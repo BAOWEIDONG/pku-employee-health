@@ -823,6 +823,36 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .itx{flex:1;min-width:0}
 .itx b{font-size:13px;display:block;letter-spacing:-.2px}
 .itx span{display:block;font-size:10.5px;color:#9AA0A8;margin-top:2px}
+
+/* rights */
+.rsum{display:flex;margin:14px;background:linear-gradient(135deg,#FFF8F2,#FFEFE2);border:1px solid #FFE4CE;border-radius:18px;padding:16px 10px}
+.rsum>div{flex:1;text-align:center;border-right:1px solid #FFDFC4}
+.rsum>div:last-child{border-right:none}
+.rsum b{display:block;font-size:20px;font-weight:800;color:#E4520A;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+.rsum span{display:block;font-size:10px;color:#A2652F;margin-top:3px}
+.rcard2{display:flex;gap:12px;align-items:center;margin:9px 14px 0;background:#fff;border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.rcard2.off{opacity:.72}
+.rc-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto}
+.rc-tx{flex:1;min-width:0}
+.rc-tx b{font-size:13.5px;display:block;letter-spacing:-.2px}
+.rc-tx span{display:block;font-size:11px;color:#9AA0A8;line-height:1.5;margin-top:3px}
+.rc-meta{display:flex;gap:10px;margin-top:7px;flex-wrap:wrap}
+.rc-meta i{font-style:normal;font-size:10px;color:#6E737B;background:#F5F6F8;padding:2px 7px;border-radius:5px}
+.rc-use{flex:0 0 auto;font-size:11.5px;font-weight:600;color:#E4520A;background:#FFF3E9;padding:7px 11px;border-radius:9px}
+.rc-use.off{background:#F3F4F6;color:#9AA0A8}
+/* lecture list */
+.lcard{display:flex;gap:12px;align-items:center;margin:10px 14px 0;background:#fff;border-radius:16px;padding:12px;box-shadow:var(--shadow)}
+.lthumb{position:relative;width:92px;height:68px;border-radius:12px;overflow:hidden;flex:0 0 auto}
+.lthumb .scene{width:100%;height:100%}
+.lbadge{position:absolute;left:7px;bottom:6px;font-size:9px;color:#fff;padding:2px 7px;border-radius:5px;background:rgba(0,0,0,.3);backdrop-filter:blur(4px)}
+.lbadge.live{background:#0E9F6E}
+.lbadge.end{background:rgba(0,0,0,.42)}
+.ltx{flex:1;min-width:0}
+.ltx b{font-size:13px;line-height:1.4;display:block;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ltx>span{display:block;font-size:10.5px;color:#9AA0A8;margin-top:5px}
+.lmeta{display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap}
+.lmeta i{font-style:normal;font-size:9.5px;color:#6E737B;background:#F5F6F8;padding:2px 6px;border-radius:4px}
+.livedot{font-style:normal;font-size:9.5px;color:#0E9F6E;font-weight:600}
 </style>
 </head>
 <body>
@@ -1058,12 +1088,24 @@ const INDUSTRIES=[
   value:'严格合规使用工会经费，将普惠性健康服务落到实处，提升在职及退休职工获得感与组织凝聚力。',payer:['工会经费','职工福利费','企康']}
 ];
 const LECTURES=[
- {t:'久坐人群的颈腰自救：3 个动作缓解僵硬',d:'11-06 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（可回看 7 天）',dur:'60 分钟',
+ {t:'久坐人群的颈腰自救：3 个动作缓解僵硬',d:'11-06 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（可回看 7 天）',dur:'60 分钟',status:'upcoming',
   outline:['久坐为什么先伤颈腰：3 分钟讲清力学原因','工位可做的 3 个松解动作（现场跟练）','什么信号提示需要就医，而不是继续拉伸','答疑：现场收集 5 个问题逐一回答']},
- {t:'睡得好才有战斗力：压力与睡眠管理',d:'11-13 周四 14:00',tag:'线下沙龙',n:'心理科 · 王莹',place:'北京昌平 · 北大国际医院健康管理中心',dur:'90 分钟',
+ {t:'睡得好才有战斗力：压力与睡眠管理',d:'11-13 周四 14:00',tag:'线下沙龙',n:'心理科 · 王莹',place:'北京昌平 · 北大国际医院健康管理中心',dur:'90 分钟',status:'upcoming',
   outline:['压力如何把睡眠"切碎"：睡眠结构基础','睡前 30 分钟的减法清单','失眠的认知行为疗法（CBT-I）入门','小组练习：给自己的工作日晚间方案']},
- {t:'AED 与心肺复苏实操工作坊（持证）',d:'11-20 周四 09:30',tag:'线下实训',n:'急救培训中心',place:'企业 F3 培训室',dur:'4 学时',
-  outline:['心脏骤停的识别与呼救流程','高质量 CPR：按压深度、频率与换人','AED 到场后的完整操作演练','考核：通过后颁发急救员证书']}
+ {t:'AED 与心肺复苏实操工作坊（持证）',d:'11-20 周四 09:30',tag:'线下实训',n:'急救培训中心',place:'企业 F3 培训室',dur:'4 学时',status:'upcoming',
+  outline:['心脏骤停的识别与呼救流程','高质量 CPR：按压深度、频率与换人','AED 到场后的完整操作演练','考核：通过后颁发急救员证书']},
+ {t:'三高人群的冬季饮食：一顿饭怎么配',d:'今天 14:00',tag:'线上直播',n:'临床营养科 · 周敏',place:'线上直播（支持回看）',dur:'60 分钟',status:'live',
+  outline:['冬季血压波动的饮食诱因','一顿饭的主食、蛋白、蔬菜配比','外食与应酬场景的替代方案','现场答疑：10 个常见饮食误区']},
+ {t:'久坐族的肩颈拉伸（已结束·可回看）',d:'10-23 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（回看有效期 30 天）',dur:'55 分钟',status:'ended',
+  outline:['肩颈紧张的 3 个常见代偿动作','办公室可做的 4 个拉伸','拉伸的时长与频次怎么定','课后 7 天打卡计划']}
+];
+const RIGHTS=[
+ {pid:'annual-exam',name:'职工年度体检',benefit:'每年 1 次基础体检，含报告解读',total:'1 次 / 年',left:1,used:0,expiry:'2026-12-31'},
+ {pid:'fast',name:'就医绿通',benefit:'副主任以上号源协调、院内陪诊、住院安排',total:'3 次 / 年',left:2,used:1,expiry:'2026-12-31'},
+ {pid:'fivehigh',name:'五高一重管理',benefit:'建档 + 季度随访 + 医生按需介入',total:'1 年',left:1,used:0,expiry:'2026-12-31'},
+ {pid:'eap',name:'EAP 心理咨询',benefit:'1v1 咨询，全程保密不进入企业记录',total:'6 次 / 年',left:4,used:2,expiry:'2026-12-31'},
+ {pid:'firstaid',name:'职场急救培训',benefit:'CPR + AED 实操，考核通过发证',total:'1 次 / 年',left:1,used:0,expiry:'2026-12-31'},
+ {pid:'weight',name:'减重训练营',benefit:'90 天医学减重，营养师与康复师带队',total:'1 期 / 年',left:0,used:1,expiry:'2026-12-31'}
 ];
 const ARTICLES=[
  {t:'体检报告上的"结节"，多久复查一次才不焦虑',m:'健康科普 · 6 分钟阅读',mod:'screen',rel:'lung',
@@ -1088,7 +1130,7 @@ const state={
   view:'tab', tab:'home', product:null, from:'home',
   sel:new Set(), favs:new Set(), enrolled:new Map(), lecture:0, article:0, signed:false,
   openMods:new Set(['screen']), pq:'', appFilter:'all', lastCode:'',
-  remind:new Set(), artFav:new Set(), industry:0, hist:[],
+  remind:new Set(), artFav:new Set(), industry:0, hist:[], lecFilter:'all',
   msgs:[
     {id:'m1',ic:'doc',title:'体检报告已生成',desc:'2026 年度体检报告已出，6 项指标需关注',time:'10-12',read:false,go:"archive:exam"},
     {id:'m2',ic:'calendar',title:'随访提醒',desc:'明天 09:30 健康管家张医生电话随访',time:'10-25',read:false,go:"apps"},
@@ -1139,9 +1181,9 @@ function homeHTML(){
     ['shield','急救培训','#FFF6E0','#A86A06',"openProduct('firstaid')"],
     ['video','云门诊','#EDF3FF','#1F4FD1',"openProduct('cloud')"],
     ['walk','减重营','#E9F7F1','#0A7A55',"openProduct('weight')"],
-    ['chat','健康讲座','#FFF1E7','#F5520A',"openLecture(0)"],
+    ['chat','健康讲座','#FFF1E7','#F5520A',"openLectureList()"],
     ['file','健康档案','#F1F2F6','#4A4E55',"openArchive('exam')"],
-    ['wallet','我的权益','#FFF6E0','#A86A06',"goTab('mine')"]
+    ['wallet','我的权益','#FFF6E0','#A86A06',"openRights()"]
   ];
   return `<div class="view fade-in">
   <div class="scroll">
@@ -1577,7 +1619,7 @@ function mineHTML(){
 
       <div class="section-title"><h3>更多</h3></div>
       <div class="mcard" style="margin:0 14px">
-        ${[['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
+        ${[['wallet','我的权益','5 项可用','openRights()'],['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
           <div class="mrow" onclick="${r[3]}">
             <div class="mi2" style="background:#F4F5F7;color:#5E626A">${ico(r[0])}</div>
             <div>${r[1]}</div>
@@ -1726,6 +1768,60 @@ function scene(kind,c1,c2){
 }
 const LSCENE=[['sleep','#F7A862','#B9420A'],['talk','#E995B0','#8E2E52'],['firstaid','#F3C463','#A05C0C']];
 const ASCENE=[['checkup','#83B9A6','#2C6350'],['report','#F1A873','#A9470F'],['run','#93ACD9','#2B4A80']];
+function openRights(){navTo({view:'rights'});}
+function rightsHTML(){
+  const active=RIGHTS.filter(r=>r.left>0).length;
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>我的权益</b></div>
+    <div class="scroll">
+      <div class="rsum">
+        <div><b>${active}</b><span>项可用权益</span></div>
+        <div><b>6</b><span>项已开通</span></div>
+        <div><b>2026</b><span>有效期至 12-31</span></div>
+      </div>
+      <div class="section-title"><h3>健康服务权益</h3><span>企业已开通</span></div>
+      ${RIGHTS.map(r=>{const p=prod(r.pid),m=modOf(p.mod);return `
+        <div class="rcard2 ${r.left?'':'off'}" onclick="openProduct('${r.pid}')">
+          <div class="rc-ico" style="background:${m.tint};color:${m.ink}">${ico(PICON[r.pid]||m.icon,19)}</div>
+          <div class="rc-tx">
+            <b>${r.name}</b>
+            <span>${r.benefit}</span>
+            <div class="rc-meta"><i>${r.total}</i><i>剩余 ${r.left}</i><i>至 ${r.expiry}</i></div>
+          </div>
+          <span class="rc-use ${r.left?'':'off'}">${r.left?'去使用':'已用完'}</span>
+        </div>`}).join('')}
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;padding:16px 24px;line-height:1.7">权益由企业职工福利费与工会经费配置，仅限本人使用，年度清零。<br>具体次数与范围以企业协议为准。</div>
+      <div style="height:12px"></div>
+    </div>
+  </div>`;
+}
+function openLectureList(){state.lecFilter='all';navTo({view:'lectures'});}
+function setLecFilter(k){state.lecFilter=k;render();}
+function lectureStatus(l){return l.status==='live'?'live':l.status==='ended'?'ended':'upcoming';}
+function lecturesHTML(){
+  const f=state.lecFilter||'all';
+  const list=LECTURES.filter(l=>f==='all'?true:lectureStatus(l)===f);
+  const meta={upcoming:['未开始','up'],live:['进行中','live'],ended:['已结束','end']};
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>健康讲座</b></div>
+    <div class="scroll">
+      <div class="seg">
+        ${[['all','全部'],['upcoming','未开始'],['live','进行中'],['ended','已结束']].map(x=>`<button class="${f===x[0]?'on':''}" onclick="setLecFilter('${x[0]}')">${x[1]}</button>`).join('')}
+      </div>
+      ${list.map(l=>{const i=LECTURES.indexOf(l),st=lectureStatus(l),m=meta[st];return `
+        <div class="lcard" onclick="openLecture(${i})">
+          <div class="lthumb">${scene(LSCENE[i%3][0],LSCENE[i%3][1],LSCENE[i%3][2])}<span class="lbadge ${m[1]}">${m[0]}</span></div>
+          <div class="ltx">
+            <b>${l.t}</b>
+            <span>${l.d} · ${l.n}</span>
+            <div class="lmeta"><i>${l.tag}</i><i>${l.dur}</i>${st==='live'?'<em class="livedot">直播中</em>':''}</div>
+          </div>
+          <span class="arw">${ico('chev',14)}</span>
+        </div>`}).join('')||'<div class="empty">这个分类下暂无讲座</div>'}
+      <div style="height:20px"></div>
+    </div>
+  </div>`;
+}
 function openLecture(i){navTo({view:'lecture',lecture:i});}
 function openArticle(i){navTo({view:'article',article:i});}
 function backToDiscover(){back();}
@@ -1749,12 +1845,18 @@ function toggleRemind(i){
 }
 function lectureHTML(){
   const i=state.lecture||0, l=LECTURES[i], sc=LSCENE[i%3];
-  const on=state.enrolled.has(i);
+  const on=state.enrolled.has(i), st=lectureStatus(l);
+  const badge={upcoming:'未开始',live:'进行中',ended:'已结束'}[st];
+  const cta = st==='upcoming'
+    ? `<button class="primary" style="background:#EDEFF3;color:#9AA0A8;box-shadow:none" onclick="toast('该场次尚未开放报名，开场前 7 天开放')">报名未开放</button>`
+    : st==='ended'
+      ? `<button class="primary" onclick="toast('回放为演示内容，正式环境可播放')">查看回放</button>`
+      : `<button class="primary" ${on?'style="background:#EAF7F1;color:#0A7A55;box-shadow:none"':''} onclick="enrollLecture(${i})">${on?'已报名 · 取消报名':'报名参加'}</button>`;
   return `<div class="view subview slide-in" style="background:#F5F6F8">
     <div class="subhead"><button class="back" onclick="backToDiscover()">${ico('left')}</button><b>讲座详情</b></div>
     <div class="scroll">
       <div class="art-hero">
-        <div class="art-img">${scene(sc[0],sc[1],sc[2])}<span class="ttag">${l.tag}</span></div>
+        <div class="art-img">${scene(sc[0],sc[1],sc[2])}<span class="ttag">${l.tag}</span><span class="lbadge ${st==='upcoming'?'up':st==='live'?'live':'end'}" style="left:auto;right:10px">${badge}</span></div>
         <h1>${l.t}</h1>
         <div class="art-meta"><span>${l.d}</span><i>·</i><span>${l.dur}</span><i>·</i><span>${l.n}</span></div>
       </div>
@@ -1769,12 +1871,12 @@ function lectureHTML(){
         <div class="kv"><span>时长</span><b>${l.dur}</b></div>
         <div class="kv"><span>费用</span><b>企业权益支付</b></div>
       </div>
-      <div class="bnote">${ico('info',13)}<span>报名后可在开课前 24 小时取消；线上场次回看 7 天。</span></div>
+      <div class="bnote">${ico('info',13)}<span>${st==='upcoming'?'本场尚未开始，可先查看内容安排；开场前 7 天开放报名。':st==='ended'?'本场已结束，可查看回放与内容安排。':'报名成功后可在开课前 24 小时取消；线上场次回看 7 天。'}</span></div>
       <div style="height:16px"></div>
     </div>
     <div class="dock">
       <button class="fav ${state.remind.has(i)?'on':''}" onclick="toggleRemind(${i})">${ico('calendar')}<span>${state.remind.has(i)?'已提醒':'提醒'}</span></button>
-      <button class="primary" ${on?'style="background:#EAF7F1;color:#0A7A55;box-shadow:none"':''} onclick="enrollLecture(${i})">${on?'已报名 · 取消报名':'报名参加'}</button>
+      ${cta}
     </div>
   </div>`;
 }
@@ -1819,10 +1921,10 @@ function discoverHTML(){
         </div>
       </div>
 
-      <div class="section-title"><h3>健康讲座</h3><span onclick="toast('本月共 3 场')">本月 3 场</span></div>
-      ${LECTURES.map((l,i)=>`
+      <div class="section-title"><h3>健康讲座</h3><span onclick="openLectureList()">全部 ${LECTURES.length} 场 ${ico('chev',12)}</span></div>
+      ${LECTURES.slice(0,3).map((l,i)=>`
         <div class="article" onclick="openLecture(${i})">
-          <div class="thumb">${scene(LSCENE[i][0],LSCENE[i][1],LSCENE[i][2])}<span class="ttag">${l.tag}</span></div>
+          <div class="thumb">${scene(LSCENE[i%3][0],LSCENE[i%3][1],LSCENE[i%3][2])}<span class="ttag">${l.tag}</span></div>
           <div class="ab"><b>${l.t}</b><div class="meta">${l.d}<i>|</i>${l.n}</div></div>
         </div>`).join('')}
 
@@ -2166,6 +2268,8 @@ function render(){
   else if(state.view==='messages'){root.innerHTML=messagesHTML();}
   else if(state.view==='quota'){root.innerHTML=quotaHTML();}
   else if(state.view==='industry'){root.innerHTML=industryHTML();}
+  else if(state.view==='rights'){root.innerHTML=rightsHTML();}
+  else if(state.view==='lectures'){root.innerHTML=lecturesHTML();}
   else if(state.view==='success'){root.innerHTML=successHTML();}
   renderTabbar();
   const sc=document.querySelector('.scroll'); if(sc)sc.scrollTop=0;
