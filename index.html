@@ -1088,7 +1088,7 @@ const state={
   view:'tab', tab:'home', product:null, from:'home',
   sel:new Set(), favs:new Set(), enrolled:new Map(), lecture:0, article:0, signed:false,
   openMods:new Set(['screen']), pq:'', appFilter:'all', lastCode:'',
-  remind:new Set(), artFav:new Set(), industry:0,
+  remind:new Set(), artFav:new Set(), industry:0, hist:[],
   msgs:[
     {id:'m1',ic:'doc',title:'体检报告已生成',desc:'2026 年度体检报告已出，6 项指标需关注',time:'10-12',read:false,go:"archive:exam"},
     {id:'m2',ic:'calendar',title:'随访提醒',desc:'明天 09:30 健康管家张医生电话随访',time:'10-25',read:false,go:"apps"},
@@ -1097,9 +1097,9 @@ const state={
     {id:'m5',ic:'chat',title:'健康讲座开放报名',desc:'11 月共 3 场讲座，可在线报名',time:'10-28',read:true,go:"discover"}
   ], recent:[], svcFilter:'all', msg:3,
   apps:[
-    {id:'a1',name:'五高一重管理 · 季度随访',date:'10-24',week:'周五',time:'14:00',org:'线上 · 健康管家 张医生',status:'待随访'},
-    {id:'a2',name:'无痛胃肠镜检查',date:'10-18',week:'周六',time:'08:30',org:'北京大学国际医院 · 内镜中心',status:'已完成'},
-    {id:'a3',name:'职场急救培训（持证）',date:'09-12',week:'周五',time:'09:00',org:'企业 F3 培训室',status:'已完成'}
+    {id:'a1',pid:'fivehigh',name:'五高一重管理 · 季度随访',date:'10-24',week:'周五',time:'14:00',org:'线上 · 健康管家 张医生',status:'待随访'},
+    {id:'a2',pid:'gastro',name:'无痛胃肠镜检查',date:'10-18',week:'周六',time:'08:30',org:'北京大学国际医院 · 内镜中心',status:'已完成'},
+    {id:'a3',pid:'firstaid',name:'职场急救培训（持证）',date:'09-12',week:'周五',time:'09:00',org:'企业 F3 培训室',status:'已完成'}
   ],
   booking:{org:0,date:0,time:0},
   ask:{scene:-1,need:-1},
@@ -1379,12 +1379,18 @@ function detailHTML(p){
     </div>
   </div>`;
 }
-function openProduct(id){state.product=id;state.view='detail';render();}
+function snap(){return {view:state.view,tab:state.tab,product:state.product,lecture:state.lecture,article:state.article,industry:state.industry};}
+function navTo(u){state.hist.push(snap());Object.assign(state,u);render();}
+function openProduct(id){navTo({view:'detail',product:id});}
 function toggleFav(id,el){
   if(state.favs.has(id)){state.favs.delete(id);el.classList.remove('on');el.querySelector('span').textContent='关注';toast('已取消关注');}
   else{state.favs.add(id);el.classList.add('on');el.querySelector('span').textContent='已关注';toast('已加入我的关注');}
 }
-function back(){state.view='tab';render();}
+function back(){
+  const p=state.hist.pop();
+  if(p){Object.assign(state,p);render();}
+  else{state.view='tab';render();}
+}
 
 /* ---------------- booking page ---------------- */
 const ORGS=[{n:'北大国际医院',s:'北京·昌平'},{n:'北大医疗康复医院',s:'北京·朝阳'},{n:'线上视频面诊',s:'全国'}];
@@ -1412,7 +1418,7 @@ function openBooking(id){
   const p=prod(id); state.product=id;
   state.book={opt:{},num:{}};
   fieldSet(p).forEach(f=>{ if(f.opts)state.book.opt[f.k]=0; if(f.num)state.book.num[f.k]=f.num[2]; });
-  state.view='booking'; render();
+  navTo({view:'booking'});
 }
 function pickBook(k,i,el){
   state.book.opt[k]=i;
@@ -1448,7 +1454,7 @@ function bookingHTML(){
         <div class="person">
           <div class="pav">${AVATAR}</div>
           <div class="ptx"><b>王莉 <span>本人</span></b><em>国家电网 · 华东分部　138****8866</em></div>
-          <button class="plink" onclick="toast('可在「我的-家庭成员」中添加就诊人')">更换</button>
+          <button class="plink" onclick="openFamily()">更换</button>
         </div>
       </div>
       <div class="bnote">${ico('info',13)}<span>提交后健康管家将在 30 分钟内电话确认；服务前 24 小时可免费改期或取消。</span></div>
@@ -1459,7 +1465,7 @@ function bookingHTML(){
     </div>
   </div>`;
 }
-function backToDetail(){state.view='detail';render();}
+function backToDetail(){back();}
 function confirmBooking(){
   const p=prod(state.product), fields=fieldSet(p), opt=state.book.opt, num=state.book.num;
   const orgF=fields.find(f=>f.k==='org');
@@ -1492,7 +1498,7 @@ function successHTML(){
         </div>
         <div class="succ-btns">
           <button class="ghost" onclick="goTab('home')">返回首页</button>
-          <button class="solid" onclick="openApps()">查看我的预约</button>
+          <button class="solid" onclick="openAppsFromSuccess()">查看我的预约</button>
         </div>
         <div style="font-size:11px;color:#B4B9C1;margin-top:22px">本页面为产品演示，未产生真实预约</div>
       </div>
@@ -1502,10 +1508,16 @@ function successHTML(){
 
 /* ---------------- mine (appointments + balance) ---------------- */
 function statusKind(a){ return a.status==='已完成'?'done':a.status==='已取消'?'cancel':'doing'; }
+function openFromAppt(id){
+  const a=state.apps.find(x=>x.id===id); if(!a)return;
+  if(a.type==='lecture'&&a.lec!=null){openLecture(a.lec);return;}
+  if(a.pid){openProduct(a.pid);return;}
+  toast(a.name);
+}
 function apptCard(a){
   const k=statusKind(a);
   return `<div class="appt ${k}">
-    <div class="ap-top">
+    <div class="ap-top" onclick="openFromAppt('${a.id}')">
       <div class="ap-date"><b>${a.date}</b><span>${a.week}</span></div>
       <div class="ap-tx">
         <b>${a.name}</b>
@@ -1580,7 +1592,8 @@ function mineHTML(){
     </div>
   </div>`;
 }
-function openApps(){state.view='apps';render();}
+function openApps(){navTo({view:'apps'});}
+function openAppsFromSuccess(){state.hist=[];state.tab='mine';state.view='apps';render();}
 function setAppFilter(k){state.appFilter=k;render();}
 function appsHTML(){
   const f=state.appFilter||'all';
@@ -1596,15 +1609,28 @@ function appsHTML(){
     </div>
   </div>`;
 }
-function openQuota(){ state.view='quota'; render(); }
+function openQuota(){ navTo({view:'quota'}); }
+const QUOTA_RECS=[
+    {ic:'heart',pid:'tcm',name:'中医康复综合解决方案',item:'推拿疗程 5 次',org:'北京大学国际医院 · 中医科',date:'10-20',amt:-680},
+    {ic:'doc',pid:'annual-exam',name:'职工年度体检',item:'升级加项 · 颈动脉超声',org:'北大国际医院 · 健康管理中心',date:'10-12',amt:-260},
+    {ic:'chat',pid:'eap',name:'EAP 心理咨询',item:'1v1 咨询 2 次',org:'北大医疗心理服务中心',date:'10-08',amt:-600},
+    {ic:'pulse',pid:'fivehigh',name:'五高一重管理',item:'季度随访 · 权益内',org:'线上 · 健康管家 张医生',date:'09-24',amt:0},
+    {ic:'hospital',pid:'gastro',name:'无痛胃肠镜检查',item:'麻醉评估 + 检查',org:'北大国际医院 · 内镜中心',date:'09-18',amt:-1260}
+];
+function openQuotaRec(i){
+  const r=QUOTA_RECS[i]; if(!r)return;
+  openSheet('使用记录', `
+    <div style="font-size:11.5px;color:#9AA0A8;margin-bottom:10px">${r.date} · 已结算</div>
+    <div class="kv"><span>服务项目</span><b>${r.name}</b></div>
+    <div class="kv"><span>具体内容</span><b>${r.item}</b></div>
+    <div class="kv"><span>服务机构</span><b>${r.org}</b></div>
+    <div class="kv"><span>结算金额</span><b style="color:#E4520A">${r.amt===0?'权益内 0 元':'−¥'+Math.abs(r.amt).toLocaleString('en-US')}</b></div>
+    <div class="kv"><span>支出来源</span><b>企业职工健康额度</b></div>
+    <div class="kv"><span>状态</span><b style="color:#0E9F6E">已完成</b></div>
+    <button class="primary" style="margin-top:16px" onclick="closeSheet();openProduct('${r.pid||'fivehigh'}')">查看该服务</button>`);
+}
 function quotaHTML(){
-  const recs=[
-    {ic:'heart',name:'中医康复综合解决方案',item:'推拿疗程 5 次',org:'北京大学国际医院 · 中医科',date:'10-20',amt:-680},
-    {ic:'doc',name:'职工年度体检',item:'升级加项 · 颈动脉超声',org:'北大国际医院 · 健康管理中心',date:'10-12',amt:-260},
-    {ic:'chat',name:'EAP 心理咨询',item:'1v1 咨询 2 次',org:'北大医疗心理服务中心',date:'10-08',amt:-600},
-    {ic:'pulse',name:'五高一重管理',item:'季度随访 · 权益内',org:'线上 · 健康管家 张医生',date:'09-24',amt:0},
-    {ic:'hospital',name:'无痛胃肠镜检查',item:'麻醉评估 + 检查',org:'北大国际医院 · 内镜中心',date:'09-18',amt:-1260}
-  ];
+  const recs=QUOTA_RECS;
   return `<div class="view subview slide-in" style="background:#F5F6F8">
     <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>额度使用明细</b></div>
     <div class="scroll">
@@ -1618,7 +1644,7 @@ function quotaHTML(){
       </div>
       <div class="section-title"><h3>使用记录</h3><span>2026 年度</span></div>
       <div class="ucard">
-        ${recs.map(r=>`<div class="urow" onclick="toast('${r.name} · 演示账单')">
+        ${recs.map((r,i)=>`<div class="urow" onclick="openQuotaRec(${i})">
           <div class="uic">${ico(r.ic,17)}</div>
           <div class="ut">
             <b>${r.name}</b>
@@ -1700,9 +1726,9 @@ function scene(kind,c1,c2){
 }
 const LSCENE=[['sleep','#F7A862','#B9420A'],['talk','#E995B0','#8E2E52'],['firstaid','#F3C463','#A05C0C']];
 const ASCENE=[['checkup','#83B9A6','#2C6350'],['report','#F1A873','#A9470F'],['run','#93ACD9','#2B4A80']];
-function openLecture(i){state.lecture=i;state.view='lecture';render();}
-function openArticle(i){state.article=i;state.view='article';render();}
-function backToDiscover(){state.view='tab';state.tab='discover';render();}
+function openLecture(i){navTo({view:'lecture',lecture:i});}
+function openArticle(i){navTo({view:'article',article:i});}
+function backToDiscover(){back();}
 function enrollLecture(i){
   if(state.enrolled.has(i)){
     const aid=state.enrolled.get(i);
@@ -1818,7 +1844,7 @@ function discoverHTML(){
     </div>
   </div>`;
 }
-function openIndustryAt(i){state.industry=i;state.view='industry';render();}
+function openIndustryAt(i){navTo({view:'industry',industry:i});}
 function industryHTML(){
   const i=state.industry||0, x=INDUSTRIES[i];
   const tints=[['#F7A862','#B9420A'],['#E995B0','#8E2E52'],['#F3C463','#A05C0C'],['#8FB8D9','#2C5A80'],['#83B9A6','#2C6350'],['#F1A873','#A9470F'],['#93ACD9','#2B4A80'],['#B79AD9','#5A3A86']][i%8];
@@ -1981,15 +2007,15 @@ function openSheet(title,body){
 function closeSheet(){$('sheet').classList.remove('on'); $('backdrop').classList.remove('on');}
 $('backdrop').addEventListener('click',closeSheet);
 function unreadCount(){ return state.msgs.filter(m=>!m.read).length; }
-function openMessages(){ state.view='messages'; render(); }
+function openMessages(){ navTo({view:'messages'}); }
 function openMsg(id){
   const m=state.msgs.find(x=>x.id===id); if(!m)return;
   m.read=true;
   const [k,v]=m.go.split(':');
   if(k==='archive'){ render(); openArchive(v); }
-  else if(k==='apps'){ render(); openApps(); }
-  else if(k==='product'){ render(); openProduct(v); }
-  else if(k==='quota'){ render(); openQuota(); }
+  else if(k==='apps'){ openApps(); }
+  else if(k==='product'){ openProduct(v); }
+  else if(k==='quota'){ openQuota(); }
   else { goTab('discover'); }
 }
 function readAllMsgs(){
@@ -2090,7 +2116,7 @@ function openArchive(k){
   }
 }
 function goTab(id){
-  state.tab=id; state.view='tab'; state.filter=state.filter||'';
+  state.tab=id; state.view='tab'; state.hist=[]; state.filter=state.filter||'';
   closeSearch(); closeQA(); render();
 }
 function renderTabbar(){
