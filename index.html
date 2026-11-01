@@ -30,7 +30,7 @@ input{font-family:inherit;border:none;outline:none;background:none;color:inherit
 ::-webkit-scrollbar{width:0;height:0}
 .phone{
   position:relative;width:100%;max-width:430px;background:#fff;
-  height:100%;overflow:hidden;display:flex;flex-direction:column;
+  height:var(--app-h,100%);overflow:hidden;display:flex;flex-direction:column;
 }
 @media(max-width:559px){body{background:#fff}}
 @media(min-width:560px){
@@ -1250,6 +1250,17 @@ function bannerArt(n){
 }
 function pickAsk(k,i){state.ask[k]=state.ask[k]===i?-1:i;render();}
 
+/* 微信 H5：按可视视口高度锁定容器，避免底部多出一条空白 */
+function fitViewport(){
+  const vv=window.visualViewport;
+  const h=Math.round((vv&&vv.height)||window.innerHeight||0);
+  if(h>200)document.documentElement.style.setProperty('--app-h',h+'px');
+}
+fitViewport();
+window.addEventListener('resize',fitViewport);
+window.addEventListener('orientationchange',()=>setTimeout(fitViewport,120));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',fitViewport);
+
 /* ---------------- products (search + accordion) ---------------- */
 function productsHTML(){
   return `<div class="view fade-in">
@@ -2248,6 +2259,7 @@ function render(){
   if(state.view==='tab'&&state.tab==='home')startBanner(); else clearInterval(bannerTimer);
   mount();
 }
+fitViewport();
 render();
 
 </script>
