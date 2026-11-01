@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FF6A13">
+<title>北大医疗 · 职工健康管理</title>
+<style>
+:root{
+  --orange:#FF6A13; --orange-d:#F04E00; --orange-l:#FF933B; --amber:#FFB020;
+  --tint:#FFF3E9; --tint-2:#FFE7D5;
+  --ink:#191A1C; --ink-2:#5E626A; --ink-3:#9AA0A8; --line:#EFEFF3;
+  --bg:#F5F6F8; --white:#fff;
+  --green:#0E9F6E; --blue:#2F6BFF; --pink:#E24C86; --gold:#C8860A;
+  --navy:#123B54;
+  --r:18px;
+  --shadow:0 6px 22px rgba(24,26,32,.06);
+  --tab-h:64px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#E9EBEF;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+button{font-family:inherit;border:none;background:none;padding:0;color:inherit;cursor:pointer}
+input{font-family:inherit;border:none;outline:none;background:none;color:inherit}
+::-webkit-scrollbar{width:0;height:0}
+.phone{
+  position:relative;width:100%;max-width:430px;height:100dvh;background:#fff;
+  overflow:hidden;display:flex;flex-direction:column;
+}
+@media(min-width:560px){
+  body{background:radial-gradient(1200px 600px at 50% -10%,#FFF1E6 0%,#E9EBEF 60%)}
+  .phone{height:min(920px,calc(100dvh - 36px));border-radius:38px;box-shadow:0 40px 90px rgba(20,24,30,.22),0 0 0 9px #17191d,0 0 0 10px #2b2f36}
+}
+/* ---------- status bar ---------- */
+.statusbar{
+  height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;font-size:14px;font-weight:600;letter-spacing:.2px;color:#fff;
+  position:relative;z-index:30;
+}
+.statusbar.dark{color:var(--ink)}
+.statusbar .sb-r{display:flex;align-items:center;gap:5px}
+.sb-bars{display:flex;align-items:flex-end;gap:2px;height:10px}
+.sb-bars i{width:3px;background:currentColor;border-radius:1px;display:block}
+.sb-bars i:nth-child(1){height:4px}.sb-bars i:nth-child(2){height:6px}.sb-bars i:nth-child(3){height:8px}.sb-bars i:nth-child(4){height:10px}
+.sb-batt{width:22px;height:11px;border:1.4px solid currentColor;border-radius:3px;position:relative;opacity:.9}
+.sb-batt::after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:currentColor;border-radius:0 1px 1px 0}
+.sb-batt i{position:absolute;inset:1.6px;width:70%;background:currentColor;border-radius:1.5px;display:block}
+/* ---------- generic ---------- */
+.view{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:1}
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(var(--tab-h) + 26px);position:relative;-webkit-overflow-scrolling:touch}
+.subview{z-index:20;background:#fff}
+.subview.detail{background:#F5F6F8}
+.subview .scroll{padding-bottom:28px}
+.section-title{display:flex;align-items:baseline;justify-content:space-between;padding:0 16px;margin:22px 0 12px}
+.section-title h3{margin:0;font-size:17px;letter-spacing:-.2px}
+.section-title span{font-size:12px;color:var(--ink-3);display:flex;align-items:center;gap:2px}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:0 16px}
+.chev{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:4px 9px;border-radius:8px;background:var(--tint);color:var(--orange-d);font-weight:500}
+.chip.grey{background:#F3F4F6;color:var(--ink-2)}
+.chip.blue{background:#EDF3FF;color:var(--blue)}
+.chip.green{background:#E9F7F1;color:var(--green)}
+/* ---------- home hero ---------- */
+.hero{
+  background:linear-gradient(168deg,#FF8A2B 0%,#FF6A13 46%,#F5520A 100%);
+  padding:0 0 26px;border-radius:0 0 26px 26px;position:relative;overflow:hidden;flex:0 0 auto;
+}
+.hero::before{
+  content:"";position:absolute;width:320px;height:320px;right:-120px;top:-160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.32),rgba(255,255,255,0) 66%);
+}
+.hero::after{
+  content:"";position:absolute;width:180px;height:180px;left:-80px;top:40px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.16),rgba(255,255,255,0) 70%);
+}
+.topbar{display:flex;align-items:center;gap:9px;padding:0 16px;position:relative;z-index:2}
+.city{display:flex;align-items:center;gap:3px;color:#fff;font-size:14px;font-weight:600;flex:0 0 auto}
+.searchbox{
+  flex:1;height:38px;background:rgba(255,255,255,.96);border-radius:19px;display:flex;align-items:center;gap:6px;
+  padding:0 13px;font-size:13px;color:#9AA0A8;min-width:0;
+}
+.searchbox svg{width:15px;height:15px;flex:0 0 auto;stroke:#B0B5BD;fill:none;stroke-width:2.2;stroke-linecap:round}
+.msgbtn{position:relative;width:32px;height:32px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
+.msgbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.badge{
+  position:absolute;top:-3px;right:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;
+  background:#FF3B30;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;border:1.5px solid #FF7A22;
+}
+.quick-pill{
+  flex:0 0 auto;height:32px;padding:0 11px;border-radius:16px;background:rgba(255,255,255,.2);
+  color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:3px;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.36);
+}
+.greet{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 18px 0;position:relative;z-index:2}
+.greet h1{margin:0;font-size:21px;line-height:1.32;color:#fff;letter-spacing:-.4px;font-weight:700;text-shadow:0 1px 6px rgba(180,60,0,.16)}
+.greet p{margin:6px 0 0;font-size:12px;color:rgba(255,255,255,.86);display:flex;align-items:center;gap:6px}
+.greet p b{font-weight:600;background:rgba(255,255,255,.2);padding:2px 7px;border-radius:6px;font-size:11px}
+.avatar{position:relative;width:64px;height:64px;flex:0 0 auto;margin-top:-2px}
+.avatar .ring{position:absolute;inset:-4px;border-radius:50%;border:1.5px solid rgba(255,255,255,.55)}
+.avatar svg{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 6px 16px rgba(150,50,0,.24)}
+.avatar .dot{position:absolute;right:1px;bottom:3px;width:11px;height:11px;border-radius:50%;background:#34D07C;border:2px solid #FF6A13}
+/* ask card */
+.ask{
+  margin:16px 14px 0;background:#fff;border-radius:20px;padding:16px 15px 12px;position:relative;z-index:2;
+  box-shadow:0 12px 30px rgba(160,60,0,.14);
+}
+.ask-head{display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:700;letter-spacing:-.2px}
+.ask-head .rot{color:#C9CDD4}
+.ask-head .rot svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ask-row{display:flex;align-items:center;gap:8px;margin-top:13px;flex-wrap:wrap}
+.ask-key{font-size:13px;color:#7A7F88;width:40px;flex:0 0 auto}
+.ask-chips{display:flex;gap:8px;flex-wrap:wrap}
+.ask-chip{
+  padding:6px 13px;border-radius:15px;font-size:12.5px;background:#FFF7F1;color:#8A5B38;
+  border:1px solid #FFE8D7;font-weight:500;
+}
+.ask-chip.on{background:var(--tint-2);border-color:#FFC79E;color:var(--orange-d);font-weight:600}
+.ask-foot{display:flex;align-items:center;gap:9px;margin-top:16px;padding-top:12px;border-top:1px solid #F4F1EE}
+.ask-act{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#5E626A;padding:6px 4px;font-weight:500}
+.ask-act svg{width:16px;height:16px;stroke:var(--orange);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ask-act+.ask-act{padding-left:12px;border-left:1px solid #F0EEEC}
+.ask-go{
+  margin-left:auto;height:34px;padding:0 20px;border-radius:17px;color:#fff;font-size:13px;font-weight:600;
+  background:linear-gradient(135deg,#FF8A3D,#FF5A0C);box-shadow:0 6px 14px rgba(255,90,12,.28);
+}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px 4px;padding:20px 12px 4px;background:transparent}
+.gitem{display:flex;flex-direction:column;align-items:center;gap:7px}
+.gicon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center}
+.gicon svg{width:24px;height:24px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.gitem span{font-size:11.5px;color:#3C4048;letter-spacing:-.2px;white-space:nowrap}
+/* quota */
+.quota{margin:8px 14px 0;padding:15px 16px;border-radius:18px;background:linear-gradient(115deg,#FFF8F2,#FFEFE2);border:1px solid #FFE4CE;display:flex;align-items:center;gap:12px}
+.quota .q-num{font-size:26px;font-weight:800;color:var(--orange-d);letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1}
+.quota .q-num small{font-size:13px;font-weight:700;margin-right:1px}
+.quota .q-mid{flex:1;min-width:0}
+.quota .q-mid .t{font-size:12px;color:#8A6039;margin-bottom:6px;display:flex;justify-content:space-between}
+.quota .q-bar{height:5px;border-radius:3px;background:#FFDFC4;overflow:hidden}
+.quota .q-bar i{display:block;height:100%;width:42%;border-radius:3px;background:linear-gradient(90deg,#FFB020,#FF6A13)}
+.quota .q-btn{font-size:11.5px;color:var(--orange-d);font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:1px}
+/* banner */
+.section-title + .banner{margin-top:0}
+.banner{margin:16px 14px 0;border-radius:18px;overflow:hidden;position:relative;height:104px}
+.bslide{position:absolute;inset:0;display:flex;align-items:center;padding:0 18px;opacity:0;transition:opacity .6s;pointer-events:none}
+.bslide.on{opacity:1;pointer-events:auto}
+.bslide h4{margin:0;font-size:16.5px;color:#fff;font-weight:700;letter-spacing:-.3px}
+.bslide p{margin:5px 0 0;font-size:11.5px;color:rgba(255,255,255,.82)}
+.bslide .b-tag{display:inline-block;margin-top:8px;font-size:10.5px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.22);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.bslide .art{position:absolute;right:-6px;bottom:-10px;opacity:.9}
+.bdots{position:absolute;right:12px;bottom:9px;display:flex;gap:4px;z-index:3}
+.bdots i{width:4px;height:4px;border-radius:2px;background:rgba(255,255,255,.45);transition:.3s}
+.bdots i.on{width:12px;background:#fff}
+/* task card */
+.task{margin:14px 14px 0;padding:14px 15px;display:flex;align-items:center;gap:12px}
+.task .ti{width:40px;height:40px;border-radius:12px;background:var(--tint);display:grid;place-items:center;flex:0 0 auto}
+.task .ti svg{width:21px;height:21px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.task .tm{flex:1;min-width:0}
+.task .tm b{font-size:14px;font-weight:600;display:block;letter-spacing:-.2px}
+.task .tm span{font-size:11.5px;color:var(--ink-3);display:block;margin-top:3px}
+.task .go{font-size:12px;font-weight:600;color:var(--orange-d);background:var(--tint);padding:7px 12px;border-radius:12px;white-space:nowrap}
+/* signin */
+.signin{margin:14px 14px 0;background:#fff;border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
+.signin b{font-size:14px;color:var(--ink)}
+.signin span{font-size:12px;color:#8A6039;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.signin .sbtn{font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#FFB020,#FF7A18);padding:6px 14px;border-radius:12px}
+/* tabbar */
+.tabbar{
+  position:absolute;left:0;right:0;bottom:0;height:calc(var(--tab-h) + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid #F0F1F4;
+  display:flex;align-items:flex-start;padding-top:7px;z-index:50;
+}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:#9BA0A8}
+.tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab span{font-size:10.5px;letter-spacing:-.2px}
+.tab.on{color:var(--orange);font-weight:600}
+.tab.ai{position:relative;color:var(--orange)}
+.tab.ai .aiball{
+  width:26px;height:26px;border-radius:50%;background:linear-gradient(140deg,#FFB020,#FF5A0C);color:#fff;
+  display:grid;place-items:center;font-size:13px;font-weight:800;font-style:italic;box-shadow:0 4px 10px rgba(255,90,12,.3);
+  margin-top:-3px;
+}
+/* ---------- products ---------- */
+.pheader{background:linear-gradient(168deg,#FF8A2B,#F5520A);padding:0 16px 16px;color:#fff}
+.pheader h2{margin:6px 0 4px;font-size:22px;letter-spacing:-.5px}
+.pheader p{margin:0 0 14px;font-size:12px;color:rgba(255,255,255,.82)}
+.ptabs{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;justify-content:space-between}
+.ptab{flex:0 0 auto;padding:6px 11px;border-radius:13px;font-size:12px;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.26);white-space:nowrap}
+.ptab.on{background:#fff;color:var(--orange-d);font-weight:700;border-color:#fff}
+.mod{background:#fff;margin:12px 14px 0;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.mod-head{padding:15px 15px;display:flex;align-items:center;gap:12px}
+.mod-ico{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:0 0 auto}
+.mod-ico svg{width:23px;height:23px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mod-h{flex:1;min-width:0}
+.mod-h b{font-size:15.5px;display:block;letter-spacing:-.2px}
+.mod-h span{font-size:11.5px;color:var(--ink-3);margin-top:2px;display:block}
+.mod-n{font-size:11px;color:var(--ink-3)}
+.pitem{padding:12px 15px;border-top:1px solid #F5F5F8;display:flex;gap:11px;align-items:flex-start;background:#fff}
+.pitem .ck{
+  width:19px;height:19px;border-radius:6px;border:1.6px solid #D8DBE1;flex:0 0 auto;margin-top:2px;
+  display:grid;place-items:center;transition:.16s;background:#fff;
+}
+.pitem .ck svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.pitem.sel .ck{background:linear-gradient(135deg,#FF8A3D,#F5520A);border-color:transparent}
+.pitem.sel .ck svg{opacity:1}
+.pitem .pi{flex:1;min-width:0}
+.pitem .pi b{font-size:13.5px;font-weight:600;letter-spacing:-.2px;display:block}
+.pitem .pi p{margin:3px 0 0;font-size:11.5px;color:var(--ink-3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pitem .tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.pitem .arw{color:#C9CDD4;align-self:center;margin-top:2px}
+.selbar{
+  position:absolute;left:12px;right:12px;bottom:calc(var(--tab-h) + 10px);z-index:45;
+  background:#1B1D21;border-radius:16px;padding:10px 10px 10px 16px;display:flex;align-items:center;gap:10px;
+  color:#fff;box-shadow:0 12px 28px rgba(0,0,0,.24);backdrop-filter:blur(8px);
+}
+.selbar .s1{font-size:12px;color:rgba(255,255,255,.66)}
+.selbar .s1 b{font-size:17px;color:#FFB020;margin:0 2px;font-variant-numeric:tabular-nums}
+.selbar button{
+  margin-left:auto;height:38px;padding:0 18px;border-radius:12px;font-size:13px;font-weight:600;color:#fff;
+  background:linear-gradient(135deg,#FF8A3D,#F5520A);
+}
+/* ---------- detail ---------- */
+.detail-hero{padding:16px 18px 24px;color:#fff;position:relative;overflow:hidden}
+.detail-hero::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-90px;top:-90px;background:radial-gradient(circle,rgba(255,255,255,.26),transparent 70%)}
+.detail-hero .d-tags{display:flex;gap:6px;margin-bottom:12px;position:relative;z-index:2;flex-wrap:wrap}
+.detail-hero .d-tags i{font-style:normal;font-size:11px;padding:4px 9px;border-radius:7px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3)}
+.detail-hero h1{margin:0;font-size:23px;line-height:1.36;letter-spacing:-.5px;position:relative;z-index:2}
+.detail-hero .en{margin:6px 0 0;font-size:11px;color:rgba(255,255,255,.66);letter-spacing:.3px;position:relative;z-index:2;text-transform:uppercase}
+.detail-hero .d-intro{margin:12px 0 0;font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.9);position:relative;z-index:2}
+.dcard{background:#fff;border-radius:18px;margin:12px 14px 0;padding:16px;box-shadow:var(--shadow)}
+.dcard h4{margin:0 0 12px;font-size:14.5px;display:flex;align-items:center;gap:7px;letter-spacing:-.2px}
+.dcard h4::before{content:"";width:3px;height:14px;border-radius:2px;background:var(--orange)}
+.inc{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed #F1F2F5;font-size:12.5px;color:#4A4E55;line-height:1.55}
+.inc:last-child{border-bottom:none;padding-bottom:0}
+.inc i{font-style:normal;width:18px;height:18px;border-radius:6px;background:var(--tint);color:var(--orange-d);font-size:10px;font-weight:700;display:grid;place-items:center;flex:0 0 auto;margin-top:1px}
+.flow{display:flex;gap:0;margin-top:4px}
+.fstep{flex:1;text-align:center;position:relative;padding:0 2px}
+.fstep .n{width:24px;height:24px;border-radius:50%;background:var(--tint);color:var(--orange-d);font-size:11px;font-weight:700;display:grid;place-items:center;margin:0 auto 7px;position:relative;z-index:2}
+.fstep .l{font-size:10.5px;color:#5E626A;line-height:1.35}
+.fstep::before{content:"";position:absolute;left:0;right:50%;top:12px;height:1px;background:#FFE0C8}
+.fstep::after{content:"";position:absolute;left:50%;right:0;top:12px;height:1px;background:#FFE0C8}
+.fstep:first-child::before,.fstep:last-child::after{display:none}
+.org{display:flex;align-items:center;gap:9px;padding:9px 0;font-size:12.5px;color:#4A4E55;border-bottom:1px solid #F5F6F8}
+.org:last-child{border-bottom:none}
+.org svg{width:16px;height:16px;stroke:var(--ink-3);fill:none;stroke-width:1.7;flex:0 0 auto}
+.org em{font-style:normal;margin-left:auto;font-size:11px;color:var(--ink-3)}
+.dock{
+  position:absolute;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.98);border-top:1px solid #F2F3F6;display:flex;align-items:center;gap:10px;z-index:40;
+}
+.dock .fav{width:48px;text-align:center;color:#6E737B;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:0 0 auto}
+.dock .fav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.dock .primary{flex:1;height:46px;border-radius:14px;background:linear-gradient(135deg,#FF8A3D,#F5520A);color:#fff;font-size:15px;font-weight:600;box-shadow:0 8px 18px rgba(245,82,10,.28)}
+/* sub header */
+.subhead{
+  flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:0 14px;height:50px;background:#fff;
+  border-bottom:1px solid #F4F5F7;position:relative;z-index:10;
+}
+.subhead .back{width:30px;height:30px;display:grid;place-items:center;margin-left:-6px}
+.subhead .back svg{width:21px;height:21px;stroke:#191A1C;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.subhead b{font-size:16px;letter-spacing:-.2px;flex:1;text-align:center;margin-right:24px}
+.subhead .ext{position:absolute;right:14px;font-size:12px;color:var(--ink-2)}
+/* ---------- services page ---------- */
+.stat-row{display:flex;gap:10px;margin:12px 14px 0}
+.stat-cell{flex:1;background:#fff;border-radius:16px;padding:14px 12px;box-shadow:var(--shadow)}
+.stat-cell b{display:block;font-size:23px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat-cell span{font-size:11.5px;color:var(--ink-3);margin-top:3px;display:block}
+.rec{background:#fff;border-radius:16px;margin:10px 14px 0;padding:14px 15px;display:flex;gap:12px;box-shadow:var(--shadow)}
+.rec .rt{width:56px;flex:0 0 auto;text-align:center;border-right:1px solid #F2F3F6;padding-right:10px}
+.rec .rt b{display:block;font-size:15px;font-weight:800;letter-spacing:-.3px;font-variant-numeric:tabular-nums;line-height:1.25;white-space:nowrap}
+.rec .rt span{font-size:10.5px;color:var(--ink-3);display:block;margin-top:3px}
+.rec .rb{flex:1;min-width:0}
+.rec .rb b{font-size:13.5px;display:block;letter-spacing:-.2px}
+.rec .rb p{margin:4px 0 0;font-size:11.5px;color:var(--ink-3);line-height:1.55}
+.rec .st{align-self:flex-start;font-size:10.5px;padding:3px 7px;border-radius:6px;background:#E9F7F1;color:#0E9F6E;white-space:nowrap}
+.rec .st.done{background:#F3F4F6;color:#8A8F98}
+.empty{text-align:center;padding:40px 20px;color:var(--ink-3);font-size:12.5px}
+/* ---------- discover ---------- */
+.article{background:#fff;border-radius:16px;margin:10px 14px 0;padding:14px;display:flex;gap:13px;box-shadow:var(--shadow)}
+.article .thumb{width:78px;border-radius:12px;flex:0 0 auto;position:relative;overflow:hidden;align-self:stretch;min-height:76px}
+.article .ab{flex:1;min-width:0;display:flex;flex-direction:column}
+.article .ab b{font-size:13.5px;line-height:1.45;letter-spacing:-.2px}
+.article .ab .meta{margin-top:auto;font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.article .ab .meta i{font-style:normal;color:#D9DCE1}
+.ind{background:#fff;border-radius:16px;margin:10px 14px 0;padding:14px 15px;box-shadow:var(--shadow)}
+.ind-head{display:flex;align-items:center;gap:8px}
+.ind-head b{font-size:14px}
+.ind-head span{font-size:11px;color:var(--ink-3);margin-left:auto}
+.ind p{margin:8px 0 0;font-size:12px;color:#5E626A;line-height:1.62}
+.ind .prod{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.ind .prod i{font-style:normal;font-size:10.5px;padding:4px 8px;border-radius:7px;background:#F6F7F9;color:#6E7379}
+/* ---------- mine ---------- */
+.mine-hero{background:linear-gradient(168deg,#FF8A2B,#F5520A);padding:0 18px 56px;color:#fff;position:relative;overflow:hidden}
+.mine-hero::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-100px;top:-110px;background:radial-gradient(circle,rgba(255,255,255,.24),transparent 70%)}
+.muser{display:flex;align-items:center;gap:13px;position:relative;z-index:2;padding-top:6px}
+.muser .av{width:58px;height:58px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.6);flex:0 0 auto}
+.muser .av svg{width:100%;height:100%}
+.muser .mi b{font-size:18px;letter-spacing:-.2px}
+.muser .mi p{margin:4px 0 0;font-size:11.5px;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:6px}
+.muser .mi p em{font-style:normal;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:5px}
+.mstats{display:flex;margin:20px 4px 0;position:relative;z-index:2}
+.mstats div{flex:1;text-align:center;color:#fff}
+.mstats b{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.mstats span{display:block;font-size:11px;color:rgba(255,255,255,.76);margin-top:3px}
+.mcard{background:#fff;border-radius:18px;margin:-40px 14px 0;padding:6px 0;box-shadow:0 8px 24px rgba(80,40,10,.1);position:relative;z-index:3}
+.mrow{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #F5F6F8;font-size:13.5px}
+.mrow:last-child{border-bottom:none}
+.mrow .mi2{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto}
+.mrow .mi2 svg{width:17px;height:17px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mrow .mv{margin-left:auto;color:var(--ink-3);font-size:12px;display:flex;align-items:center;gap:2px}
+/* brands strip */
+.brands{display:flex;align-items:center;justify-content:center;gap:16px;padding:18px 10px 6px;opacity:.62}
+.brands div{font-size:10.5px;color:#8A8F98;display:flex;align-items:center;gap:4px}
+.brands i{width:4px;height:4px;border-radius:50%;background:#C9CDD4;display:block}
+/* ---------- overlays ---------- */
+.backdrop{position:absolute;inset:0;background:rgba(17,19,23,.46);z-index:60;opacity:0;pointer-events:none;transition:opacity .24s}
+.backdrop.on{opacity:1;pointer-events:auto}
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;z-index:61;
+  transform:translateY(102%);transition:transform .3s cubic-bezier(.3,.9,.3,1);max-height:86%;display:flex;flex-direction:column;
+}
+.sheet.on{transform:translateY(0)}
+.sheet-h{padding:16px 18px 10px;display:flex;align-items:center}
+.sheet-h b{font-size:16px;letter-spacing:-.2px}
+.sheet-h .x{margin-left:auto;width:26px;height:26px;border-radius:50%;background:#F4F5F7;color:#8A8F98;display:grid;place-items:center;font-size:16px}
+.sheet-b{padding:0 18px 18px;overflow-y:auto}
+.field{margin-bottom:16px}
+.field .fl{font-size:12.5px;color:#5E626A;margin-bottom:9px;font-weight:500}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{padding:9px 13px;border-radius:12px;background:#F5F6F8;font-size:12.5px;color:#3C4048;border:1px solid transparent;line-height:1.3;text-align:center}
+.opt small{display:block;font-size:10px;color:var(--ink-3);margin-top:2px}
+.opt.on{background:var(--tint);border-color:#FFB77F;color:var(--orange-d);font-weight:600}
+.opt.on small{color:#C7763B}
+.sheet .primary{width:100%;height:46px;border-radius:14px;background:linear-gradient(135deg,#FF8A3D,#F5520A);color:#fff;font-size:15px;font-weight:600;margin-top:4px}
+/* toast */
+.toast{
+  position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) scale(.94);z-index:99;
+  background:rgba(20,22,26,.88);color:#fff;font-size:13px;padding:12px 18px;border-radius:12px;
+  opacity:0;pointer-events:none;transition:.22s;max-width:74%;text-align:center;line-height:1.5;backdrop-filter:blur(6px);
+}
+.toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* search overlay */
+.searchview{position:absolute;inset:0;background:#fff;z-index:70;display:flex;flex-direction:column;transform:translateY(6%);opacity:0;pointer-events:none;transition:.24s}
+.searchview.on{transform:none;opacity:1;pointer-events:auto}
+.sv-top{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #F4F5F7}
+.sv-top .sb{flex:1;height:38px;background:#F5F6F8;border-radius:19px;display:flex;align-items:center;gap:7px;padding:0 13px}
+.sv-top .sb input{flex:1;font-size:13px}
+.sv-top .sb svg{width:15px;height:15px;stroke:#9AA0A8;fill:none;stroke-width:2.2}
+.sv-top .cancel{font-size:13px;color:var(--ink-2)}
+.sv-body{flex:1;overflow-y:auto;padding:14px}
+.sv-label{font-size:12px;color:var(--ink-3);margin:4px 0 10px}
+.sv-row{display:flex;align-items:center;gap:10px;padding:13px 4px;border-bottom:1px solid #F6F7F9;font-size:13.5px}
+.sv-row .si{width:32px;height:32px;border-radius:10px;background:var(--tint);display:grid;place-items:center;flex:0 0 auto}
+.sv-row .si svg{width:17px;height:17px;stroke:var(--orange);fill:none;stroke-width:1.8}
+.sv-row span{color:var(--ink-3);font-size:11.5px;margin-left:auto}
+/* qa modal */
+.qawrap{position:absolute;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.qawrap .bd{position:absolute;inset:0;background:rgba(16,18,22,.5);opacity:0;transition:.24s}
+.qawrap.on{pointer-events:auto}
+.qawrap.on .bd{opacity:1}
+.qapanel{
+  position:relative;width:100%;background:#fff;border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(103%);transition:transform .32s cubic-bezier(.3,.9,.3,1);max-height:88%;overflow-y:auto;
+}
+.qawrap.on .qapanel{transform:none}
+.qapanel .qh{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.qapanel .qh .ai{width:32px;height:32px;border-radius:50%;background:linear-gradient(140deg,#FFB020,#FF5A0C);color:#fff;display:grid;place-items:center;font-weight:800;font-style:italic;font-size:14px}
+.qapanel .qh b{font-size:16px}
+.qapanel .qs{font-size:13px;color:var(--ink-2);margin:12px 0 12px;line-height:1.6}
+.qopt{display:flex;align-items:center;gap:8px;padding:12px 13px;border-radius:12px;background:#F7F8FA;margin-bottom:8px;font-size:13px;color:#3C4048}
+.qopt .r{width:16px;height:16px;border-radius:50%;border:1.5px solid #D3D7DD;margin-left:auto;flex:0 0 auto}
+.qopt.on{background:var(--tint);color:var(--orange-d);font-weight:600}
+.qopt.on .r{border:5px solid var(--orange);background:#fff}
+.qres{background:linear-gradient(150deg,#FFF8F2,#FFEFE3);border-radius:16px;padding:15px;margin-bottom:12px}
+.qres .rt{font-size:12px;color:#A2652F;margin-bottom:8px}
+.qres b{font-size:15px;letter-spacing:-.2px}
+.qres p{font-size:12px;color:#7A5B42;line-height:1.65;margin:6px 0 0}
+.qprod{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:11px 12px;margin-bottom:8px;box-shadow:0 2px 8px rgba(120,70,30,.06)}
+.qprod .qi{width:34px;height:34px;border-radius:10px;background:var(--tint);display:grid;place-items:center;flex:0 0 auto}
+.qprod .qi svg{width:18px;height:18px;stroke:var(--orange);fill:none;stroke-width:1.8}
+.qprod b{font-size:12.5px;display:block}
+.qprod span{font-size:10.5px;color:var(--ink-3)}
+.qprod .ar{margin-left:auto;color:#C9CDD4}
+/* success */
+.succ{display:flex;flex-direction:column;align-items:center;padding:42px 24px 24px;text-align:center}
+.succ .ok{width:66px;height:66px;border-radius:50%;background:linear-gradient(140deg,#FFB020,#FF6A13);display:grid;place-items:center;box-shadow:0 12px 26px rgba(255,106,19,.28)}
+.succ .ok svg{width:32px;height:32px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.succ h2{margin:18px 0 6px;font-size:19px;letter-spacing:-.3px}
+.succ p{margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.7}
+.ticket{width:100%;margin-top:22px;background:#fff;border:1px solid #F0F1F4;border-radius:16px;padding:16px;text-align:left;box-shadow:var(--shadow)}
+.ticket .tr{display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;color:#5E626A}
+.ticket .tr b{color:var(--ink);font-weight:600}
+.ticket .code{margin-top:10px;padding-top:12px;border-top:1px dashed #E8EAEE;display:flex;align-items:center;justify-content:space-between}
+.ticket .code span{font-size:11px;color:var(--ink-3)}
+.ticket .code b{font-size:15px;letter-spacing:1.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.succ-btns{display:flex;gap:10px;width:100%;margin-top:18px}
+.succ-btns button{flex:1;height:44px;border-radius:13px;font-size:14px;font-weight:600}
+.succ-btns .ghost{background:#F4F5F7;color:#4A4E55}
+.succ-btns .solid{background:linear-gradient(135deg,#FF8A3D,#F5520A);color:#fff}
+/* animations */
+.fade-in{animation:fadeIn .26s ease both}
+@keyframes fadeIn{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+.slide-in{animation:slideIn .28s cubic-bezier(.3,.9,.3,1) both}
+@keyframes slideIn{from{transform:translateX(22%);opacity:.5}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* extra */
+.hscroll{display:flex;gap:10px;overflow-x:auto;padding:0 14px 4px}
+.pcard{flex:0 0 134px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.pcard .ph{height:72px;position:relative;overflow:hidden}
+.pcard .ph em{position:absolute;left:9px;bottom:8px;font-style:normal;font-size:9.5px;color:#fff;background:rgba(0,0,0,.2);padding:2px 6px;border-radius:5px;backdrop-filter:blur(4px)}
+.pcard .pb{padding:9px 10px 11px}
+.pcard .pb b{font-size:12.5px;line-height:1.35;display:block;height:34px;overflow:hidden;letter-spacing:-.2px}
+.pcard .pb p{margin:5px 0 0;font-size:10.5px;color:var(--ink-3);display:flex;align-items:center;gap:2px}
+.tabbar.hide{display:none}
+.detail .scroll{padding-bottom:88px}
+.hide{display:none!important}
+
+/* ================= v2 polish ================= */
+:root{
+  --r:20px;
+  --shadow:0 6px 20px rgba(24,26,32,.055),0 1px 2px rgba(24,26,32,.04);
+  --shadow-lg:0 16px 40px rgba(24,26,32,.10);
+}
+.phone{background:#F5F6F8}
+.view{background:transparent}
+button{-webkit-tap-highlight-color:transparent}
+.gitem,.pcard,.article,.ind,.mrow,.qprod,.opt,.ask-chip,.ptab,.pitem,.tab{transition:transform .16s ease,background-color .16s ease,color .2s ease}
+.gitem:active,.pcard:active{transform:scale(.955)}
+.pitem:active,.mrow:active,.ind:active,.article:active{background:#FAFAFC}
+.ask-chip:active,.opt:active,.ptab:active,.qopt:active{transform:scale(.95)}
+.primary:active,.ask-go:active,.sbtn:active,.qprod:active,.succ-btns button:active,.selbar button:active{transform:scale(.975)}
+
+/* tab bar */
+.tab{position:relative}
+.tab svg{transition:transform .24s cubic-bezier(.3,1.5,.5,1)}
+.tab.on svg{transform:translateY(-2px) scale(1.05)}
+.tab.ai .aiball{transition:transform .24s cubic-bezier(.3,1.5,.5,1),box-shadow .24s}
+.tab.on .aiball{transform:translateY(-2px) scale(1.06);box-shadow:0 6px 16px rgba(255,90,12,.42)}
+.tab.on::after{content:"";position:absolute;top:-7px;width:22px;height:2.5px;border-radius:2px;background:linear-gradient(90deg,#FFB020,#FF5A0C)}
+.tab.ai.on::after{display:none}
+
+/* hero */
+.hero{background:linear-gradient(165deg,#FF9A48 0%,#FF6C16 42%,#F04E00 100%);border-radius:0 0 28px 28px}
+.hero::before{width:280px;height:280px;right:-100px;top:-150px;background:radial-gradient(circle,rgba(255,255,255,.36),rgba(255,255,255,0) 64%)}
+.greet h1{font-size:22px;line-height:1.34}
+.greet p{margin-top:8px}
+.avatar .ring{inset:-5px;border:1.5px solid rgba(255,255,255,.6)}
+.avatar svg{border-radius:50%}
+.ask{box-shadow:0 14px 34px rgba(150,55,0,.16);padding:17px 16px 12px}
+.ask-chip{transition:transform .15s ease,background .18s,border-color .18s;position:relative;overflow:hidden}
+.ask-chip.on{box-shadow:0 4px 10px rgba(255,106,19,.14)}
+.searchbox{box-shadow:inset 0 1px 2px rgba(0,0,0,.03)}
+
+/* grid */
+.gicon{width:46px;height:46px;border-radius:15px;box-shadow:0 7px 14px -8px currentColor,inset 0 1px 0 rgba(255,255,255,.7)}
+.gitem span{font-size:11.5px;color:#43474E}
+.gitem:active .gicon{transform:scale(.94);transition:transform .16s}
+
+/* quota */
+.quota{box-shadow:0 8px 20px -12px rgba(240,78,0,.5)}
+.quota .q-bar i{width:0;transition:width 1s cubic-bezier(.2,.85,.3,1)}
+.q-num{font-feature-settings:"tnum"}
+
+/* banner */
+.banner{height:112px;box-shadow:0 10px 24px -14px rgba(80,40,10,.55)}
+.bslide h4{font-size:17px}
+.bdots{gap:5px;bottom:10px}
+.bdots i{width:5px;height:3px;border-radius:2px;background:rgba(255,255,255,.5);transition:width .35s,background .35s}
+.bdots i.on{width:15px;background:#fff}
+
+/* section titles */
+.section-title h3{font-size:17px;font-weight:700;letter-spacing:-.4px}
+.section-title{padding:0 18px}
+
+/* cards */
+.mod,.dcard,.rec,.stat-cell,.mcard,.task,.signin,.ind,.article,.pcard{box-shadow:var(--shadow)}
+.mod{border-radius:20px}
+.mod-ico{border-radius:14px}
+.pitem .ck{transition:transform .18s cubic-bezier(.3,1.6,.5,1),background .18s,border-color .18s}
+.pitem.sel .ck{transform:scale(1.04)}
+.pitem.sel{background:linear-gradient(90deg,#FFF8F1,#fff 70%)}
+.pitem.sel .pi b{color:var(--orange-d)}
+
+/* selection bar */
+.selbar{transform:translateY(160%);opacity:0;transition:transform .34s cubic-bezier(.22,.95,.3,1),opacity .3s}
+.selbar.show{transform:none;opacity:1}
+.selbar .s1 b{display:inline-block;transition:transform .22s cubic-bezier(.3,1.6,.5,1)}
+.selbar.bump .s1 b{transform:scale(1.4)}
+
+/* mini header + detail fixed nav */
+.mini{
+  position:absolute;left:0;right:0;top:0;z-index:45;height:calc(70px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);display:flex;align-items:center;gap:9px;
+  padding:0 14px;background:#fff;
+  border-bottom:1px solid rgba(24,26,32,.06);box-shadow:0 4px 16px rgba(24,26,32,.04);transform:translateY(-102%);transition:transform .3s cubic-bezier(.3,.95,.3,1);
+  pointer-events:none;
+}
+.mini.on{transform:none;pointer-events:auto}
+.mini .mt{font-size:13.5px;font-weight:700;letter-spacing:-.2px;white-space:nowrap}
+.mini .ms{flex:1;height:32px;border-radius:16px;background:#F4F5F7;display:flex;align-items:center;gap:6px;padding:0 12px;font-size:12px;color:#9AA0A8;min-width:0}
+.mini .ms svg{width:14px;height:14px;stroke:#AEB3BB;fill:none;stroke-width:2.2}
+.mini .mb{position:relative;width:28px;height:28px;display:grid;place-items:center;color:#5E626A}
+.mini .mb svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.dnav-fixed{
+  position:absolute;left:0;right:0;top:0;z-index:46;height:calc(56px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);display:flex;align-items:center;gap:10px;padding:0 14px;
+  background:#fff;border-bottom:1px solid rgba(24,26,32,.06);box-shadow:0 4px 16px rgba(24,26,32,.04);
+  transform:translateY(-102%);transition:transform .3s cubic-bezier(.3,.95,.3,1);pointer-events:none;
+}
+.dnav-fixed.on{transform:none;pointer-events:auto}
+.dnav-fixed b{font-size:14.5px;letter-spacing:-.2px;flex:1;text-align:center;margin-right:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dnav-fixed .bck{width:30px;height:30px;display:grid;place-items:center;margin-left:-6px}
+.dnav-fixed .bck svg{width:21px;height:21px;stroke:#191A1C;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* detail */
+.detail-hero{border-radius:0 0 26px 26px}
+.dcard{animation:cardIn .42s cubic-bezier(.22,.9,.3,1)}
+.dcard:nth-of-type(2){animation-delay:.04s}
+.dcard:nth-of-type(3){animation-delay:.08s}
+.dcard:nth-of-type(4){animation-delay:.12s}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.dock{box-shadow:0 -8px 24px rgba(24,26,32,.05)}
+
+/* services segment */
+.seg{display:flex;gap:6px;padding:0 14px;margin:0 0 10px}
+.seg button{padding:7px 14px;border-radius:12px;font-size:12.5px;color:#6E737B;background:#fff;box-shadow:var(--shadow);transition:.18s}
+.seg button.on{background:#191A1C;color:#fff;font-weight:600}
+
+/* success */
+.succ .ok{animation:popIn .55s cubic-bezier(.2,1.35,.4,1) both}
+@keyframes popIn{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.succ .ok svg path{stroke-dasharray:34;stroke-dashoffset:34;animation:draw .5s .22s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ticket{animation:rise .5s .2s cubic-bezier(.22,.9,.3,1) both}
+.succ h2,.succ p{animation:rise .45s .12s cubic-bezier(.22,.9,.3,1) both}
+.succ-btns{animation:rise .45s .3s cubic-bezier(.22,.9,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* sheet */
+.sheet{border-radius:26px 26px 0 0;box-shadow:0 -18px 50px rgba(20,22,26,.18)}
+.sheet::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:36px;height:4px;border-radius:2px;background:#E7E9ED}
+.sheet-h{padding:24px 18px 10px}
+.sheet .primary{transition:transform .15s}
+
+/* search */
+mark{background:transparent;color:var(--orange-d);font-weight:700}
+.sv-row{transition:background .15s}
+.sv-row:active{background:#FAFAFC}
+.recent{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+
+/* favorites */
+.dock .fav.on{color:#F59E0B}
+.dock .fav.on svg{fill:#FFB020;stroke:#FFB020}
+.qres{animation:popIn .42s cubic-bezier(.2,1.1,.4,1) both}
+.qopt{animation:cardIn .3s cubic-bezier(.22,.9,.3,1) both}
+
+/* page transitions */
+.view.fade-in{animation:tabIn .32s cubic-bezier(.22,.85,.3,1)}
+@keyframes tabIn{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:none}}
+.view.slide-in{animation:pushIn .34s cubic-bezier(.22,.9,.28,1)}
+@keyframes pushIn{from{opacity:.5;transform:translateX(26%)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ================= home v4 · service first ================= */
+.heroS{
+  position:relative;overflow:hidden;padding-bottom:30px;border-radius:0 0 30px 30px;
+  background:
+    radial-gradient(110% 80% at 88% -20%,#FFC078 0%,rgba(255,192,120,0) 58%),
+    linear-gradient(158deg,#FF8E3E 0%,#FF6512 48%,#EC4A00 100%);
+}
+.heroS::before{content:"";position:absolute;left:-70px;top:-90px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.2),rgba(255,255,255,0) 68%)}
+.heroS .topbar{position:relative;z-index:3}
+.greetS{position:relative;z-index:3;display:flex;align-items:center;gap:10px;padding:14px 18px 0}
+.greetS .g-av{width:38px;height:38px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(255,255,255,.5);flex:0 0 auto}
+.greetS .g-av svg{width:100%;height:100%;display:block}
+.greetS .g-tx{flex:1;min-width:0;color:#fff}
+.greetS .g-tx b{font-size:14.5px;display:block;letter-spacing:-.2px}
+.greetS .g-tx span{font-size:10.5px;color:rgba(255,255,255,.78);display:block;margin-top:2px}
+.greetS .g-tag{font-size:10px;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22);padding:3px 8px;border-radius:9px;white-space:nowrap}
+.heroS h1.title{position:relative;z-index:3;margin:18px 18px 0;font-size:27px;line-height:1.28;font-weight:800;letter-spacing:-.9px;color:#fff}
+.heroS h1.title em{font-style:normal;display:block;font-size:12px;font-weight:400;letter-spacing:0;color:rgba(255,255,255,.82);margin-top:8px;line-height:1.5}
+.bigsearch{position:relative;z-index:3;margin:15px 16px 0;height:46px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:9px;padding:0 14px;box-shadow:0 12px 26px -16px rgba(120,40,0,.6)}
+.bigsearch svg{width:17px;height:17px;stroke:#B0B5BD;flex:0 0 auto}
+.bigsearch span{font-size:13px;color:#A0A5AD;flex:1;text-align:left}
+.bigsearch i{display:none}
+.hotline{position:relative;z-index:3;display:flex;gap:7px;padding:10px 16px 0;flex-wrap:wrap;justify-content:center}
+.hotline button{font-size:10.5px;color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);padding:4px 9px;border-radius:11px}
+/* service rows */
+.svc{margin:9px 14px 0;background:#fff;border-radius:16px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow);transition:transform .16s,background .16s}
+.svc:active{transform:scale(.99);background:#FAFAFC}
+.svc-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto}
+.svc-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-b{flex:1;min-width:0}
+.svc-b b{font-size:13.5px;display:block;letter-spacing:-.2px;line-height:1.35}
+.svc-b p{margin:4px 0 0;font-size:11px;color:#9AA0A8;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.svc-tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.svc-go{flex:0 0 auto;align-self:center;font-size:11.5px;font-weight:600;color:#E4520A;background:#FFF3E9;padding:7px 12px;border-radius:10px;transition:transform .15s}
+.svc-go:active{transform:scale(.94)}
+.moreline{display:flex;align-items:center;justify-content:center;gap:4px;margin:12px 14px 0;height:42px;border-radius:13px;background:#fff;color:#6E737B;font-size:12px;box-shadow:var(--shadow)}
+/* ai fab */
+.aibar2{
+  display:flex;width:calc(100% - 28px);margin:12px auto 0;padding:11px 13px;border-radius:16px;display:flex;align-items:center;gap:10px;text-align:left;
+  background:linear-gradient(100deg,#FFF6EE,#fff 62%);border:1px solid #FFE8D5;
+  box-shadow:0 6px 18px -12px rgba(240,78,0,.5);transition:transform .16s;
+}
+.aibar2:active{transform:scale(.99)}
+.aibar2 .ai{width:30px;height:30px;border-radius:50%;background:linear-gradient(140deg,#FFB020,#FF5A0C);color:#fff;display:grid;place-items:center;font-style:italic;font-weight:800;font-size:12.5px;flex:0 0 auto}
+.aibar2 .tx{flex:1;min-width:0;padding-right:4px}
+.aibar2 .tx b{font-size:12.5px;display:block;letter-spacing:-.2px}
+.aibar2 .tx span{font-size:10.5px;color:#9AA0A8;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aibar2 .go{display:flex;align-items:center;gap:1px;font-size:11.5px;font-weight:600;color:#E4520A;flex:0 0 auto}
+/* service icon grid */
+.gridS{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:17px 2px;
+  background:#fff;border-radius:20px;margin:-8px 14px 0;padding:18px 8px 15px;
+  box-shadow:0 12px 28px -18px rgba(30,20,10,.55);position:relative;z-index:5;
+}
+.gridS .gitem span{font-size:11px}
+
+/* ================= v6 · accordion / booking / mine ================= */
+.bigsearch{display:flex;width:calc(100% - 32px);height:52px;border-radius:16px;padding:0 18px;margin:16px auto 0;justify-content:center;gap:8px;box-shadow:0 10px 24px -16px rgba(120,40,0,.6)}
+.bigsearch span{font-size:13.5px}
+.bigsearch i{font-size:11.5px;padding:4px 10px}
+
+/* accordion */
+.acc{margin:12px 14px 0;background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.acc-h{width:100%;display:flex;align-items:center;gap:12px;padding:15px;text-align:left}
+.acc-t{flex:1;min-width:0}
+.acc-t b{font-size:15px;display:block;letter-spacing:-.2px}
+.acc-t span{font-size:10.5px;color:var(--ink-3);display:block;margin-top:2px}
+.acc-n{font-size:11px;color:#B4B9C1;font-variant-numeric:tabular-nums}
+.acc-ar{color:#C1C6CD;display:grid;place-items:center;transition:transform .28s cubic-bezier(.3,.9,.3,1)}
+.acc.on .acc-ar{transform:rotate(180deg)}
+.acc-b{max-height:0;overflow:hidden;transition:max-height .36s cubic-bezier(.3,.9,.3,1)}
+.acc.on .acc-b{max-height:1400px}
+.arow{display:flex;align-items:center;gap:11px;padding:12px 15px;border-top:1px solid #F6F7F9;transition:background .15s}
+.arow:active{background:#FAFAFC}
+.aico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto}
+.atx{flex:1;min-width:0}
+.atx b{font-size:13px;display:block;letter-spacing:-.2px;line-height:1.35}
+.atx span{font-size:10.5px;color:#9AA0A8;display:block;margin-top:2px}
+.arw{color:#C9CDD4;flex:0 0 auto}
+
+/* detail meta + kv */
+.d-meta{display:flex;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.22);position:relative;z-index:2}
+.d-meta>div{flex:1;min-width:0}
+.d-meta span{font-size:9.5px;color:rgba(255,255,255,.66);display:block;margin-bottom:4px}
+.d-meta b{font-size:11px;color:#fff;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:6px}
+.kv{display:flex;justify-content:space-between;gap:14px;padding:9px 0;font-size:12.5px;border-bottom:1px dashed #F1F2F5;color:#7A7F88}
+.kv:last-child{border:none;padding-bottom:0}
+.kv b{color:#191A1C;font-weight:600;text-align:right}
+.note{display:flex;gap:8px;font-size:11.5px;color:#6E737B;line-height:1.65;padding:7px 0}
+.note svg{flex:0 0 auto;margin-top:2px;stroke:#F59E0B}
+
+/* booking page */
+.booking .scroll{padding-bottom:96px;background:#F5F6F8}
+.bsum{display:flex;align-items:center;gap:12px;margin:14px 14px 0;background:#fff;border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.bsum-ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;flex:0 0 auto}
+.bsum-tx{flex:1;min-width:0}
+.bsum-tx b{font-size:14px;display:block;letter-spacing:-.2px}
+.bsum-tx span{font-size:11px;color:#9AA0A8;display:block;margin-top:3px}
+.bfield .opts{display:flex;flex-wrap:wrap;gap:8px}
+.bfield .opt{flex:1 1 28%;padding:10px 8px}
+.stepper{display:flex;align-items:center;gap:18px;justify-content:center;padding:4px 0 2px}
+.st-btn{width:42px;height:42px;border-radius:13px;background:#F5F6F8;font-size:20px;color:#3C4048;display:grid;place-items:center}
+.st-btn:active{background:#EEF0F3}
+.st-val{min-width:86px;text-align:center}
+.st-val b{font-size:25px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.st-val span{font-size:11px;color:#9AA0A8;margin-left:3px}
+.person{display:flex;align-items:center;gap:11px}
+.pav{width:40px;height:40px;border-radius:50%;overflow:hidden;flex:0 0 auto}
+.pav svg{width:100%;height:100%;display:block}
+.ptx{flex:1;min-width:0}
+.ptx b{font-size:13.5px}
+.ptx b span{font-size:9.5px;color:#0E9F6E;background:#E9F7F1;padding:2px 6px;border-radius:5px;margin-left:5px;font-weight:500}
+.ptx em{display:block;font-style:normal;font-size:11px;color:#9AA0A8;margin-top:3px}
+.plink{font-size:12px;color:#E4520A;font-weight:500;white-space:nowrap}
+.bnote{display:flex;gap:7px;margin:14px 18px 0;font-size:11px;color:#9AA0A8;line-height:1.6}
+.bnote svg{flex:0 0 auto;margin-top:1px}
+.dock-price{flex:0 0 auto;margin-right:6px}
+.dock-price span{font-size:9.5px;color:#9AA0A8;display:block}
+.dock-price b{font-size:18px;font-weight:800;color:#E4520A;font-variant-numeric:tabular-nums;line-height:1.1}
+.dock-price em{font-style:normal;font-size:9px;color:#9AA0A8;display:block}
+
+/* mine */
+.mine-hero{padding-bottom:64px}
+.bal{position:relative;z-index:3;margin:-38px 14px 0;background:#fff;border-radius:20px;padding:16px;box-shadow:0 16px 36px -20px rgba(30,20,10,.5)}
+.bal-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#8A6039}
+.bal-top button{color:#E4520A;font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:1px}
+.bal-num{display:flex;align-items:baseline;gap:1px;color:#E4520A;font-size:31px;font-weight:800;letter-spacing:-1.2px;margin:7px 0 11px;font-variant-numeric:tabular-nums;line-height:1}
+.bal-num small{font-size:16px;font-weight:700}
+.bal-num span{font-size:11px;color:#A0A5AD;font-weight:400;margin-left:7px;letter-spacing:0}
+.bal-bar{height:6px;border-radius:3px;background:#FFE7D3;overflow:hidden}
+.bal-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#FFB020,#FF5A0C);transition:width 1s cubic-bezier(.2,.85,.3,1)}
+.bal-foot{display:flex;margin-top:14px;padding-top:13px;border-top:1px solid #F5F6F8}
+.bal-foot>div{flex:1}
+.bal-foot b{font-size:12.5px;display:block;font-variant-numeric:tabular-nums;letter-spacing:-.2px}
+.bal-foot span{font-size:10px;color:#9AA0A8;display:block;margin-top:2px}
+
+.appt{margin:9px 14px 0;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.appt.cancel{opacity:.7}
+.ap-top{display:flex;gap:12px;padding:14px 14px 12px;align-items:flex-start}
+.ap-date{width:58px;flex:0 0 auto;text-align:center;border-right:1px solid #F2F3F6;padding-right:10px}
+.ap-date b{display:block;font-size:15px;font-weight:800;letter-spacing:-.3px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ap-date span{display:block;font-size:9.5px;color:#A0A5AD;margin-top:3px;line-height:1.4}
+.ap-tx{flex:1;min-width:0}
+.ap-tx b{font-size:13.5px;display:block;line-height:1.35;letter-spacing:-.2px}
+.ap-tx p{margin:3px 0 0;font-size:11px;color:#9AA0A8}
+.ap-tag{display:inline-block;margin:6px 4px 0 0;font-size:10px;color:#6E737B;background:#F5F6F8;padding:2px 7px;border-radius:5px}
+.appt .st{flex:0 0 auto;font-size:10px;padding:3px 7px;border-radius:6px;background:#E9F7F1;color:#0E9F6E;white-space:nowrap;align-self:flex-start}
+.appt .st.done{background:#F3F4F6;color:#8A8F98}
+.appt .st.cancel{background:#F3F4F6;color:#9AA0A8}
+.ap-act{display:flex;gap:9px;padding:0 14px 13px;justify-content:flex-end}
+.ap-act button{font-size:11.5px;padding:6px 12px;border-radius:9px;background:#F5F6F8;color:#5E626A;font-weight:500}
+.ap-act button:first-child{background:#FFF3E9;color:#E4520A}
+.scene{width:100%;height:100%;display:block}
+.article .thumb{position:relative;overflow:hidden;border-radius:13px}
+.ttag{position:absolute;left:8px;bottom:7px;font-size:9px;color:#fff;background:rgba(0,0,0,.26);padding:2px 7px;border-radius:5px;backdrop-filter:blur(4px)}
+
+/* mine header (rebuild, no overlap) */
+.mhead{position:relative;overflow:hidden;background:linear-gradient(160deg,#FF8E3E 0%,#F5520A 100%);padding:0 16px 22px;border-radius:0 0 26px 26px}
+.mhead::after{content:"";position:absolute;right:-70px;top:-90px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),rgba(255,255,255,0) 70%)}
+.mh-row{display:flex;align-items:center;gap:12px;position:relative;z-index:2;padding-top:4px}
+.mh-av{width:54px;height:54px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.55);flex:0 0 auto;box-shadow:0 6px 14px rgba(140,45,0,.22)}
+.mh-av svg{width:100%;height:100%;display:block}
+.mh-tx{flex:1;min-width:0}
+.mh-tx b{font-size:19px;color:#fff;letter-spacing:-.3px}
+.mh-tx span{display:block;font-size:11px;color:rgba(255,255,255,.8);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mh-set{color:#fff;width:32px;height:32px;display:grid;place-items:center;flex:0 0 auto}
+.bal{margin:14px 14px 0}
+
+/* article + lecture detail */
+.art-hero{padding:18px 18px 6px;background:#fff}
+.art-img{position:relative;width:100%;height:180px;border-radius:18px;overflow:hidden;box-shadow:0 12px 26px -16px rgba(30,20,10,.5)}
+.art-img.tall{height:200px}
+.art-img .scene{width:100%;height:100%}
+.art-hero h1{margin:16px 0 0;font-size:21px;line-height:1.4;letter-spacing:-.6px;font-weight:800}
+.art-meta{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:11px;color:#9AA0A8;flex-wrap:wrap}
+.art-meta i{font-style:normal;color:#D9DCE1}
+.art-body{padding:16px 20px 4px}
+.art-body p{margin:0 0 15px;font-size:14px;line-height:1.9;color:#3C4048;letter-spacing:.1px}
+.subview .dock .primary{font-size:15px}
+
+/* products search + results */
+.psearch{display:flex;align-items:center;gap:8px;width:calc(100% - 32px);margin:12px auto 0;height:44px;border-radius:14px;background:#fff;padding:0 14px;box-shadow:0 6px 18px -12px rgba(24,26,32,.4);border:1px solid #F1F2F5}
+.psearch input{flex:1;min-width:0;font-size:13px;color:#191A1C}
+.psearch input::placeholder{color:#B0B5BD}
+.psearch svg{width:16px;height:16px;stroke:#B0B5BD;flex:0 0 auto}
+.psearch .clr{color:#C1C6CD;font-size:16px;line-height:1;padding:2px}
+.res{margin:10px 14px 0;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.resrow{display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:1px solid #F6F7F9}
+.resrow:last-child{border-bottom:none}
+.resrow .ri{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto}
+.resrow .rt{flex:1;min-width:0}
+.resrow .rt b{font-size:13px;display:block;line-height:1.35}
+.resrow .rt span{font-size:10.5px;color:#9AA0A8;display:block;margin-top:2px}
+.resempty{padding:40px 20px;text-align:center;color:#9AA0A8;font-size:12.5px}
+/* mine bottom */
+.minepage .scroll{padding-bottom:140px}
+.minepage .empty{padding:26px 20px}
+/* all appointments */
+.apps .scroll{padding-bottom:36px;background:#F5F6F8}
+.apps .seg{margin:10px 0 4px}
+.apps .seg button{box-shadow:none;background:#fff}
+.apps .seg button.on{background:#191A1C}
+/* sheet rows */
+.srow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #F5F6F8;font-size:13px}
+.srow:last-child{border-bottom:none}
+.srow i{font-style:normal;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto}
+.srow .st2{margin-left:auto;font-size:11px;color:#9AA0A8}
+.srow b{font-weight:600}
+.morelink{display:flex;align-items:center;justify-content:center;gap:4px;width:calc(100% - 28px);margin:10px auto 0;height:42px;border-radius:13px;background:#fff;color:#E4520A;font-size:12px;font-weight:600;box-shadow:var(--shadow)}
+.sw{width:42px;height:24px;border-radius:12px;background:#E5E7EB;position:relative;transition:background .2s;flex:0 0 auto}
+.sw i{position:absolute;left:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.sw.on{background:#FF6A13}
+.sw.on i{transform:translateX(18px)}
+
+/* messages + quota detail */
+.msgcard{margin:0 14px;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.msgrow{display:flex;gap:11px;padding:14px;border-bottom:1px solid #F6F7F9;align-items:flex-start}
+.msgrow:last-child{border-bottom:none}
+.msgrow:active{background:#FAFAFC}
+.mico{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto}
+.mtx{flex:1;min-width:0}
+.mtx b{font-size:13.5px;display:flex;align-items:center;gap:6px;letter-spacing:-.2px}
+.udot{width:6px;height:6px;border-radius:50%;background:#FF3B30;display:inline-block}
+.mtx span{display:block;font-size:11.5px;color:#9AA0A8;line-height:1.55;margin-top:4px}
+.msgrow.read .mtx b{color:#6E737B;font-weight:500}
+.mtime{font-size:10.5px;color:#B4B9C1;flex:0 0 auto;margin-top:2px}
+.qsum{margin:14px;background:linear-gradient(135deg,#FFF8F2,#FFEFE2);border:1px solid #FFE4CE;border-radius:18px;padding:16px}
+.qs-main span{font-size:12px;color:#8A6039}
+.qs-main b{display:block;font-size:30px;font-weight:800;color:#E4520A;letter-spacing:-1px;margin-top:4px;font-variant-numeric:tabular-nums}
+.qs-main b small{font-size:16px;font-weight:700}
+.qs-row{display:flex;margin-top:12px;padding-top:12px;border-top:1px solid #FFD9BE}
+.qs-row>div{flex:1}
+.qs-row span{display:block;font-size:10px;color:#A2652F}
+.qs-row b{display:block;font-size:12.5px;margin-top:3px;font-variant-numeric:tabular-nums}
+.ucard{margin:0 14px;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.urow{display:flex;gap:11px;padding:13px 14px;border-bottom:1px solid #F6F7F9;align-items:flex-start}
+.urow:last-child{border-bottom:none}
+.urow:active{background:#FAFAFC}
+.uic{width:34px;height:34px;border-radius:10px;background:#FFF3E9;color:#E4520A;display:grid;place-items:center;flex:0 0 auto}
+.ut{flex:1;min-width:0}
+.ut b{font-size:13px;display:block;letter-spacing:-.2px}
+.ut span{display:block;font-size:11px;color:#6E737B;margin-top:3px}
+.ut em{display:block;font-style:normal;font-size:10px;color:#B4B9C1;margin-top:3px}
+.up{font-size:14px;font-weight:700;color:#191A1C;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.up.zero{font-size:11px;color:#0E9F6E;font-weight:600}
+.usum{text-align:center;font-size:11px;color:#9AA0A8;padding:14px 0 0}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <div id="root"></div>
+  <div class="tabbar" id="tabbar"></div>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" id="sheet"><div class="sheet-h"><b id="sheetTitle"></b><button class="x" onclick="closeSheet()">✕</button></div><div class="sheet-b" id="sheetBody"></div></div>
+  <div class="searchview" id="searchview"></div>
+  <div class="qawrap" id="qawrap"><div class="bd" onclick="closeQA()"></div><div class="qapanel" id="qapanel"></div></div>
+  <div class="toast" id="toast"></div>
+</div>
+<script>
+/* ==========================================================
+   北大医疗 · 企业职工医疗健康管理 H5 Demo（员工端）
+   ========================================================== */
+const ICONS={
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  bell:'<path d="M18 8a6 6 0 1 0-12 0c0 7-2 8-2 8h16s-2-1-2-8"/><path d="M10.5 20a1.8 1.8 0 0 0 3 0"/>',
+  chev:'<path d="m9 5 7 7-7 7"/>', down:'<path d="m6 9 6 6 6-6"/>', left:'<path d="m15 5-7 7 7 7"/>',
+  rotate:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/>',
+  sparkle:'<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+  user:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.5-5.4 7-5.4s6.2 1.8 7 5.4"/>',
+  phone:'<path d="M6 3h3l2 5-2.2 1.4a12 12 0 0 0 5.8 5.8L16 13l5 2v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 3Z"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',
+  hospital:'<path d="M4 21V7l8-4 8 4v14"/><path d="M12 10v6M9 13h6"/><path d="M9 21v-4h6v4"/>',
+  pulse:'<path d="M3 12h4l2.5-6 4 12 2.5-6H21"/>',
+  heart:'<path d="M12 20s-7-4.4-7-9.3A4 4 0 0 1 12 8a4 4 0 0 1 7 2.7C19 15.6 12 20 12 20Z"/>',
+  shield:'<path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/>',
+  doc:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  file:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  video:'<rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 11 5-3v8l-5-3"/>',
+  message:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12Z"/>',
+  sleep:'<path d="M20 14.5A8 8 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/>',
+  lung:'<path d="M12 4v7"/><path d="M12 11c-1.6 0-2.4 1-3 2.2L6.5 18a2.2 2.2 0 0 1-3.6-2.4l2.3-6A3 3 0 0 1 8 7.8"/><path d="M12 11c1.6 0 2.4 1 3 2.2l2.5 4.8a2.2 2.2 0 0 0 3.6-2.4l-2.3-6A3 3 0 0 0 16 7.8"/>',
+  walk:'<circle cx="13" cy="4.5" r="2"/><path d="m10 21 2-6-3-3 1-5 4 3 3 1"/><path d="m12 15 4 6"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4V5Z"/>',
+  check:'<path d="m5 12 4.5 4.5L19 7"/>',
+  loc:'<path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>',
+  gift:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M12 8v12"/><path d="M12 8S10 3 7.5 3 5 7 8 8M12 8s2-5 4.5-5S19 7 16 8"/>',
+  star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  users:'<circle cx="9" cy="8" r="3.2"/><path d="M3 19c.7-3 3-4.5 6-4.5s5.3 1.5 6 4.5"/><path d="M16 5.5a3 3 0 0 1 0 5.4M18 14.8c2 .5 3.1 1.9 3.6 4.2"/>',
+  set:'<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14.2 3h-4l-.4 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2l.4 2.6h4l.4-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.05-.4.1-.8.1-1.2Z"/>',
+  wallet:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 14h2"/>',
+  more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  close:'<path d="m6 6 12 12M18 6 6 18"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  scan:'<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 12h10"/>',
+  bag:'<path d="M6 8h12l1 13H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'
+};
+const ico=(n,s)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ${s?`style="width:${s}px;height:${s}px"`:''}>${ICONS[n]||''}</svg>`;
+
+/* ---------------- data ---------------- */
+const THEME={
+  screen:'linear-gradient(150deg,#FF9A4D,#EF4F05)',
+  chronic:'linear-gradient(150deg,#31BD8C,#0A7A55)',
+  medical:'linear-gradient(150deg,#4C8BFF,#1F4FD1)',
+  special:'linear-gradient(150deg,#F0659B,#BE2A5E)',
+  safety:'linear-gradient(150deg,#F2AA2E,#BE7408)'
+};
+const MODULES=[
+  {id:'screen',  name:'健康筛查', stab:'筛查', sub:'发现潜在风险',      icon:'scan',     tint:'#FFF1E7', ink:'#F5520A'},
+  {id:'chronic', name:'慢病管理', stab:'慢病', sub:'长期干预控费',      icon:'pulse',    tint:'#E9F7F1', ink:'#0A7A55'},
+  {id:'medical', name:'就医服务', stab:'就医', sub:'解决看病难',        icon:'hospital', tint:'#EDF3FF', ink:'#1F4FD1'},
+  {id:'special', name:'特色服务', stab:'特色', sub:'身心关怀 / EAP',     icon:'heart',    tint:'#FDEEF4', ink:'#BE2A5E'},
+  {id:'safety',  name:'应急保障', stab:'应急', sub:'企业安全风控',      icon:'shield',   tint:'#FFF6E0', ink:'#A86A06'}
+];
+const PRODUCTS=[
+ {id:'annual-exam',mod:'screen',name:'职工年度体检',en:'Annual Employee Health Checkup',scope:'属地履约',payer:['职工福利费','工会经费','企康'],tags:['每年 1 次','含报告解读'],
+  intro:'企业年度体检套餐：基础检查、影像与肿瘤标志物组合，检后统一由医生解读并给出复查建议。',
+  includes:['内外科、血常规、肝肾功能等基础项目','胸部 CT、腹部超声、心电图','常见肿瘤标志物组合','体检报告 + 医生解读 + 复查建议'],
+  suit:'全体在职职工，每年 1 次；可按岗位与年龄加项。',
+  orgs:['北京大学国际医院 · 健康管理中心','北大医疗康复医院 · 体检中心']},
+ {id:'risk-report',mod:'screen',name:'检后管理 · 深度报告解读',en:'Post-checkup Report Interpretation',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['线上','1个工作日出结论'],
+  intro:'由全科与专科医生对近 3–6 个月体检报告逐项解读，标出需要复查和干预的指标，给出下一步就医建议。',
+  includes:['全科医生逐项解读，异常指标标注风险等级','专科医生复核，给出复查项目与时间窗','异常指标转诊建议，可直接预约院内号源','解读结论同步至个人健康档案'],
+  suit:'近半年做过体检、报告有多项异常但不知先看哪一科的在职职工。',
+  orgs:['北大医疗互联网医院 · 全科医学中心','北京大学国际医院 · 健康管理中心']},
+ {id:'risk-survey',mod:'screen',name:'健康风险调研问卷',en:'Health Risk Assessment',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['10分钟','线上'],
+  intro:'围绕心脑血管、五高一重、睡眠与心理 4 个维度自评，10 分钟生成个人风险画像与干预建议。',
+  includes:['28 题自评，覆盖心脑血管 / 代谢 / 睡眠 / 情绪','自动生成风险分级与雷达图','高风险项推送对应服务与随访','脱敏汇总后可用于企业年度健康报告'],
+  suit:'希望先做一次整体健康盘点的职工，以及需要建立健康基线的部门。',
+  orgs:['北大医疗互联网医院 · 健康管理部']},
+ {id:'gastro',mod:'screen',name:'无痛胃肠镜检查',en:'Painless Gastroscopy & Colonoscopy',scope:'属地履约',payer:['职工福利费','企康'],tags:['麻醉','含病理'],
+  intro:'麻醉下完成胃镜与肠镜联合检查，发现息肉可同期处理，适合 40 岁以上或有消化道家族史人群。',
+  includes:['胃镜 + 肠镜联合检查（麻醉）','息肉切除等镜下治疗（限适应症）','术前评估与术后复苏观察','病理报告与消化科医生解读'],
+  suit:'40 岁以上、长期外食应酬、有消化道肿瘤家族史或幽门螺杆菌阳性者。',
+  orgs:['北京大学国际医院 · 消化内镜中心','北大医疗康复医院 · 内镜中心']},
+ {id:'cancer',mod:'screen',name:'重疾筛查',en:'Critical Illness Screening',scope:'属地履约',payer:['职工福利费','企康'],tags:['影像+标志物'],
+  intro:'针对肺、肝、甲状腺、乳腺、前列腺等高发部位的低剂量 CT、超声与肿瘤标志物组合筛查。',
+  includes:['低剂量螺旋 CT（肺部）','腹部 / 甲状腺 / 乳腺超声','常见肿瘤标志物组合','阳性结果多学科会诊建议'],
+  suit:'长期吸烟饮酒熬夜，或有肿瘤家族史的 35 岁以上职工。',
+  orgs:['北京大学国际医院 · 健康管理中心']},
+ {id:'sleep',mod:'screen',name:'医疗级多导睡眠监测',en:'Polysomnography (PSG)',scope:'属地履约',payer:['职工福利费','企康'],tags:['整夜监测'],
+  intro:'院内整夜监测脑电、眼电、肌电、血氧与呼吸事件，明确是否存在阻塞性睡眠呼吸暂停（OSAS）。',
+  includes:['整夜 PSG 监测（含血氧与体位）','睡眠分期与呼吸事件判读','呼吸科 / 耳鼻喉科医生出具报告','CPAP 压力滴定与减重建议'],
+  suit:'打鼾伴憋醒、白天嗜睡、晨起头痛，或血压难以控制的人群。',
+  orgs:['北京大学国际医院 · 睡眠医学中心']},
+ {id:'occupational',mod:'screen',name:'职业病筛查',en:'Occupational Disease Screening',scope:'属地履约',payer:['企业安全生产费','职工福利费'],tags:['合规','岗前在岗离岗'],
+  intro:'按岗位接触的粉尘、噪声、化学毒物配置体检项目，出具符合职业健康监护规范的报告。',
+  includes:['岗前 / 在岗 / 离岗三类体检','粉尘、噪声、苯系物等定向项目','职业健康监护档案建立','异常人员调岗建议（合规口径）'],
+  suit:'制造、能源化工、矿业等存在职业病危害因素的岗位。',
+  orgs:['北大医疗职业病防治合作机构','属地职业病防治院']},
+ {id:'cpet',mod:'screen',name:'心肺运动 CPET 筛查',en:'Cardiopulmonary Exercise Testing',scope:'属地履约',payer:['职工福利费','企康'],tags:['运动风险评估'],
+  intro:'在运动负荷下同步监测心、肺、代谢指标，评估运动耐量与心血管风险，是运动处方的依据。',
+  includes:['功率车递增负荷测试','最大摄氧量、无氧阈等 12 项指标','运动中十二导联心电与血压监测','运动处方与风险分级建议'],
+  suit:'计划参加高强度运动、体检心电图异常，或需评估心肺储备的职工。',
+  orgs:['北京大学国际医院 · 心肺运动实验室']},
+ {id:'inpatient',mod:'screen',name:'住院体检',en:'Inpatient Physical Examination',scope:'属地履约',payer:['职工福利费','企康'],tags:['1–2天','一站式'],
+  intro:'1–2 天院内完成全部检查，含胃肠镜、影像与多学科会诊，免去多次往返与排队。',
+  includes:['住院 1–2 天，一站式完成检查','含无痛胃肠镜与胸部 CT','多学科医生联合出具体检结论','出院后 7 日内电话随访'],
+  suit:'工作节奏紧、希望一次查清楚的管理者与外地驻场职工。',
+  orgs:['北京大学国际医院 · 国际医疗部']},
+ {id:'fivehigh',mod:'chronic',name:'五高一重管理',en:'Five Highs & One Heavy Management',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['年度管理','健管师随访'],
+  intro:'高血压、高血糖、高血脂、高尿酸、高体重与重疾风险管理，健管师按季度随访，医生按需介入。',
+  includes:['首诊建档 + 年度干预方案','血压 / 血糖 / 体重数据线上记录与预警','健管师季度随访，异常升级医生','年度复评与用药依从性提醒'],
+  suit:'体检已提示血压、血糖、血脂、尿酸或体重异常，尚未系统管理的职工。',
+  orgs:['北大医疗互联网医院 · 慢病管理中心','北京大学国际医院 · 全科医学科']},
+ {id:'lung',mod:'chronic',name:'肺结节管理',en:'Pulmonary Nodule Management',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['影像比对','分层随访'],
+  intro:'按结节大小与密度分层随访，影像科医生逐年比对，避免过度检查也不漏掉窗口期。',
+  includes:['薄层 CT 影像判读与分层','3 / 6 / 12 个月随访计划','两次影像同屏比对','高危结节胸外科绿色通道'],
+  suit:'体检发现肺结节、需要确定随访节奏的人群。',
+  orgs:['北京大学国际医院 · 胸外科 / 影像科']},
+ {id:'heart',mod:'chronic',name:'心脑健康训练营',en:'Cardio-Cerebral Health Camp',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['12周','线上营'],
+  intro:'12 周线上营期，运动、营养、睡眠与用药四条线同步干预，配合家庭血压监测。',
+  includes:['12 周分阶段课程与打卡','运动处方 + 营养师 1v1','血压计 / 手环数据接入','结营复评与个人报告'],
+  suit:'血压血脂偏高、久坐、有早发心脑血管家族史的职工。',
+  orgs:['北大医疗互联网医院 · 心脏康复团队']},
+ {id:'weight',mod:'chronic',name:'减重训练营',en:'Weight Management Camp',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['90天','双师带队'],
+  intro:'90 天医学减重，营养师与运动康复师双师带队，按月复测体成分与代谢指标。',
+  includes:['体成分与代谢评估','营养师 1v1 食谱调整','运动康复师定制训练计划','月度复测与阶段报告'],
+  suit:'BMI≥24 或腹型肥胖，合并脂肪肝、血糖异常的职工。',
+  orgs:['北大医疗互联网医院 · 医学营养中心']},
+ {id:'rehab',mod:'chronic',name:'远程居家康复健康指导',en:'Remote Home Rehabilitation',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['术后/伤后','视频指导'],
+  intro:'术后或伤后居家阶段，康复治疗师通过视频指导训练动作，按周调整强度。',
+  includes:['康复治疗师首次评估','每周 1 次视频指导 + 日常动作清单','疼痛与活动度记录追踪','复工前功能评估建议'],
+  suit:'骨科术后、运动损伤、脑卒中恢复期需居家训练的职工。',
+  orgs:['北大医疗康复医院 · 康复治疗部']},
+ {id:'tcm',mod:'chronic',name:'中医康复综合解决方案',en:'Integrated Traditional Medicine Rehabilitation',scope:'全国履约',payer:['职工福利费','工会经费','自费'],tags:['针灸推拿','疗程制'],
+  intro:'针灸、推拿、艾灸与中药调理组合，针对颈肩腰腿痛、失眠与疲劳等职场常见问题。',
+  includes:['中医体质辨识与辨证','针灸 / 推拿 / 理疗组合疗程','代煎中药配送（可选）','疗程结束疗效评估'],
+  suit:'长期伏案、颈肩腰腿痛、睡眠差、易疲劳人群。',
+  orgs:['北京大学国际医院 · 中医科','北大医疗康复医院 · 中医康复科']},
+ {id:'fast',mod:'medical',name:'职工就医快通（挂号 / 陪诊 / 住院安排）',en:'Employee Medical Fast Track',scope:'属地到院 · 全国履约',payer:['社保','商保','企康','自费'],tags:['3个工作日','全程陪诊'],
+  intro:'副主任以上号源协调、院内全程陪诊、住院床位安排，把看病从"跑一天"变成"请半天"。',
+  includes:['专家号源协调（3 个工作日内）','院内全程陪诊（挂号 / 检查 / 取药）','住院床位与术前检查安排','就诊结果回传企业健康档案'],
+  suit:'工作日难以请假、对院内流程不熟悉、需要住院协调的职工。',
+  orgs:['北京大学国际医院','北大医疗康复医院','北大医疗淄博医院']},
+ {id:'second',mod:'medical',name:'专家线上二次诊疗咨询',en:'Expert Online Second Opinion',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['45分钟','书面意见'],
+  intro:'已确诊或拿到治疗方案后，由三甲专家复核诊断与治疗路径，给出书面第二意见。',
+  includes:['病历与影像资料预审','45 分钟视频问诊','书面第二诊疗意见','必要时转介院内专家'],
+  suit:'确诊重大疾病、面临手术或多种治疗方案选择的职工及家属。',
+  orgs:['北大医疗互联网医院 · 专家会诊中心']},
+ {id:'cloud',mod:'medical',name:'北大国际医院云门诊',en:'PKU International Hospital Cloud Clinic',scope:'全国履约',payer:['社保','商保','自费'],tags:['1v1视频','可开检查'],
+  intro:'北大国际医院医生 1v1 视频面诊，可开具线上处方与检查单，到院直接做检查。',
+  includes:['1v1 视频面诊（约 20 分钟）','线上处方与检查开单','到院检查优先时段','复诊线上续方'],
+  suit:'常见病复诊、慢病续方、报告咨询，不想跑医院的职工。',
+  orgs:['北京大学国际医院 · 云门诊']},
+ {id:'clinic',mod:'medical',name:'企业医务室（医务室 / 健康小屋 / 云诊医务室）',en:'On-site Clinic & Health Cabin',scope:'属地到企',payer:['企康','职工福利费'],tags:['驻场医护','按人数配置'],
+  intro:'驻场医护 + 智能设备 + 云诊终端，把血压血糖测量、常见病处置和转诊放到办公楼下。',
+  includes:['驻场护士 / 医生（按人数配置）','血压、血糖、体成分等自助检测','云诊终端直连院内医生','急救箱与药品管理'],
+  suit:'员工 500 人以上、园区偏远或有多班次生产的企业。',
+  orgs:['北大医疗企业健康服务团队']},
+ {id:'eap',mod:'special',name:'EAP 心理咨询（压力 / 情绪 / 职场关系）',en:'Employee Assistance Program',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['7×24','全程保密'],
+  intro:'7×24 小时热线与面对面咨询，覆盖压力、情绪、亲子、婚恋与职场关系，全程保密。',
+  includes:['7×24 小时心理热线','每人每年 6 次 1v1 咨询','心理测评与危机干预转介','管理者心理风险培训'],
+  suit:'高压岗位、经历组织调整，或出现持续失眠焦虑的职工。',
+  orgs:['北大医疗心理服务中心','合作心理咨询师团队']},
+ {id:'lecture',mod:'special',name:'定制化健康讲座（线上直播 / 线下沙龙）',en:'Customized Health Lecture',scope:'全国履约',payer:['工会经费','职工福利费','企康'],tags:['可定制选题','含回放'],
+  intro:'按企业人群画像选题，线上直播覆盖异地员工，线下沙龙做小范围深度互动。',
+  includes:['选题定制（颈腰 / 睡眠 / 三高 / 急救等）','线上直播 + 回放','线下沙龙（50 人以内）','课后答疑与资料包'],
+  suit:'希望做全员健康宣教、工会活动或党建主题活动的企业。',
+  orgs:['北大医疗健康讲师团']},
+ {id:'onsite',mod:'special',name:'入企 1v1 健康咨询',en:'On-site 1v1 Consultation',scope:'全国履约',payer:['企康','职工福利费'],tags:['医生坐诊','20分钟/人'],
+  intro:'全科、中医、心理医生定期到企业坐诊，员工午休时间即可完成一次面诊。',
+  includes:['医生定期坐诊（月度 / 季度）','每人 20 分钟 1v1 面诊','现场血压血糖与体质辨识','需转诊者直接预约院内'],
+  suit:'员工不便外出就医、希望提高健康服务触达率的园区企业。',
+  orgs:['北大医疗企业健康服务团队']},
+ {id:'travel',mod:'special',name:'医旅康养服务',en:'Medical Wellness Retreat',scope:'全国履约',payer:['工会经费','职工福利费','自费'],tags:['3–7天','含随队医护'],
+  intro:'3–7 天康养行程，含中医理疗、体检复查与运动课程，兼顾休养与健康管理。',
+  includes:['康养基地住宿与膳食','中医理疗与体检复查','运动与睡眠课程','随队医护保障'],
+  suit:'高强度岗位休整、劳模与退休职工疗休养、党建主题活动。',
+  orgs:['北大医疗康养基地（北京 / 海南）']},
+ {id:'fivegood',mod:'special',name:'五好生活',en:'Five Good Life Program',scope:'全国履约',payer:['工会经费','企康'],tags:['全员普惠','30天打卡'],
+  intro:'吃好、睡好、动好、心情好、关系好，五个轻量主题打卡，适合全员普惠式健康促进。',
+  includes:['5 大主题 30 天打卡','企业排行榜与部门 PK','健康积分兑换','年度健康白皮书'],
+  suit:'希望低门槛覆盖全员、提升健康氛围的企业与工会。',
+  orgs:['北大医疗企业健康服务团队']},
+ {id:'firstaid',mod:'safety',name:'职场急救培训（持证）',en:'Workplace First Aid Certification',scope:'全国履约',payer:['企业安全生产费','职工福利费','工会经费'],tags:['4学时','发证书'],
+  intro:'心肺复苏、AED、气道梗阻与创伤处置，考核通过颁发急救员证书。',
+  includes:['4 学时理论 + 实操','AED 与 CPR 考核','红十字会 / 急救中心证书','年度复训提醒'],
+  suit:'安全生产重点岗位、园区安保、HR 与工会干部。',
+  orgs:['北大医疗急救培训中心']},
+ {id:'env',mod:'safety',name:'职场环境健康安全服务（集体疫苗 / 消杀）',en:'Workplace Environment Health & Safety',scope:'全国履约',payer:['企业安全生产费','职工福利费','企康'],tags:['上门','季度报告'],
+  intro:'流感等集体疫苗接种、办公区与食堂消杀、空气质量检测，按季度形成环境健康报告。',
+  includes:['集体疫苗接种（上门）','办公区 / 食堂定期消杀','空气质量与饮用水检测','环境健康季度报告'],
+  suit:'人员密集办公、有多班次食堂、需应对季节性传染病的园区。',
+  orgs:['北大医疗公共卫生服务团队']},
+ {id:'event',mod:'safety',name:'大型活动应急保障（年会 / 运动会现场医护）',en:'Event Medical Support',scope:'全国履约',payer:['企业安全生产费','工会经费'],tags:['现场医护','含AED'],
+  intro:'医护团队与急救设备现场驻守，含 AED、担架与转运通道，覆盖年会、运动会与大型会议。',
+  includes:['现场医护驻守（按人数配比）','AED、急救包、担架','应急转运通道与就近医院联动','活动前风险评估'],
+  suit:'举办年会、运动会、开放日等大型聚集活动的企业。',
+  orgs:['北大医疗急救保障团队']}
+];
+const INDUSTRIES=[
+ {n:'互联网 / IT科技',s:'中大型 500人+',pain:'长期熬夜、久坐、高压；颈肩腰腿痛与睡眠障碍高发，心源性猝死风险不容忽视。',prod:['多导睡眠监测','心肺运动筛查','EAP心理咨询','减重训练营','云诊医务室']},
+ {n:'金融 / 银行 / 证券',s:'中大型 1000人+',pain:'高管及业务骨干心血管风险高，对就医体验、隐私与稀缺医疗资源要求高。',prod:['住院体检','重疾筛查','职工就医快通','EAP心理咨询','医旅康养']},
+ {n:'制造业 / 工厂',s:'大型 2000人+',pain:'一线员工健康意识薄弱，存在粉尘 / 噪声等职业伤害，工伤与突发疾病影响生产连续性。',prod:['职业病筛查','职场急救培训','环境消杀','企业医务室','检后管理']},
+ {n:'物流 / 快递 / 外卖',s:'大型 5000人+',pain:'作息极不规律、高强度体力劳动，腰椎颈椎劳损；人员分散，突发疾病与交通事故风险高。',prod:['中医康复指导','远程居家康复','EAP心理咨询','云门诊','云诊医务室']},
+ {n:'教育 / 高校 / 科研',s:'中型 300人+',pain:'长期伏案导致颈椎腰椎问题，升学与科研考核带来精神压力，亚健康普遍。',prod:['中医康复指导','五高一重管理','EAP心理咨询','定制化健康讲座','五好生活']},
+ {n:'能源 / 化工 / 矿业',s:'大型 1000人+',pain:'高危作业环境，接触有毒有害物质；对现场应急救援响应速度与合规审查要求极高。',prod:['心肺运动筛查','职场急救培训','职工就医快通','风险前筛','EAP心理咨询']},
+ {n:'建筑 / 工程施工',s:'中大型 1000人+',pain:'户外高强度作业，流动性大；夏季中暑、冬季心脑血管突发疾病风险高，就医不便。',prod:['心肺运动筛查','职场急救培训','职工就医快通','风险前筛','EAP心理咨询']},
+ {n:'大型国企央企 / 政府机构',s:'中大型 500人+',pain:'员工年龄结构偏大，离退休职工多；"三高"等慢病多发，福利发放合规性要求极严。',prod:['五高一重管理','检后管理','定制化健康讲座','健康小屋','医旅康养']}
+];
+const LECTURES=[
+ {t:'久坐人群的颈腰自救：3 个动作缓解僵硬',d:'11-06 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（可回看 7 天）',dur:'60 分钟',
+  outline:['久坐为什么先伤颈腰：3 分钟讲清力学原因','工位可做的 3 个松解动作（现场跟练）','什么信号提示需要就医，而不是继续拉伸','答疑：现场收集 5 个问题逐一回答']},
+ {t:'睡得好才有战斗力：压力与睡眠管理',d:'11-13 周四 14:00',tag:'线下沙龙',n:'心理科 · 王莹',place:'北京昌平 · 北大国际医院健康管理中心',dur:'90 分钟',
+  outline:['压力如何把睡眠"切碎"：睡眠结构基础','睡前 30 分钟的减法清单','失眠的认知行为疗法（CBT-I）入门','小组练习：给自己的工作日晚间方案']},
+ {t:'AED 与心肺复苏实操工作坊（持证）',d:'11-20 周四 09:30',tag:'线下实训',n:'急救培训中心',place:'企业 F3 培训室',dur:'4 学时',
+  outline:['心脏骤停的识别与呼救流程','高质量 CPR：按压深度、频率与换人','AED 到场后的完整操作演练','考核：通过后颁发急救员证书']}
+];
+const ARTICLES=[
+ {t:'体检报告上的"结节"，多久复查一次才不焦虑',m:'健康科普 · 6 分钟阅读',mod:'screen',rel:'lung',
+  body:['体检报告里出现"结节"两个字，多数人第一反应是恐慌。实际上，肺结节在成年人中非常常见，低剂量 CT 筛查人群中检出率可达 20%–40%，其中绝大多数是良性。',
+  '真正决定复查节奏的是三件事：结节的大小、密度（实性、部分实性、磨玻璃）以及是否在随访中发生变化。临床上通常按大小分层：小于 5mm 的纯磨玻璃结节，多数按 12 个月复查；5–8mm 建议 6 个月；大于 8mm 或出现实性成分增加，则需要胸外科评估。',
+  '比"多久查一次"更容易被忽略的是"怎么比"。复查时尽量在同一家医院、同一台设备上做薄层 CT，医生才能把两次影像同屏对齐，看清 1–2 毫米的变化。',
+  '如果你已经有结节，建议把历次 CT 的影像号整理在一起，交给固定的医生随访；出现持续咳嗽、痰中带血、体重下降等情况，不要等到复查时间，直接就诊。']},
+ {t:'血压早上高、晚上正常，是药没吃对吗',m:'慢病管理 · 5 分钟阅读',mod:'chronic',rel:'fivehigh',
+  body:['很多人自测血压会发现：早晨起床后偏高，下午和晚上反而正常。这种"晨峰"现象并不罕见，也不一定意味着药吃错了。',
+  '人体血压本身有昼夜节律，清晨 6–10 点交感神经兴奋、皮质醇升高，血压会自然上冲。如果晨峰过高（家庭自测持续 ≥135/85mmHg），心脑血管事件风险会明显增加，需要医生评估用药时间与剂型。',
+  '建议连续 7 天，在起床后 1 小时内、排尿后、服药前测量，每次间隔 1 分钟测两遍取平均，并记录入睡时间。把这份记录带给医生，比诊室里的一次测量更有价值。',
+  '不要自行加药或改时间。部分长效降压药本身就是为了覆盖晨峰设计的，随意调整可能造成夜间低血压。']},
+ {t:'长期加班的人，怎么用 10 分钟把睡眠拉回来',m:'心理与睡眠 · 8 分钟阅读',mod:'special',rel:'eap',
+  body:['加班后的疲惫常常伴着"报复性熬夜"：明明很困，却舍不得睡。这不是意志力问题，而是大脑需要一段"属于自己的时间"来结束高压状态。',
+  '与其强行提前上床，不如先做一个 10 分钟的"收工仪式"：关掉工作消息提醒、把明天的三件事写在纸上、用温水洗脸或冲澡、做 4 组 4-7-8 呼吸（吸气 4 秒、屏息 7 秒、呼气 8 秒）。',
+  '如果躺下 20 分钟仍清醒，不要继续躺着刷手机。起身到客厅，在昏暗灯光下做点无聊的事，有困意再回床——这是睡眠限制疗法的基本原理，目的是重新建立"床=睡觉"的联结。',
+  '连续两周入睡困难、白天功能受影响，建议直接预约一次心理咨询或睡眠门诊，不要靠加量咖啡因硬扛。']}
+];
+
+/* ---------------- state ---------------- */
+const state={
+  view:'tab', tab:'home', product:null, from:'home',
+  sel:new Set(), favs:new Set(), enrolled:new Map(), lecture:0, article:0, signed:false,
+  openMods:new Set(['screen']), pq:'', appFilter:'all', lastCode:'',
+  remind:new Set(), artFav:new Set(),
+  msgs:[
+    {id:'m1',ic:'doc',title:'体检报告已生成',desc:'2026 年度体检报告已出，6 项指标需关注',time:'10-12',read:false,go:"archive:exam"},
+    {id:'m2',ic:'calendar',title:'随访提醒',desc:'明天 09:30 健康管家张医生电话随访',time:'10-25',read:false,go:"apps"},
+    {id:'m3',ic:'heart',title:'心理测评建议',desc:'测评显示中度压力，建议预约 1 次咨询',time:'10-20',read:false,go:"product:eap"},
+    {id:'m4',ic:'gift',title:'年度健康额度已到账',desc:'2026 年度职工健康额度 ¥6,660 已到账',time:'01-05',read:true,go:"quota"},
+    {id:'m5',ic:'chat',title:'健康讲座开放报名',desc:'11 月共 3 场讲座，可在线报名',time:'10-28',read:true,go:"discover"}
+  ], recent:[], svcFilter:'all', msg:3,
+  apps:[
+    {id:'a1',name:'五高一重管理 · 季度随访',date:'10-24',week:'周五',time:'14:00',org:'线上 · 健康管家 张医生',status:'待随访'},
+    {id:'a2',name:'无痛胃肠镜检查',date:'10-18',week:'周六',time:'08:30',org:'北京大学国际医院 · 内镜中心',status:'已完成'},
+    {id:'a3',name:'职场急救培训（持证）',date:'09-12',week:'周五',time:'09:00',org:'企业 F3 培训室',status:'已完成'}
+  ],
+  booking:{org:0,date:0,time:0},
+  ask:{scene:-1,need:-1},
+  qa:{step:1,concern:null,age:null}
+};
+const TABS=[
+  {id:'home',ai:true,label:'企康小安'},
+  {id:'products',icon:'bag',label:'选服务'},
+  {id:'discover',icon:'chart',label:'发现'},
+  {id:'mine',icon:'user',label:'我的'}
+];
+const $=id=>document.getElementById(id);
+const modOf=id=>MODULES.find(m=>m.id===id);
+const PICON={'annual-exam':'calendar','risk-report':'doc','risk-survey':'file','gastro':'search','cancer':'shield','sleep':'sleep','occupational':'shield','cpet':'pulse','inpatient':'hospital','fivehigh':'pulse','lung':'lung','heart':'heart','weight':'walk','rehab':'walk','tcm':'heart','fast':'hospital','second':'video','cloud':'video','clinic':'hospital','eap':'chat','lecture':'chat','onsite':'user','travel':'star','fivegood':'star','firstaid':'shield','env':'shield','event':'shield'};
+const prod=id=>PRODUCTS.find(p=>p.id===id);
+function statusbar(dark){
+  const t=new Date(), hh=String(t.getHours()).padStart(2,'0'), mm=String(t.getMinutes()).padStart(2,'0');
+  return `<div class="statusbar ${dark?'dark':''}">
+    <div>${hh}:${mm}</div>
+    <div class="sb-r">
+      <div class="sb-bars"><i></i><i></i><i></i><i></i></div>
+      <svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor" opacity=".92"><path d="M8 10.2 1.2 3.4A9.6 9.6 0 0 1 14.8 3.4L8 10.2Z"/></svg>
+      <div class="sb-batt"><i></i></div>
+    </div>
+  </div>`;
+}
+const AVATAR=`<svg viewBox="0 0 64 64"><defs><linearGradient id="avg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF0E2"/><stop offset="1" stop-color="#FFD9BE"/></linearGradient><linearGradient id="avg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF8A3D"/><stop offset="1" stop-color="#F04E00"/></linearGradient></defs><rect width="64" height="64" fill="url(#avg)"/><path d="M32 36c8.8 0 16 6.6 17.6 16H14.4C16 42.6 23.2 36 32 36Z" fill="url(#avg2)"/><circle cx="32" cy="24" r="10.5" fill="#FFE0C8"/><path d="M21.5 23c0-7 4.7-11.5 10.5-11.5S42.5 16 42.5 23c0 1.6-.3 2.8-.8 3.6-1.4-4.4-5.2-7-9.7-7s-8.3 2.6-9.7 7c-.5-.8-.8-2-.8-3.6Z" fill="#4A2E22"/><path d="M28 29.5c1.2.8 2.5 1.2 4 1.2s2.8-.4 4-1.2" stroke="#C4633A" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="27.5" cy="24" r="1.2" fill="#4A2E22"/><circle cx="36.5" cy="24" r="1.2" fill="#4A2E22"/></svg>`;
+
+/* ---------------- home ---------------- */
+function homeHTML(){
+  const hot=['fivehigh','risk-report','fast','sleep','tcm'].map(prod);
+  const grid=[
+    ['calendar','体检预约','#FFF1E7','#F5520A',"openProduct('annual-exam')"],
+    ['hospital','就医快通','#EDF3FF','#1F4FD1',"openProduct('fast')"],
+    ['pulse','五高管理','#E9F7F1','#0A7A55',"openProduct('fivehigh')"],
+    ['heart','心理EAP','#FDEEF4','#BE2A5E',"openProduct('eap')"],
+    ['shield','急救培训','#FFF6E0','#A86A06',"openProduct('firstaid')"],
+    ['video','云门诊','#EDF3FF','#1F4FD1',"openProduct('cloud')"],
+    ['walk','减重营','#E9F7F1','#0A7A55',"openProduct('weight')"],
+    ['chat','健康讲座','#FFF1E7','#F5520A',"openLecture(0)"],
+    ['file','健康档案','#F1F2F6','#4A4E55',"openArchive('exam')"],
+    ['wallet','我的权益','#FFF6E0','#A86A06',"goTab('mine')"]
+  ];
+  return `<div class="view fade-in">
+  <div class="scroll">
+    <div class="heroS">
+      ${statusbar()}
+      <div class="topbar">
+        <div class="city">上海 ${ico('down',13)}</div>
+        <div style="flex:1"></div>
+        <button class="msgbtn" onclick="openMessages()">${ico('bell')}${unreadCount()?`<i class="badge">${unreadCount()}</i>`:''}</button>
+      </div>
+      <div class="greetS">
+        <div class="g-av">${AVATAR}</div>
+        <div class="g-tx"><b>你好，王莉</b><span>中国平安 · 科技中心</span></div>
+        <span class="g-tag">职工权益已开通</span>
+      </div>
+      <h1 class="title">职工健康服务<em>5 大类 ${PRODUCTS.length} 项，体检、就医、慢病、心理都能直接约</em></h1>
+      <button class="bigsearch" onclick="openSearch()">${ico('search')}<span>搜索服务、症状或机构</span></button>
+      <div class="hotline">
+        ${['体检报告解读','就医绿通','五高管理','心理咨询','睡眠改善'].map(k=>`<button onclick="quickSearch('${k}')">${k}</button>`).join('')}
+      </div>
+    </div>
+
+    <div class="gridS">
+      ${grid.map(g=>`<button class="gitem" onclick="${g[4]}">
+        <div class="gicon" style="background:${g[2]};color:${g[3]}">${ico(g[0])}</div>
+        <span>${g[1]}</span>
+      </button>`).join('')}
+    </div>
+
+    <button class="aibar2" onclick="openQA()">
+      <span class="ai">Ai</span>
+      <div class="tx"><b>不知道选哪项？</b><span>说说症状或诉求，企康小安帮你匹配服务</span></div>
+      <span class="go">去问 ${ico('chev',12)}</span>
+    </button>
+
+    <div class="section-title"><h3>热门服务</h3><span onclick="goTab('products')">全部 ${PRODUCTS.length} 项 ${ico('chev',12)}</span></div>
+
+    <div class="banner" id="banner">
+      <div class="bslide on" style="background:linear-gradient(115deg,#FF8A3D,#F5520A)" onclick="openProduct('inpatient')">
+        <div><h4>职工体检升级计划</h4><p>住院体检 · 含无痛胃肠镜，一次查清楚</p><span class="b-tag">2026 年度 · 限 200 人</span></div>
+        ${bannerArt(1)}
+      </div>
+      <div class="bslide" style="background:linear-gradient(115deg,#31BD8C,#0A7A55)" onclick="openProduct('weight')">
+        <div><h4>11 月减重训练营</h4><p>90 天医学减重 · 营养师与康复师双师带队</p><span class="b-tag">报名截止 11-08</span></div>
+        ${bannerArt(2)}
+      </div>
+      <div class="bslide" style="background:linear-gradient(115deg,#4C8BFF,#1F4FD1)" onclick="openProduct('firstaid')">
+        <div><h4>职场急救持证培训</h4><p>CPR + AED 实操，每期限 30 人</p><span class="b-tag">企业安全生产费支持</span></div>
+        ${bannerArt(3)}
+      </div>
+      <div class="bdots"><i class="on"></i><i></i><i></i></div>
+    </div>
+
+    ${hot.map(p=>{const mm=modOf(p.mod);return `<div class="svc" onclick="openProduct('${p.id}')">
+      <div class="svc-ic" style="background:${mm.tint};color:${mm.ink}">${ico(PICON[p.id]||mm.icon)}</div>
+      <div class="svc-b">
+        <b>${p.name}</b>
+        <p>${p.intro}</p>
+        <div class="svc-tags"><span class="chip ${p.scope.indexOf('全国')>=0?'':'blue'}">${p.scope}</span><span class="chip grey">${p.payer[0]}</span></div>
+      </div>
+      <span class="arw" style="align-self:center;color:#C9CDD4">${ico('chev',15)}</span>
+    </div>`}).join('')}
+
+    <div class="brands">
+      <div>北京大学国际医院</div><i></i><div>北大医疗康复医院</div><i></i><div>北大医疗淄博医院</div>
+    </div>
+    <div style="text-align:center;font-size:10px;color:#B4B9C1;padding:14px 0 4px">北大医疗集团 · 企康办　本页为演示数据</div>
+  </div>
+
+  <div class="mini" id="miniBar">
+    <div class="mt">职工健康</div>
+    <button class="ms" onclick="openSearch()">${ico('search')}<span>搜索服务 / 症状</span></button>
+    <button class="mb" onclick="openMessages()">${ico('bell')}${unreadCount()?`<i class="badge" style="border-color:#fff;top:-5px;right:-2px">${unreadCount()}</i>`:''}</button>
+  </div>
+  </div>`;
+}
+function quickSearch(k){
+  openSearch();
+  const i=document.getElementById('sq'); if(i)i.value=k;
+  filterSearch(k);
+}
+function openModule(id){ state.filter=id; goTab('products'); }
+function bannerArt(n){
+  if(n===1)return `<svg class="art" width="112" height="96" viewBox="0 0 112 96"><circle cx="82" cy="30" r="40" fill="rgba(255,255,255,.14)"/><rect x="46" y="30" width="54" height="40" rx="8" fill="rgba(255,255,255,.22)"/><path d="M64 50h18M73 41v18" stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity=".9"/></svg>`;
+  if(n===2)return `<svg class="art" width="118" height="96" viewBox="0 0 118 96"><circle cx="90" cy="46" r="42" fill="rgba(255,255,255,.12)"/><path d="M40 34c14 0 18 6 24 14s10 10 22 10" stroke="rgba(255,255,255,.72)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="88" cy="58" r="5.5" fill="#fff" opacity=".92"/><path d="M36 50h14M36 58h9M36 66h20" stroke="rgba(255,255,255,.28)" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+  return `<svg class="art" width="112" height="96" viewBox="0 0 112 96"><circle cx="84" cy="44" r="44" fill="rgba(255,255,255,.13)"/><circle cx="70" cy="44" r="20" fill="rgba(255,255,255,.2)"/><path d="M62 44h16M66 44l4-7 4 7-4 7-4-7Z" fill="#fff" opacity=".9"/></svg>`;
+}
+function pickAsk(k,i){state.ask[k]=state.ask[k]===i?-1:i;render();}
+
+/* ---------------- products (search + accordion) ---------------- */
+function productsHTML(){
+  return `<div class="view fade-in">
+    <div class="scroll">
+      <div class="pheader">
+        ${statusbar()}
+        <h2>选服务</h2>
+        <p>5 大类 ${PRODUCTS.length} 项，按名称或症状搜索，点开即可预约</p>
+      </div>
+      <div class="psearch">
+        ${ico('search')}
+        <input id="pq" placeholder="搜索服务，如 体检 / 睡眠 / 心理" value="${state.pq||''}" oninput="filterProducts(this.value)">
+        <button class="clr" id="pclr" style="${state.pq?'':'display:none'}" onclick="clearPq()">✕</button>
+      </div>
+      <div id="plist">${productListHTML()}</div>
+      <div style="text-align:center;font-size:10.5px;color:#B4B9C1;padding:16px 24px 8px;line-height:1.7">全国履约不受时空地域限制；属地履约限北大医疗地域及资源限制。<br>实际服务以预约确认页为准。</div>
+      <div style="height:20px"></div>
+    </div>
+  </div>`;
+}
+function productListHTML(){
+  const q=(state.pq||'').trim();
+  if(q){
+    const list=PRODUCTS.filter(p=>(p.name+p.intro+p.tags.join('')+modOf(p.mod).name).toLowerCase().includes(q.toLowerCase()));
+    if(!list.length)return `<div class="resempty">没有找到「${q}」相关的服务<br><span style="font-size:11px;color:#C1C6CD">试试 体检、睡眠、心理、急救</span></div>`;
+    return `<div class="res">${list.map(p=>{const m=modOf(p.mod);return `<div class="resrow" onclick="openProduct('${p.id}')">
+      <div class="ri" style="background:${m.tint};color:${m.ink}">${ico(PICON[p.id]||m.icon,18)}</div>
+      <div class="rt"><b>${hi(p.name,q)}</b><span>${m.name} · ${p.scope}</span></div>
+      <span class="arw">${ico('chev',14)}</span>
+    </div>`}).join('')}</div>
+    <div style="text-align:center;font-size:11px;color:#B4B9C1;padding:14px">共 ${list.length} 项结果，点击即可预约</div>`;
+  }
+  return MODULES.map(m=>{
+    const items=PRODUCTS.filter(p=>p.mod===m.id);
+    const on=state.openMods.has(m.id);
+    return `<div class="acc ${on?'on':''}" data-id="${m.id}">
+      <button class="acc-h" onclick="toggleAcc('${m.id}')">
+        <div class="mod-ico" style="background:${m.tint};color:${m.ink}">${ico(m.icon)}</div>
+        <div class="acc-t"><b>${m.name}</b><span>${m.sub} · ${items.length} 项</span></div>
+        <span class="acc-ar">${ico('down',16)}</span>
+      </button>
+      <div class="acc-b">
+        ${items.map(p=>`<div class="arow" onclick="openProduct('${p.id}')">
+          <div class="aico" style="background:${m.tint};color:${m.ink}">${ico(PICON[p.id]||m.icon,18)}</div>
+          <div class="atx"><b>${p.name}</b><span>${p.scope} · ${p.tags[0]}</span></div>
+          <span class="arw">${ico('chev',14)}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterProducts(v){
+  state.pq=v;
+  const box=document.getElementById('plist'); if(box)box.innerHTML=productListHTML();
+  const clr=document.getElementById('pclr'); if(clr)clr.style.display=v.trim()?'':'none';
+}
+function clearPq(){
+  state.pq='';
+  const box=document.getElementById('plist'); if(box)box.innerHTML=productListHTML();
+  const inp=document.getElementById('pq'); if(inp){inp.value='';inp.focus();}
+  const clr=document.getElementById('pclr'); if(clr)clr.style.display='none';
+}
+function toggleAcc(id){
+  const el=document.querySelector('.acc[data-id="'+id+'"]'); if(!el)return;
+  const on=!el.classList.contains('on');
+  el.classList.toggle('on',on);
+  if(on)state.openMods.add(id); else state.openMods.delete(id);
+}
+function setFilter(id){state.filter=id;goTab('products');}
+
+/* ---------------- detail ---------------- */
+const DETAIL_META={
+  screen:{time:'约 30–60 分钟',resp:'1 个工作日内响应',notice:['检查类项目需提前 1–2 天预约，部分项目需空腹','到院请携带身份证与既往检查报告','报告出具后由医生电话或线上解读']},
+  chronic:{time:'周期 4–12 周',resp:'24 小时内响应',notice:['首次服务包含建档与方案制定','按周期完成随访与数据记录，异常可随时发起咨询','中途可申请更换健康管家']},
+  medical:{time:'按就诊流程',resp:'3 个工作日内协调号源',notice:['号源以实际协调结果为准，未约到可改约','陪诊服务请提前 24 小时确认','住院安排需提供医保与身份信息']},
+  special:{time:'约 45–60 分钟',resp:'24 小时内响应',notice:['心理咨询全程保密，不进入企业人事记录','讲座类服务需提前 7 天确认主题与场地','企业内服务需提供场地与基础设备']},
+  safety:{time:'按场次安排',resp:'2 个工作日内响应',notice:['入企服务需提前 5 个工作日确认场地与人数','急救培训需提供投影与实操场地','大型活动保障按活动规模配置医护数量']}
+};
+function detailHTML(p){
+  if(!p)return '';
+  const m=modOf(p.mod), meta=DETAIL_META[p.mod];
+  const flow={
+    screen:['预约登记','到院检查 / 线上评估','报告出具','医生解读'],
+    chronic:['健康建档','方案制定','周期干预','复评调优'],
+    medical:['需求提交','资源匹配','就诊 / 面诊','诊后随访'],
+    special:['需求评估','匹配顾问','服务实施','反馈建档'],
+    safety:['需求沟通','方案排期','现场实施','演练复盘']
+  }[p.mod];
+  return `<div class="view subview detail slide-in">
+    <div class="dnav-fixed" id="dnavFixed">
+      <button class="bck" onclick="back()">${ico('left')}</button>
+      <b>${p.name}</b>
+      <button style="color:#5E626A;width:30px;height:30px;display:grid;place-items:center" onclick="toast('已复制分享链接')">${ico('more',20)}</button>
+    </div>
+    <div class="scroll">
+      <div class="detail-hero" style="background:${THEME[p.mod]}">
+        ${statusbar()}
+        <div style="display:flex;align-items:center;height:40px;position:relative;z-index:3">
+          <button onclick="back()" style="width:30px;height:30px;display:grid;place-items:center;margin-left:-8px;color:#fff">${ico('left',21)}</button>
+          <button onclick="toast('已复制分享链接')" style="margin-left:auto;width:30px;height:30px;display:grid;place-items:center;color:#fff">${ico('more',21)}</button>
+        </div>
+        <div class="d-tags"><i>${m.name}</i><i>${p.scope}</i><i>${p.tags[0]}</i></div>
+        <h1>${p.name}</h1>
+        <p class="en">${p.en}</p>
+        <p class="d-intro">${p.intro}</p>
+        <div class="d-meta">
+          <div><span>服务时长</span><b>${meta.time}</b></div>
+          <div><span>响应时效</span><b>${meta.resp}</b></div>
+          <div><span>支出来源</span><b>${p.payer[0]}</b></div>
+        </div>
+      </div>
+
+      <div class="dcard">
+        <h4>服务包含</h4>
+        ${p.includes.map((x,i)=>`<div class="inc"><i>${i+1}</i><span>${x}</span></div>`).join('')}
+      </div>
+
+      <div class="dcard">
+        <h4>适合谁</h4>
+        <div style="font-size:12.5px;color:#4A4E55;line-height:1.75">${p.suit}</div>
+      </div>
+
+      <div class="dcard">
+        <h4>服务流程</h4>
+        <div class="flow">${flow.map((f,i)=>`<div class="fstep"><div class="n">${i+1}</div><div class="l">${f}</div></div>`).join('')}</div>
+      </div>
+
+      <div class="dcard">
+        <h4>覆盖与支出</h4>
+        <div class="kv"><span>覆盖范围</span><b>${p.scope}</b></div>
+        <div class="kv"><span>支出来源</span><b>${p.payer.join(' / ')}</b></div>
+        <div class="kv"><span>服务机构</span><b>${p.orgs[0]}</b></div>
+      </div>
+
+      <div class="dcard">
+        <h4>预约须知</h4>
+        ${meta.notice.map(n=>`<div class="note">${ico('info',13)}<span>${n}</span></div>`).join('')}
+      </div>
+
+      <div class="brands"><div>北京大学国际医院</div><i></i><div>北大医疗康复医院</div><i></i><div>企康办</div></div>
+    </div>
+    <div class="dock">
+      <button class="fav ${state.favs.has(p.id)?'on':''}" onclick="toggleFav('${p.id}',this)">${ico('star')}<span>${state.favs.has(p.id)?'已关注':'关注'}</span></button>
+      <button class="fav" onclick="openContact()">${ico('phone')}<span>咨询</span></button>
+      <button class="primary" onclick="openBooking('${p.id}')">预约服务</button>
+    </div>
+  </div>`;
+}
+function openProduct(id){state.product=id;state.view='detail';render();}
+function toggleFav(id,el){
+  if(state.favs.has(id)){state.favs.delete(id);el.classList.remove('on');el.querySelector('span').textContent='关注';toast('已取消关注');}
+  else{state.favs.add(id);el.classList.add('on');el.querySelector('span').textContent='已关注';toast('已加入我的关注');}
+}
+function back(){state.view='tab';render();}
+
+/* ---------------- booking page ---------------- */
+const ORGS=[{n:'北大国际医院',s:'北京·昌平'},{n:'北大医疗康复医院',s:'北京·朝阳'},{n:'线上视频面诊',s:'全国'}];
+const DATES=[{d:'11-02',w:'明天'},{d:'11-03',w:'周二'},{d:'11-04',w:'周三'},{d:'11-05',w:'周四'}];
+const TIMES=[{t:'08:30',n:'上午'},{t:'10:00',n:'上午'},{t:'14:00',n:'下午'},{t:'15:30',n:'下午'}];
+function fieldSet(p){
+  const orgs={k:'org',label:'服务机构',opts:ORGS.map(o=>o.n+' · '+o.s)};
+  const date={k:'date',label:'预约日期',opts:DATES.map(d=>d.d+' '+d.w)};
+  const time={k:'time',label:'时段',opts:TIMES.map(t=>t.t+' '+t.n)};
+  let f=[];
+  if(p.mod==='screen')f=[orgs,date,time,{k:'empty',label:'是否需要空腹提醒',opts:['需要，提前一天提醒','不需要']}];
+  else if(p.mod==='chronic')f=[{k:'mode',label:'服务形式',opts:['线上管理','到院评估']},date,{k:'manager',label:'健康管家',opts:['不限','张医生','李医生']},{k:'cycle',label:'管理周期',opts:['12 周','24 周']}];
+  else if(p.mod==='medical')f=[{k:'way',label:'就诊方式',opts:['到院就诊','线上视频']},orgs,date,time];
+  else if(p.mod==='special')f=[{k:'way',label:'服务方式',opts:['电话咨询','视频咨询','面对面']},date,time];
+  else f=[{k:'way',label:'服务形式',opts:['入企服务','到院服务']},date,{k:'people',label:'参与人数',num:[10,500,50]}];
+  if(p.id==='eap')f=[{k:'way',label:'咨询方式',opts:['电话','视频','面对面']},{k:'topic',label:'想聊的话题',opts:['压力与情绪','职场关系','亲子家庭','睡眠问题']},{k:'gender',label:'咨询师偏好',opts:['不限','女性咨询师','男性咨询师']},date,time];
+  if(p.id==='lecture')f=[{k:'theme',label:'讲座主题',opts:['颈腰自救','睡眠管理','三高防治','急救常识']},{k:'way',label:'开展形式',opts:['线上直播','线下沙龙']},date,{k:'people',label:'预计参与人数',num:[20,500,100]}];
+  if(p.id==='firstaid')f=[{k:'way',label:'培训形式',opts:['入企培训','到院培训']},date,{k:'people',label:'参训人数',num:[10,120,30]},{k:'cert',label:'证书类型',opts:['红十字会急救员证','企业内部培训证明']}];
+  if(p.id==='event')f=[{k:'event',label:'活动类型',opts:['年会','运动会','大型会议']},date,{k:'people',label:'参与人数',num:[50,2000,300]},{k:'site',label:'活动场地',opts:['公司园区','外部场馆']}];
+  if(p.id==='travel')f=[date,{k:'days',label:'康养天数',opts:['3 天','5 天','7 天']},{k:'people',label:'出行人数',num:[1,20,1]}];
+  if(p.id==='env')f=[{k:'envtype',label:'服务内容',opts:['集体疫苗','环境消杀','两项都要']},date,{k:'people',label:'覆盖人数',num:[50,5000,500]}];
+  return f;
+}
+function openBooking(id){
+  const p=prod(id); state.product=id;
+  state.book={opt:{},num:{}};
+  fieldSet(p).forEach(f=>{ if(f.opts)state.book.opt[f.k]=0; if(f.num)state.book.num[f.k]=f.num[2]; });
+  state.view='booking'; render();
+}
+function pickBook(k,i,el){
+  state.book.opt[k]=i;
+  [...el.parentNode.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');
+  const v=document.querySelector(`[data-bk="${k}"]`); if(v)v.textContent=el.textContent.trim();
+}
+function stepNum(k,d){
+  const p=prod(state.product), f=fieldSet(p).find(x=>x.k===k); if(!f)return;
+  const [min,max]=[f.num[0],f.num[1]];
+  state.book.num[k]=Math.max(min,Math.min(max,(state.book.num[k]||f.num[2])+d));
+  const el=document.querySelector(`[data-num="${k}"]`); if(el)el.textContent=state.book.num[k];
+}
+function bookingHTML(){
+  const p=prod(state.product), m=modOf(p.mod), fields=fieldSet(p);
+  return `<div class="view subview booking slide-in">
+    <div class="subhead" style="height:50px"><button class="back" onclick="backToDetail()">${ico('left')}</button><b>预约服务</b></div>
+    <div class="scroll">
+      <div class="bsum">
+        <div class="bsum-ic" style="background:${m.tint};color:${m.ink}">${ico(PICON[p.id]||m.icon,22)}</div>
+        <div class="bsum-tx"><b>${p.name}</b><span>${p.scope} · 支出 ${p.payer[0]}</span></div>
+      </div>
+      ${fields.map(f=>`<div class="dcard bfield">
+        <h4>${f.label}</h4>
+        ${f.opts?`<div class="opts">${f.opts.map((o,i)=>`<button class="opt ${state.book.opt[f.k]===i?'on':''}" onclick="pickBook('${f.k}',${i},this)">${o}</button>`).join('')}</div>`:`
+        <div class="stepper">
+          <button onclick="stepNum('${f.k}',-10)" class="st-btn">−</button>
+          <div class="st-val"><b data-num="${f.k}">${state.book.num[f.k]}</b><span>人</span></div>
+          <button onclick="stepNum('${f.k}',10)" class="st-btn">+</button>
+        </div>`}
+      </div>`).join('')}
+      <div class="dcard bfield">
+        <h4>就诊人</h4>
+        <div class="person">
+          <div class="pav">${AVATAR}</div>
+          <div class="ptx"><b>王莉 <span>本人</span></b><em>中国平安 · 科技中心　138****8866</em></div>
+          <button class="plink" onclick="toast('可在「我的-家庭成员」中添加就诊人')">更换</button>
+        </div>
+      </div>
+      <div class="bnote">${ico('info',13)}<span>提交后健康管家将在 30 分钟内电话确认；服务前 24 小时可免费改期或取消。</span></div>
+    </div>
+    <div class="dock">
+      <div class="dock-price"><span>预计自付</span><b>¥0</b><em>由企业权益支付</em></div>
+      <button class="primary" onclick="confirmBooking()">确认预约</button>
+    </div>
+  </div>`;
+}
+function backToDetail(){state.view='detail';render();}
+function confirmBooking(){
+  const p=prod(state.product), fields=fieldSet(p), opt=state.book.opt, num=state.book.num;
+  const orgF=fields.find(f=>f.k==='org');
+  const dateF=fields.find(f=>f.k==='date'), timeF=fields.find(f=>f.k==='time');
+  const org=orgF?orgF.opts[opt.org]:p.orgs[0];
+  const date=dateF?DATES[opt.date].d:'11-02', week=dateF?DATES[opt.date].w:'明天';
+  const time=timeF?TIMES[opt.time].t:'14:00';
+  const extra=fields.filter(f=>f.opts&&['org','date','time'].indexOf(f.k)<0).map(f=>f.label+'：'+f.opts[opt[f.k]]);
+  fields.filter(f=>f.num).forEach(f=>extra.push(f.label+'：'+num[f.k]+' 人'));
+  const code='PKU'+String(Math.floor(Math.random()*9e8+1e8));
+  const app={id:code,name:p.name,date,week,time,org,status:'已预约',extra,pid:p.id};
+  state.apps.unshift(app); state.lastApp=app; state.lastCode=code;
+  state.view='success'; render();
+}
+function successHTML(){
+  const a=state.lastApp||{name:'五高一重管理',date:'11-02',time:'08:30',org:'北京大学国际医院（昌平）',extra:[]};
+  return `<div class="view subview fade-in">
+    ${statusbar(true)}
+    <div class="scroll">
+      <div class="succ">
+        <div class="ok">${ico('check',32)}</div>
+        <h2>预约已提交</h2>
+        <p>健康管家将在 30 分钟内与您电话确认<br>请留意 010 开头的来电</p>
+        <div class="ticket">
+          <div class="tr"><span>服务项目</span><b style="max-width:64%;text-align:right">${a.name}</b></div>
+          <div class="tr"><span>预约时间</span><b>2026-${a.date} ${a.time}</b></div>
+          <div class="tr"><span>服务机构</span><b style="max-width:60%;text-align:right">${a.org}</b></div>
+          ${(a.extra||[]).map(e=>`<div class="tr"><span>${e.split('：')[0]}</span><b style="max-width:62%;text-align:right">${e.split('：')[1]}</b></div>`).join('')}
+          <div class="code"><span>预约码</span><b>${state.lastCode||'PKU26011023'}</b></div>
+        </div>
+        <div class="succ-btns">
+          <button class="ghost" onclick="goTab('home')">返回首页</button>
+          <button class="solid" onclick="openApps()">查看我的预约</button>
+        </div>
+        <div style="font-size:11px;color:#B4B9C1;margin-top:22px">本页面为产品演示，未产生真实预约</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------------- mine (appointments + balance) ---------------- */
+function statusKind(a){ return a.status==='已完成'?'done':a.status==='已取消'?'cancel':'doing'; }
+function apptCard(a){
+  const k=statusKind(a);
+  return `<div class="appt ${k}">
+    <div class="ap-top">
+      <div class="ap-date"><b>${a.date}</b><span>${a.week}</span></div>
+      <div class="ap-tx">
+        <b>${a.name}</b>
+        <p>${a.time} · ${a.org}</p>
+        ${(a.extra||[]).slice(0,2).map(e=>`<span class="ap-tag">${e}</span>`).join('')}
+      </div>
+      <span class="st ${k==='done'?'done':k==='cancel'?'cancel':''}">${a.status}</span>
+    </div>
+    ${k==='doing'?`<div class="ap-act">
+      ${a.type==='lecture'?'':`<button onclick="rescheduleApp('${a.id}')">改期</button>`}
+      <button onclick="cancelApp('${a.id}')">${a.type==='lecture'?'取消报名':'取消预约'}</button>
+    </div>`:''}
+  </div>`;
+}
+function mineHTML(){
+  const doing=state.apps.filter(a=>statusKind(a)==='doing').length;
+  const top=state.apps.slice(0,3);
+  return `<div class="view fade-in minepage">
+    <div class="scroll" style="background:#F5F6F8">
+      <div class="mhead">
+        ${statusbar()}
+        <div class="mh-row">
+          <div class="mh-av">${AVATAR}</div>
+          <div class="mh-tx"><b>王 莉</b><span>中国平安 · 科技中心　工号 A0238</span></div>
+          <button class="mh-set" onclick="openSettings()">${ico('set',21)}</button>
+        </div>
+      </div>
+
+      <div class="bal">
+        <div class="bal-top"><span>2026 年度健康额度</span><button onclick="openQuota()">使用明细 ${ico('chev',12)}</button></div>
+        <div class="bal-num"><small>¥</small>3,860<span>可用余额</span></div>
+        <div class="bal-bar"><i style="width:42%"></i></div>
+        <div class="bal-foot">
+          <div><b>¥6,660</b><span>年度总额</span></div>
+          <div><b>¥2,800</b><span>已使用</span></div>
+          <div><b>¥3,860</b><span>可用余额</span></div>
+          <div><b>1,280</b><span>健康积分</span></div>
+        </div>
+      </div>
+
+      <div class="section-title"><h3>我的预约</h3><span onclick="openApps()">${state.apps.length} 条记录 ${ico('chev',12)}</span></div>
+      ${top.map(apptCard).join('')}
+      <button class="morelink" onclick="openApps()">查看全部预约${doing?`（${doing} 项待服务）`:''} ${ico('chev',12)}</button>
+
+      <div class="section-title"><h3>健康档案</h3><span>仅本人可见</span></div>
+      <div class="mcard" style="margin:0 14px">
+        ${[
+          ['doc','2026 年度体检报告','6 项异常 · 10-12','#FFF1E7','#F5520A','exam'],
+          ['pulse','五高趋势','近 12 次记录','#E9F7F1','#0A7A55','chronic'],
+          ['heart','心理测评','中度压力','#FDEEF4','#BE2A5E','mind']
+        ].map(r=>`<div class="mrow" onclick="openArchive('${r[5]}')">
+          <div class="mi2" style="background:${r[3]};color:${r[4]}">${ico(r[0])}</div>
+          <div>${r[1]}</div>
+          <div class="mv">${r[2]} ${ico('chev',12)}</div>
+        </div>`).join('')}
+      </div>
+
+      <div class="section-title"><h3>更多</h3></div>
+      <div class="mcard" style="margin:0 14px">
+        ${[['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
+          <div class="mrow" onclick="${r[3]}">
+            <div class="mi2" style="background:#F4F5F7;color:#5E626A">${ico(r[0])}</div>
+            <div>${r[1]}</div>
+            <div class="mv">${r[2]} ${ico('chev',12)}</div>
+          </div>`).join('')}
+      </div>
+
+      <div style="text-align:center;padding:26px 0 10px">
+        <div style="font-size:11px;color:#B4B9C1">北大医疗集团 · 企康办</div>
+        <div style="font-size:10px;color:#C6CAD1;margin-top:4px">企业职工医疗健康管理系列产品 · 演示版 v1.0</div>
+      </div>
+    </div>
+  </div>`;
+}
+function openApps(){state.view='apps';render();}
+function setAppFilter(k){state.appFilter=k;render();}
+function appsHTML(){
+  const f=state.appFilter||'all';
+  const list=state.apps.filter(a=>f==='doing'?statusKind(a)==='doing':f==='done'?a.status==='已完成':f==='cancel'?a.status==='已取消':true);
+  return `<div class="view subview apps slide-in">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>我的预约</b><span class="ext">${state.apps.length} 条</span></div>
+    <div class="scroll">
+      <div class="seg">
+        ${[['all','全部'],['doing','待服务'],['done','已完成'],['cancel','已取消']].map(x=>`<button class="${f===x[0]?'on':''}" onclick="setAppFilter('${x[0]}')">${x[1]}</button>`).join('')}
+      </div>
+      ${list.map(apptCard).join('')||'<div class="empty">这个状态下还没有记录</div>'}
+      <div style="height:24px"></div>
+    </div>
+  </div>`;
+}
+function openQuota(){ state.view='quota'; render(); }
+function quotaHTML(){
+  const recs=[
+    {ic:'heart',name:'中医康复综合解决方案',item:'推拿疗程 5 次',org:'北京大学国际医院 · 中医科',date:'10-20',amt:-680},
+    {ic:'doc',name:'职工年度体检',item:'升级加项 · 颈动脉超声',org:'北大国际医院 · 健康管理中心',date:'10-12',amt:-260},
+    {ic:'chat',name:'EAP 心理咨询',item:'1v1 咨询 2 次',org:'北大医疗心理服务中心',date:'10-08',amt:-600},
+    {ic:'pulse',name:'五高一重管理',item:'季度随访 · 权益内',org:'线上 · 健康管家 张医生',date:'09-24',amt:0},
+    {ic:'hospital',name:'无痛胃肠镜检查',item:'麻醉评估 + 检查',org:'北大国际医院 · 内镜中心',date:'09-18',amt:-1260}
+  ];
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>额度使用明细</b></div>
+    <div class="scroll">
+      <div class="qsum">
+        <div class="qs-main"><span>2026 年度剩余可用</span><b><small>¥</small>3,860</b></div>
+        <div class="qs-row">
+          <div><span>年度总额</span><b>¥6,660</b></div>
+          <div><span>已使用</span><b>¥2,800</b></div>
+          <div><span>使用笔数</span><b>5 笔</b></div>
+        </div>
+      </div>
+      <div class="section-title"><h3>使用记录</h3><span>2026 年度</span></div>
+      <div class="ucard">
+        ${recs.map(r=>`<div class="urow" onclick="toast('${r.name} · 演示账单')">
+          <div class="uic">${ico(r.ic,17)}</div>
+          <div class="ut">
+            <b>${r.name}</b>
+            <span>${r.item}</span>
+            <em>${r.date} · ${r.org}</em>
+          </div>
+          <div class="up ${r.amt===0?'zero':''}">${r.amt===0?'权益内':'−¥'+Math.abs(r.amt).toLocaleString('en-US')}</div>
+        </div>`).join('')}
+      </div>
+      <div class="usum">共 5 笔 · 合计支出 ¥2,800</div>
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;padding:14px 24px;line-height:1.7">额度由企业职工福利费与工会经费共同配置，仅限本人使用，年度清零。<br>本页为演示数据。</div>
+      <div style="height:20px"></div>
+    </div>
+  </div>`;
+}
+function rescheduleApp(id){
+  const a=state.apps.find(x=>x.id===id); if(!a)return;
+  state.rs={id,date:0,time:0};
+  openSheet('改期 · '+a.name, `
+    <div style="font-size:11.5px;color:#9AA0A8;margin-bottom:14px">当前预约：${a.date} ${a.time} · ${a.org}</div>
+    <div class="field"><div class="fl">新的日期</div>
+      <div class="opts">${DATES.map((d,i)=>`<button class="opt ${i===0?'on':''}" onclick="pickRs('date',${i},this)">${d.d}<small>${d.w}</small></button>`).join('')}</div>
+    </div>
+    <div class="field"><div class="fl">新的时段</div>
+      <div class="opts">${TIMES.map((t,i)=>`<button class="opt ${i===0?'on':''}" onclick="pickRs('time',${i},this)">${t.t}<small>${t.n}</small></button>`).join('')}</div>
+    </div>
+    <button class="primary" onclick="confirmReschedule()">确认改期</button>`);
+}
+function pickRs(k,i,el){
+  state.rs[k]=i;
+  [...el.parentNode.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');
+}
+function confirmReschedule(){
+  const a=state.apps.find(x=>x.id===state.rs.id); if(!a)return;
+  a.date=DATES[state.rs.date].d; a.week=DATES[state.rs.date].w; a.time=TIMES[state.rs.time].t; a.status='已预约';
+  closeSheet(); toast('已改期至 '+a.date+' '+a.time); render();
+}
+function cancelApp(id){
+  const a=state.apps.find(x=>x.id===id); if(!a)return;
+  openSheet('取消预约', `
+    <div style="font-size:13px;line-height:1.7;color:#3C4048">确认取消「${a.name}」吗？</div>
+    <div style="background:#FFF6EE;border:1px solid #FFE3CD;border-radius:12px;padding:12px;margin:14px 0;font-size:11.5px;color:#A2652F;line-height:1.7">
+      取消后本次预约的时段将释放，已使用的额度会退回年度账户；<br>如需再次服务，请重新预约。
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:44px;border-radius:13px;background:#F4F5F7;color:#4A4E55;font-size:14px;font-weight:600" onclick="closeSheet()">再想想</button>
+      <button style="flex:1;height:44px;border-radius:13px;background:#E4520A;color:#fff;font-size:14px;font-weight:600" onclick="confirmCancel('${id}')">确认取消</button>
+    </div>`);
+}
+function confirmCancel(id){
+  const a=state.apps.find(x=>x.id===id); if(!a)return;
+  a.status='已取消';
+  if(a.type==='lecture'&&a.lec!=null)state.enrolled.delete(a.lec);
+  closeSheet(); toast(a.type==='lecture'?'已取消报名':'预约已取消，额度已退回'); render();
+}
+
+/* ---------------- discover ---------------- */
+let sceneSeq=0;
+function scene(kind,c1,c2){
+  const id='sc'+(++sceneSeq);
+  const motif={
+    sleep:`<path d="M78 22a23 23 0 1 0 27 32 27 27 0 0 1-27-32Z" fill="rgba(255,255,255,.92)"/><circle cx="38" cy="32" r="2" fill="rgba(255,255,255,.7)"/><circle cx="52" cy="22" r="1.4" fill="rgba(255,255,255,.55)"/><path d="M26 90h68" stroke="rgba(255,255,255,.42)" stroke-width="2" stroke-linecap="round"/><path d="M32 78c9-11 20-11 28 0" stroke="rgba(255,255,255,.3)" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    talk:`<rect x="24" y="30" width="46" height="30" rx="10" fill="rgba(255,255,255,.92)"/><path d="M36 60v9l10-9" fill="rgba(255,255,255,.92)"/><rect x="58" y="54" width="40" height="24" rx="9" fill="rgba(255,255,255,.5)"/><path d="M84 78v7l-8-7" fill="rgba(255,255,255,.5)"/>`,
+    firstaid:`<rect x="47" y="32" width="26" height="56" rx="8" fill="rgba(255,255,255,.9)"/><rect x="34" y="45" width="52" height="26" rx="8" fill="rgba(255,255,255,.9)"/><path d="M20 94h22l6-9 7 14 6-8h39" stroke="rgba(255,255,255,.5)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    checkup:`<rect x="34" y="28" width="52" height="64" rx="10" fill="rgba(255,255,255,.93)"/><rect x="50" y="21" width="20" height="10" rx="4" fill="rgba(255,255,255,.5)"/><path d="M48 52h24M48 64h18" stroke="rgba(0,0,0,.14)" stroke-width="3" stroke-linecap="round"/><path d="M48 78l5 5 9-11" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    report:`<path d="M36 22h34l16 16v60H36Z" fill="rgba(255,255,255,.93)"/><path d="M70 22v16h16" fill="rgba(255,255,255,.55)"/><path d="M48 56h24M48 66h18M48 76h22" stroke="rgba(0,0,0,.13)" stroke-width="3" stroke-linecap="round"/>`,
+    run:`<circle cx="58" cy="34" r="9" fill="rgba(255,255,255,.92)"/><path d="M50 50l14 6 6 16M50 50l-8 14M66 72l10 12" stroke="rgba(255,255,255,.88)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 94h64" stroke="rgba(255,255,255,.28)" stroke-width="2" stroke-linecap="round"/>`
+  }[kind]||'';
+  return `<svg class="scene" viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient>
+      <filter id="${id}b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs>
+    <rect width="120" height="120" fill="url(#${id}g)"/>
+    <circle cx="100" cy="14" r="36" fill="rgba(255,255,255,.20)" filter="url(#${id}b)"/>
+    <circle cx="14" cy="108" r="40" fill="rgba(0,0,0,.18)" filter="url(#${id}b)"/>
+    ${motif}
+  </svg>`;
+}
+const LSCENE=[['sleep','#F7A862','#B9420A'],['talk','#E995B0','#8E2E52'],['firstaid','#F3C463','#A05C0C']];
+const ASCENE=[['checkup','#83B9A6','#2C6350'],['report','#F1A873','#A9470F'],['run','#93ACD9','#2B4A80']];
+function openLecture(i){state.lecture=i;state.view='lecture';render();}
+function openArticle(i){state.article=i;state.view='article';render();}
+function backToDiscover(){state.view='tab';state.tab='discover';render();}
+function enrollLecture(i){
+  if(state.enrolled.has(i)){
+    const aid=state.enrolled.get(i);
+    state.apps=state.apps.filter(x=>x.id!==aid);
+    state.enrolled.delete(i); toast('已取消报名'); render(); return;
+  }
+  const l=LECTURES[i], d=l.d.split(' ');
+  const id='PKUL'+String(Math.floor(Math.random()*9e8+1e8));
+  state.apps.unshift({id,name:l.t,date:d[0],week:d[1]||'周四',time:d[2]||'19:30',org:l.place,status:'已报名',extra:['讲座 · '+l.tag],type:'lecture',lec:i});
+  state.enrolled.set(i,id);
+  toast('报名成功，已加入我的预约'); render();
+}
+function toggleRemind(i){
+  const el=event.currentTarget;
+  if(state.remind.has(i)){state.remind.delete(i);toast('已关闭提醒');}
+  else{state.remind.add(i);toast('已设置开课提醒');}
+  el.classList.toggle('on'); el.querySelector('span').textContent=state.remind.has(i)?'已提醒':'提醒';
+}
+function lectureHTML(){
+  const i=state.lecture||0, l=LECTURES[i], sc=LSCENE[i%3];
+  const on=state.enrolled.has(i);
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="backToDiscover()">${ico('left')}</button><b>讲座详情</b></div>
+    <div class="scroll">
+      <div class="art-hero">
+        <div class="art-img">${scene(sc[0],sc[1],sc[2])}<span class="ttag">${l.tag}</span></div>
+        <h1>${l.t}</h1>
+        <div class="art-meta"><span>${l.d}</span><i>·</i><span>${l.dur}</span><i>·</i><span>${l.n}</span></div>
+      </div>
+      <div class="dcard">
+        <h4>内容安排</h4>
+        ${l.outline.map((o,k)=>`<div class="inc"><i>${k+1}</i><span>${o}</span></div>`).join('')}
+      </div>
+      <div class="dcard">
+        <h4>参与信息</h4>
+        <div class="kv"><span>形式</span><b>${l.tag}</b></div>
+        <div class="kv"><span>地点</span><b>${l.place}</b></div>
+        <div class="kv"><span>时长</span><b>${l.dur}</b></div>
+        <div class="kv"><span>费用</span><b>企业权益支付</b></div>
+      </div>
+      <div class="bnote">${ico('info',13)}<span>报名后可在开课前 24 小时取消；线上场次回看 7 天。</span></div>
+      <div style="height:16px"></div>
+    </div>
+    <div class="dock">
+      <button class="fav ${state.remind.has(i)?'on':''}" onclick="toggleRemind(${i})">${ico('calendar')}<span>${state.remind.has(i)?'已提醒':'提醒'}</span></button>
+      <button class="primary" ${on?'style="background:#EAF7F1;color:#0A7A55;box-shadow:none"':''} onclick="enrollLecture(${i})">${on?'已报名 · 取消报名':'报名参加'}</button>
+    </div>
+  </div>`;
+}
+function toggleArticleFav(i){
+  const b=document.getElementById('favBtn');
+  if(state.artFav.has(i)){state.artFav.delete(i);if(b)b.textContent='收藏';toast('已取消收藏');}
+  else{state.artFav.add(i);if(b)b.textContent='已收藏';toast('已收藏到我的');}
+}
+function articleHTML(){
+  const i=state.article||0, a=ARTICLES[i], sc=ASCENE[i%3];
+  return `<div class="view subview slide-in" style="background:#fff">
+    <div class="subhead"><button class="back" onclick="backToDiscover()">${ico('left')}</button><b>健康科普</b><button class="ext" id="favBtn" onclick="toggleArticleFav(${i})">${state.artFav.has(i)?'已收藏':'收藏'}</button></div>
+    <div class="scroll" style="background:#fff">
+      <div class="art-hero">
+        <div class="art-img tall">${scene(sc[0],sc[1],sc[2])}</div>
+        <h1>${a.t}</h1>
+        <div class="art-meta"><span>${a.m}</span><i>·</i><span>北大医疗 · 企康办</span></div>
+      </div>
+      <div class="art-body">
+        ${a.body.map(p=>`<p>${p}</p>`).join('')}
+      </div>
+      <div class="section-title"><h3>相关服务</h3></div>
+      ${(()=>{const p=prod(a.rel),m=modOf(p.mod);return `<div class="svc" onclick="openProduct('${p.id}')" style="margin-top:0">
+        <div class="svc-ic" style="background:${m.tint};color:${m.ink}">${ico(PICON[p.id]||m.icon)}</div>
+        <div class="svc-b"><b>${p.name}</b><p>${p.intro}</p>
+          <div class="svc-tags"><span class="chip">${p.scope}</span></div></div>
+        <span class="arw" style="align-self:center;color:#C9CDD4">${ico('chev',15)}</span>
+      </div>`})()}
+      <div class="brands"><div>北京大学国际医院</div><i></i><div>企康办</div></div>
+      <div style="height:24px"></div>
+    </div>
+  </div>`;
+}
+function discoverHTML(){
+  return `<div class="view fade-in">
+    <div class="scroll" style="background:#F5F6F8">
+      <div style="background:#fff;padding-bottom:6px">
+        ${statusbar(true)}
+        <div style="display:flex;align-items:center;padding:4px 16px 10px">
+          <h2 style="margin:0;font-size:21px;letter-spacing:-.5px">发现</h2>
+          <button style="margin-left:auto;color:#5E626A" onclick="openSearch()">${ico('search',19)}</button>
+        </div>
+      </div>
+
+      <div class="section-title"><h3>健康讲座</h3><span onclick="toast('本月共 3 场')">本月 3 场</span></div>
+      ${LECTURES.map((l,i)=>`
+        <div class="article" onclick="openLecture(${i})">
+          <div class="thumb">${scene(LSCENE[i][0],LSCENE[i][1],LSCENE[i][2])}<span class="ttag">${l.tag}</span></div>
+          <div class="ab"><b>${l.t}</b><div class="meta">${l.d}<i>|</i>${l.n}</div></div>
+        </div>`).join('')}
+
+      <div class="section-title"><h3>按行业看方案</h3><span onclick="openIndustry()">全部 8 个行业 ${ico('chev',12)}</span></div>
+      ${INDUSTRIES.slice(0,3).map(x=>`
+        <div class="ind">
+          <div class="ind-head"><b>${x.n}</b><span>${x.s}</span></div>
+          <p>${x.pain}</p>
+          <div class="prod">${x.prod.map(p=>`<i>${p}</i>`).join('')}</div>
+        </div>`).join('')}
+
+      <div class="section-title"><h3>健康科普</h3></div>
+      ${ARTICLES.map((a,i)=>`
+        <div class="article" onclick="openArticle(${i})">
+          <div class="thumb">${scene(ASCENE[i%3][0],ASCENE[i%3][1],ASCENE[i%3][2])}</div>
+          <div class="ab"><b>${a.t}</b><div class="meta">${a.m}</div></div>
+        </div>`).join('')}
+      <div style="height:20px"></div>
+    </div>
+  </div>`;
+}
+function openIndustry(){
+  openSheet('八大行业 · 配置案例',`
+    <div style="font-size:12px;color:#7A7F88;line-height:1.65;margin-bottom:12px">以下配置基于共性需求梳理，仅供参考。企康办提供"一企一策"，按人员结构、预算与痛点定制。</div>
+    ${INDUSTRIES.map(x=>`<div style="padding:12px 0;border-bottom:1px solid #F3F4F7">
+      <div style="display:flex;align-items:center;gap:8px"><b style="font-size:13.5px">${x.n}</b><span style="font-size:10.5px;color:#9AA0A8;margin-left:auto">${x.s}</span></div>
+      <div style="font-size:11.5px;color:#7A7F88;line-height:1.6;margin-top:6px">${x.pain}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:8px">${x.prod.map(p=>`<span class="chip grey">${p}</span>`).join('')}</div>
+    </div>`).join('')}`);
+}
+
+/* ---------------- mine ---------------- */
+/* ---------------- search ---------------- */
+function openSearch(){
+  const sv=$('searchview');
+  sv.innerHTML=`
+    <div class="sv-top">
+      <div class="sb">${ico('search',15)}<input id="sq" placeholder="搜索服务、症状或机构" oninput="filterSearch(this.value)" autofocus><button onclick="filterSearch('')" style="color:#B4B9C1">${ico('close',14)}</button></div>
+      <button class="cancel" onclick="closeSearch()">取消</button>
+    </div>
+    <div class="sv-body">
+      ${state.recent.length?`<div class="sv-label">最近搜索</div><div class="recent">${state.recent.map(r=>`<button class="ask-chip" onclick="document.getElementById('sq').value='${r}';filterSearch('${r}')">${r}</button>`).join('')}</div>`:''}
+      <div class="sv-label">热门搜索</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+        ${['体检','胃肠镜','睡眠','血压','心理','急救'].map(k=>`<button class="ask-chip" onclick="document.getElementById('sq').value='${k}';filterSearch('${k}')">${k}</button>`).join('')}
+      </div>
+      <div class="sv-label" id="svcount">全部服务 · ${PRODUCTS.length} 项</div>
+      <div id="sres">${searchRows(PRODUCTS,'')}</div>
+    </div>`;
+  sv.classList.add('on');
+  setTimeout(()=>{const i=$('sq'); if(i)i.focus();},260);
+}
+function searchRows(list,q){
+  if(!list.length)return '<div class="empty">没有找到相关服务，试试"体检"或"心理"</div>';
+  return list.map(p=>`<div class="sv-row" onclick="fromSearch('${p.id}')">
+    <div class="si">${ico(modOf(p.mod).icon)}</div>
+    <div><div>${hi(p.name,q)}</div><div style="font-size:10.5px;color:#B4B9C1;margin-top:2px">${modOf(p.mod).name} · ${p.scope}</div></div>
+    <span>${p.tags[0]}</span>
+  </div>`).join('');
+}
+function hi(t,q){
+  if(!q)return t;
+  const i=t.toLowerCase().indexOf(q.toLowerCase());
+  if(i<0)return t;
+  return t.slice(0,i)+'<mark>'+t.slice(i,i+q.length)+'</mark>'+t.slice(i+q.length);
+}
+function fromSearch(id){
+  const nm=prod(id).name;
+  state.recent=[nm,...state.recent.filter(x=>x!==nm)].slice(0,4);
+  closeSearch(); openProduct(id);
+}
+function filterSearch(q){
+  q=(q||'').trim().toLowerCase();
+  const list=!q?PRODUCTS:PRODUCTS.filter(p=>(p.name+p.intro+p.tags.join('')+modOf(p.mod).name).toLowerCase().includes(q));
+  $('sres').innerHTML=searchRows(list,q);
+  const c=$('svcount'); if(c)c.textContent=q?('搜索结果 · '+list.length+' 项'):('全部服务 · '+PRODUCTS.length+' 项');
+}
+function closeSearch(){$('searchview').classList.remove('on');}
+
+/* ---------------- QA ---------------- */
+const CONCERNS=[
+ {k:'sleep',label:'睡不好 / 打鼾 / 白天困',rec:['sleep','risk-report','fivehigh'],tip:'睡眠问题常与体重、血压互相影响，建议先做一次客观评估。'},
+ {k:'bp',label:'血压 / 血脂 / 血糖偏高',rec:['fivehigh','heart','tcm'],tip:'代谢指标异常越早干预，用药时间点越可能往后推。'},
+ {k:'weight',label:'体重超标 / 脂肪肝',rec:['weight','fivehigh','cpet'],tip:'医学减重比自行节食更关注肌肉量与代谢指标。'},
+ {k:'pain',label:'颈肩腰腿痛 / 久坐僵硬',rec:['tcm','rehab','onsite'],tip:'先明确是肌肉劳损还是结构问题，再决定理疗或康复训练。'},
+ {k:'mood',label:'情绪压力 / 焦虑失眠',rec:['eap','lecture','fivegood'],tip:'EAP 咨询全程保密，不进入企业人事记录。'},
+ {k:'report',label:'体检报告看不懂',rec:['risk-report','risk-survey','second'],tip:'先把异常项按风险排序，再决定复查与就诊顺序。'}
+];
+function openQA(){state.qa={step:1,concern:null,age:null};renderQA();$('qawrap').classList.add('on');}
+function closeQA(){$('qawrap').classList.remove('on');}
+function renderQA(){
+  const q=state.qa, panel=$('qapanel');
+  if(q.step===1){
+    panel.innerHTML=`
+      <div class="qh"><div class="ai">Ai</div><b>深度问答</b><button style="margin-left:auto;color:#B4B9C1" onclick="closeQA()">${ico('close',18)}</button></div>
+      <div class="qs">为了更好地帮您匹配服务，先了解一下：<br><b style="color:#191A1C">最近最想解决的健康问题是什么？</b></div>
+      ${CONCERNS.map((c,i)=>`<div class="qopt ${q.concern===i?'on':''}" onclick="qaPick(${i})">${c.label}<span class="r"></span></div>`).join('')}
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;margin-top:12px">演示环境，不会上传任何健康信息</div>`;
+  }else if(q.step===2){
+    panel.innerHTML=`
+      <div class="qh"><div class="ai">Ai</div><b>深度问答</b><button style="margin-left:auto;color:#B4B9C1" onclick="closeQA()">${ico('close',18)}</button></div>
+      <div class="qs">了解。您的年龄段是？<br><span style="color:#9AA0A8;font-size:12px">不同年龄段的筛查重点不同</span></div>
+      ${['25–34 岁','35–44 岁','45–54 岁','55 岁以上'].map((a,i)=>`<div class="qopt ${q.age===i?'on':''}" onclick="qaAge(${i})">${a}<span class="r"></span></div>`).join('')}
+      <button style="width:100%;height:44px;border-radius:13px;background:#F4F5F7;color:#5E626A;font-size:13px;margin-top:6px" onclick="qaStep(1)">上一步</button>`;
+  }else{
+    const c=CONCERNS[q.concern]||CONCERNS[0];
+    panel.innerHTML=`
+      <div class="qh"><div class="ai">Ai</div><b>推荐方案</b><button style="margin-left:auto;color:#B4B9C1" onclick="closeQA()">${ico('close',18)}</button></div>
+      <div class="qres">
+        <div class="rt">根据「${c.label}」${q.age!=null?' · '+['25–34 岁','35–44 岁','45–54 岁','55 岁以上'][q.age]:''}</div>
+        <b>建议先从 1 项核心服务开始</b>
+        <p>${c.tip}</p>
+      </div>
+      ${c.rec.map((id,i)=>{const p=prod(id);return `<div class="qprod" style="animation:cardIn .42s cubic-bezier(.22,.9,.3,1) ${0.04+i*0.06}s both" onclick="closeQA();openProduct('${id}')">
+        <div class="qi">${ico(i===0?'sparkle':modOf(p.mod).icon)}</div>
+        <div><b>${i===0?'首选 · ':''}${p.name}</b><span>${p.scope} · ${p.tags.join(' · ')}</span></div>
+        <span class="ar">${ico('chev',14)}</span>
+      </div>`}).join('')}
+      <button style="width:100%;height:46px;border-radius:14px;background:linear-gradient(135deg,#FF8A3D,#F5520A);color:#fff;font-size:14px;font-weight:600;margin-top:4px" onclick="closeQA();goTab('products')">查看全部职工权益</button>
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;margin-top:12px">AI 建议仅供参考，具体方案由医生与健康管家确认</div>`;
+  }
+}
+function qaPick(i){state.qa.concern=i;qaStep(2);}
+function qaAge(i){state.qa.age=i;qaStep(3);}
+function qaStep(s){state.qa.step=s;renderQA();}
+
+/* ---------------- misc ---------------- */
+let toastTimer=null;
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('on'),1900);
+}
+function openSheet(title,body){
+  $('sheetTitle').textContent=title;
+  $('sheetBody').innerHTML=body;
+  $('sheet').classList.add('on'); $('backdrop').classList.add('on');
+}
+function closeSheet(){$('sheet').classList.remove('on'); $('backdrop').classList.remove('on');}
+$('backdrop').addEventListener('click',closeSheet);
+function unreadCount(){ return state.msgs.filter(m=>!m.read).length; }
+function openMessages(){ state.view='messages'; render(); }
+function openMsg(id){
+  const m=state.msgs.find(x=>x.id===id); if(!m)return;
+  m.read=true;
+  const [k,v]=m.go.split(':');
+  if(k==='archive'){ render(); openArchive(v); }
+  else if(k==='apps'){ render(); openApps(); }
+  else if(k==='product'){ render(); openProduct(v); }
+  else if(k==='quota'){ render(); openQuota(); }
+  else { goTab('discover'); }
+}
+function readAllMsgs(){
+  state.msgs.forEach(m=>m.read=true);
+  toast('全部消息已标记为已读'); render();
+}
+function messagesHTML(){
+  const un=unreadCount();
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>消息中心</b><button class="ext" onclick="readAllMsgs()">全部已读</button></div>
+    <div class="scroll">
+      <div class="section-title" style="margin-top:8px"><h3>全部消息</h3><span>${un?un+' 条未读':'已全部读完'}</span></div>
+      <div class="msgcard">
+        ${state.msgs.map(m=>`<div class="msgrow ${m.read?'':'unread'}" onclick="openMsg('${m.id}')">
+          <div class="mico" style="background:${m.read?'#F4F5F7':'#FFF3E9'};color:${m.read?'#8A8F98':'#E4520A'}">${ico(m.ic,17)}</div>
+          <div class="mtx">
+            <b>${m.title}${m.read?'':'<i class="udot"></i>'}</b>
+            <span>${m.desc}</span>
+          </div>
+          <div class="mtime">${m.time}</div>
+        </div>`).join('')}
+      </div>
+      <div style="text-align:center;font-size:10.5px;color:#B4B9C1;padding:18px 0">仅展示近 6 个月消息</div>
+    </div>
+  </div>`;
+}
+function toggleSw(el){el.classList.toggle('on');}
+function openSettings(){
+  openSheet('设置', `
+    ${[['消息提醒','服务进度与讲座提醒'],['服务回访电话','健康管家电话确认'],['个性化推荐','按体检数据推荐服务']].map((r,i)=>`
+      <div class="srow"><div style="flex:1"><b>${r[0]}</b><div style="font-size:11px;color:#9AA0A8;margin-top:3px">${r[1]}</div></div>
+      <button class="sw ${i===2?'':'on'}" onclick="toggleSw(this)"><i></i></button></div>`).join('')}
+    <div class="srow" onclick="closeSheet();openPrivacy()"><div style="flex:1"><b>隐私与授权</b></div><span class="st2">${ico('chev',13)}</span></div>
+    <div class="srow" onclick="toast('当前已是最新版本')"><div style="flex:1"><b>版本</b></div><span class="st2">v1.0</span></div>
+    <button class="primary" style="margin-top:16px" onclick="closeSheet()">完成</button>`);
+}
+function openFamily(){
+  openSheet('家庭成员', `
+    <div style="font-size:11.5px;color:#9AA0A8;line-height:1.7;margin-bottom:6px">添加家庭成员后，可代家人预约部分服务（心理咨询、体检加项）。</div>
+    ${[['王建国','父亲 · 62 岁','已授权'],['李慧','母亲 · 59 岁','已授权']].map(r=>`
+      <div class="srow"><i style="background:#FFF3E9;color:#E4520A">${ico('user',16)}</i>
+        <div style="flex:1"><b>${r[0]}</b><div style="font-size:11px;color:#9AA0A8;margin-top:3px">${r[1]}</div></div>
+        <span class="st2">${r[2]}</span></div>`).join('')}
+    <button class="primary" style="margin-top:16px;background:#F4F5F7;color:#4A4E55;box-shadow:none" onclick="toast('演示：填写成员信息后可授权')">+ 添加成员</button>`);
+}
+function openContact(){
+  openSheet('联系健康管家', `
+    <div style="text-align:center;padding:6px 0 14px">
+      <div style="font-size:11px;color:#9AA0A8">企业健康服务热线</div>
+      <div style="font-size:26px;font-weight:800;letter-spacing:-.5px;margin-top:6px">400-820-8866</div>
+      <div style="font-size:11px;color:#9AA0A8;margin-top:6px">工作日 09:00–18:00 · 紧急就医 7×24</div>
+    </div>
+    <div class="srow" onclick="toast('正在呼叫 400-820-8866')"><i style="background:#E9F7F1;color:#0A7A55">${ico('phone',16)}</i><div style="flex:1"><b>电话咨询</b></div><span class="st2">${ico('chev',13)}</span></div>
+    <div class="srow" onclick="closeSheet();openQA()"><i style="background:#FFF3E9;color:#F5520A">${ico('chat',16)}</i><div style="flex:1"><b>在线问小安</b></div><span class="st2">${ico('chev',13)}</span></div>
+    <div class="srow" onclick="closeSheet();openMessages()"><i style="background:#EDF3FF;color:#1F4FD1">${ico('bell',16)}</i><div style="flex:1"><b>留言给健康管家</b></div><span class="st2">${ico('chev',13)}</span></div>`);
+}
+function openAbout(){
+  openSheet('关于企业健康服务', `
+    <div style="font-size:12.5px;line-height:1.8;color:#4A4E55">
+      北大医疗集团企业健康管理（企康办）为企业提供职工医疗健康管理系列产品，覆盖健康筛查、慢病管理、就医服务、特色服务与应急保障五大类，支持全国履约与属地到院履约。
+    </div>
+    <div style="margin-top:12px;font-size:11.5px;color:#9AA0A8;line-height:1.8">
+      本页面为产品演示，服务内容、价格与履约范围以企业实际采购协议为准。
+    </div>
+    <div class="brands" style="padding:16px 0 4px"><div>北京大学国际医院</div><i></i><div>北大医疗康复医院</div><i></i><div>企康办</div></div>`);
+}
+function openPrivacy(){
+  openSheet('隐私与授权', `
+    <div style="font-size:12.5px;line-height:1.8;color:#4A4E55">
+      健康信息属于敏感个人信息，仅用于本人健康管理与服务履约。企业侧仅可查看脱敏汇总数据，无法查看个人诊断与咨询内容。
+    </div>
+    <div style="margin-top:12px">
+      ${['健康数据使用范围','第三方服务机构共享清单','撤回授权与注销'].map(t=>`<div class="srow" onclick="toast('演示页面')"><div style="flex:1"><b>${t}</b></div><span class="st2">${ico('chev',13)}</span></div>`).join('')}
+    </div>`);
+}
+function openArchive(k){
+  if(k==='exam'){
+    openSheet('2026 年度体检报告', `
+      <div style="font-size:11.5px;color:#9AA0A8;margin-bottom:10px">北京大学国际医院 · 10-12 出具 · 6 项需关注</div>
+      ${[['低密度脂蛋白','4.12 mmol/L','偏高'],['空腹血糖','6.3 mmol/L','偏高'],['尿酸','452 μmol/L','偏高'],['肺结节','4mm 磨玻璃','随访'],['脂肪肝','轻度','关注'],['血压','138/88 mmHg','偏高']].map(r=>`
+        <div class="srow"><div style="flex:1"><b>${r[0]}</b></div><span style="font-size:12px;color:#191A1C;margin-right:10px">${r[1]}</span>
+        <span class="st" style="background:#FFF3E9;color:#E4520A">${r[2]}</span></div>`).join('')}
+      <button class="primary" style="margin-top:16px" onclick="closeSheet();openProduct('risk-report')">预约报告解读</button>`);
+  }else if(k==='chronic'){
+    openSheet('五高趋势', `
+      <div style="font-size:11.5px;color:#9AA0A8;margin-bottom:10px">近 12 次记录 · 最近更新 10-24</div>
+      ${[['血压','138/88','偏高'],['空腹血糖','6.3','偏高'],['总胆固醇','5.4','临界'],['尿酸','452','偏高'],['体重','72.4kg','稳定']].map(r=>`
+        <div class="srow"><div style="flex:1"><b>${r[0]}</b></div><span style="font-size:12px;margin-right:10px">${r[1]}</span><span class="st" style="background:#FFF3E9;color:#E4520A">${r[2]}</span></div>`).join('')}
+      <button class="primary" style="margin-top:16px" onclick="closeSheet();openProduct('fivehigh')">加入五高一重管理</button>`);
+  }else{
+    openSheet('心理测评', `
+      <div style="font-size:11.5px;color:#9AA0A8;margin-bottom:10px">PHQ-9 / GAD-7 · 10-20 完成</div>
+      <div class="srow"><div style="flex:1"><b>压力水平</b></div><span class="st" style="background:#FDEEF4;color:#BE2A5E">中度</span></div>
+      <div class="srow"><div style="flex:1"><b>睡眠质量</b></div><span class="st" style="background:#FFF3E9;color:#E4520A">偏差</span></div>
+      <div class="srow"><div style="flex:1"><b>情绪状态</b></div><span class="st" style="background:#E9F7F1;color:#0A7E57">良好</span></div>
+      <div style="font-size:11.5px;color:#9AA0A8;line-height:1.7;margin-top:10px">建议预约一次 1v1 心理咨询，咨询内容不进入企业记录。</div>
+      <button class="primary" style="margin-top:14px" onclick="closeSheet();openProduct('eap')">预约心理咨询</button>`);
+  }
+}
+function goTab(id){
+  state.tab=id; state.view='tab'; state.filter=state.filter||'';
+  closeSearch(); closeQA(); render();
+}
+function renderTabbar(){
+  const tb=$('tabbar');
+  if(state.view!=='tab'){tb.classList.add('hide');return;}
+  tb.classList.remove('hide');
+  tb.innerHTML=TABS.map(t=>`<button class="tab ${state.tab===t.id?'on':''} ${t.ai?'ai':''}" onclick="goTab('${t.id}')">
+    ${t.ai?'<div class="aiball">Ai</div>':ico(t.icon)}<span>${t.label}</span>
+  </button>`).join('');
+}
+const VIEWS={home:homeHTML,products:productsHTML,discover:discoverHTML,mine:mineHTML};
+let bannerTimer=null;
+function startBanner(){
+  clearInterval(bannerTimer);
+  let i=0;
+  bannerTimer=setInterval(()=>{
+    const slides=document.querySelectorAll('.bslide'), dots=document.querySelectorAll('.bdots i');
+    if(!slides.length){clearInterval(bannerTimer);return;}
+    i=(i+1)%slides.length;
+    slides.forEach((s,n)=>s.classList.toggle('on',n===i));
+    dots.forEach((d,n)=>d.classList.toggle('on',n===i));
+  },3800);
+}
+function mount(){
+  const sc=document.querySelector('.scroll');
+  const mini=document.getElementById('miniBar'), dn=document.getElementById('dnavFixed');
+  if(sc&&(mini||dn)){
+    sc.addEventListener('scroll',()=>{
+      const y=sc.scrollTop;
+      if(mini)mini.classList.toggle('on',y>112);
+      if(dn)dn.classList.toggle('on',y>96);
+    },{passive:true});
+  }
+  document.querySelectorAll('.q-bar i[data-w]').forEach(el=>{
+    el.style.width='0';
+    setTimeout(()=>{el.style.width=el.dataset.w;},80);
+  });
+}
+function render(){
+  const root=$('root');
+  if(state.view==='tab'){root.innerHTML=VIEWS[state.tab]();}
+  else if(state.view==='detail'){root.innerHTML=detailHTML(prod(state.product));}
+  else if(state.view==='booking'){root.innerHTML=bookingHTML();}
+  else if(state.view==='lecture'){root.innerHTML=lectureHTML();}
+  else if(state.view==='article'){root.innerHTML=articleHTML();}
+  else if(state.view==='apps'){root.innerHTML=appsHTML();}
+  else if(state.view==='messages'){root.innerHTML=messagesHTML();}
+  else if(state.view==='quota'){root.innerHTML=quotaHTML();}
+  else if(state.view==='success'){root.innerHTML=successHTML();}
+  renderTabbar();
+  const sc=document.querySelector('.scroll'); if(sc)sc.scrollTop=0;
+  if(state.view==='tab'&&state.tab==='home')startBanner(); else clearInterval(bannerTimer);
+  mount();
+}
+render();
+
+</script>
+</body>
+</html>
