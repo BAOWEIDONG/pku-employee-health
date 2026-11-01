@@ -810,6 +810,19 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .up{font-size:14px;font-weight:700;color:#191A1C;font-variant-numeric:tabular-nums;flex:0 0 auto}
 .up.zero{font-size:11px;color:#0E9F6E;font-weight:600}
 .usum{text-align:center;font-size:11px;color:#9AA0A8;padding:14px 0 0}
+
+/* industry detail */
+.ind-hero{position:relative;padding:20px 18px 24px;color:#fff;border-radius:0 0 24px 24px;margin-bottom:2px;overflow:hidden}
+.ind-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.18)}
+.ind-hero .ind-tag{font-size:10px;padding:3px 8px;border-radius:7px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.3)}
+.ind-hero h1{margin:12px 0 0;font-size:23px;letter-spacing:-.5px;position:relative;z-index:2}
+.ind-hero p{margin:7px 0 0;font-size:11.5px;color:rgba(255,255,255,.82);position:relative;z-index:2}
+.irow{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #F6F7F9}
+.irow:last-child{border-bottom:none}
+.iico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto}
+.itx{flex:1;min-width:0}
+.itx b{font-size:13px;display:block;letter-spacing:-.2px}
+.itx span{display:block;font-size:10.5px;color:#9AA0A8;margin-top:2px}
 </style>
 </head>
 <body>
@@ -1019,14 +1032,30 @@ const PRODUCTS=[
   orgs:['北大医疗急救保障团队']}
 ];
 const INDUSTRIES=[
- {n:'互联网 / IT科技',s:'中大型 500人+',pain:'长期熬夜、久坐、高压；颈肩腰腿痛与睡眠障碍高发，心源性猝死风险不容忽视。',prod:['多导睡眠监测','心肺运动筛查','EAP心理咨询','减重训练营','云诊医务室']},
- {n:'金融 / 银行 / 证券',s:'中大型 1000人+',pain:'高管及业务骨干心血管风险高，对就医体验、隐私与稀缺医疗资源要求高。',prod:['住院体检','重疾筛查','职工就医快通','EAP心理咨询','医旅康养']},
- {n:'制造业 / 工厂',s:'大型 2000人+',pain:'一线员工健康意识薄弱，存在粉尘 / 噪声等职业伤害，工伤与突发疾病影响生产连续性。',prod:['职业病筛查','职场急救培训','环境消杀','企业医务室','检后管理']},
- {n:'物流 / 快递 / 外卖',s:'大型 5000人+',pain:'作息极不规律、高强度体力劳动，腰椎颈椎劳损；人员分散，突发疾病与交通事故风险高。',prod:['中医康复指导','远程居家康复','EAP心理咨询','云门诊','云诊医务室']},
- {n:'教育 / 高校 / 科研',s:'中型 300人+',pain:'长期伏案导致颈椎腰椎问题，升学与科研考核带来精神压力，亚健康普遍。',prod:['中医康复指导','五高一重管理','EAP心理咨询','定制化健康讲座','五好生活']},
- {n:'能源 / 化工 / 矿业',s:'大型 1000人+',pain:'高危作业环境，接触有毒有害物质；对现场应急救援响应速度与合规审查要求极高。',prod:['心肺运动筛查','职场急救培训','职工就医快通','风险前筛','EAP心理咨询']},
- {n:'建筑 / 工程施工',s:'中大型 1000人+',pain:'户外高强度作业，流动性大；夏季中暑、冬季心脑血管突发疾病风险高，就医不便。',prod:['心肺运动筛查','职场急救培训','职工就医快通','风险前筛','EAP心理咨询']},
- {n:'大型国企央企 / 政府机构',s:'中大型 500人+',pain:'员工年龄结构偏大，离退休职工多；"三高"等慢病多发，福利发放合规性要求极严。',prod:['五高一重管理','检后管理','定制化健康讲座','健康小屋','医旅康养']}
+ {n:'互联网 / IT科技',s:'中大型 500人+',pain:'长期熬夜、久坐、高压；颈肩腰腿痛与睡眠障碍高发，心源性猝死风险不容忽视。',
+  prod:['多导睡眠监测','心肺运动筛查','EAP心理咨询','减重训练营','云诊医务室'],pids:['sleep','cpet','eap','weight','clinic'],
+  value:'筛查"隐形杀手"（如 OSAS），缓解职场焦虑，降低核心人才流失率。',payer:['职工福利费','工会经费','企康']},
+ {n:'金融 / 银行 / 证券',s:'中大型 1000人+',pain:'高管及业务骨干心血管风险高，对就医体验、隐私与稀缺医疗资源要求高。',
+  prod:['住院体检','重疾筛查','职工就医快通','EAP心理咨询','医旅康养'],pids:['inpatient','cancer','fast','eap','travel'],
+  value:'提供尊享、私密的健康管理与就医协助，降低高管突发健康风险，体现企业关怀。',payer:['职工福利费','工会经费','商保','企康']},
+ {n:'制造业 / 工厂',s:'大型 2000人+',pain:'一线员工健康意识薄弱，存在粉尘 / 噪声等职业伤害，工伤与突发疾病影响生产连续性。',
+  prod:['职业病筛查','职场急救培训','环境消杀','企业医务室','检后管理'],pids:['occupational','firstaid','env','clinic','risk-report'],
+  value:'满足国家安全与职业病防治合规要求，把医疗服务下沉至厂区，降低工伤及职业病赔付率。',payer:['企业安全生产费','职工福利费','企康']},
+ {n:'物流 / 快递 / 外卖',s:'大型 5000人+',pain:'作息极不规律、高强度体力劳动，腰椎颈椎劳损；人员分散，突发疾病与交通事故风险高。',
+  prod:['中医康复指导','远程居家康复','EAP心理咨询','云门诊','云诊医务室'],pids:['tcm','rehab','eap','cloud','clinic'],
+  value:'依托"全国履约"网络，解决异地、分散网点员工的健康干预难题，降低突发用工风险。',payer:['职工福利费','工会经费','企康']},
+ {n:'教育 / 高校 / 科研',s:'中型 300人+',pain:'长期伏案导致颈椎腰椎问题，升学与科研考核带来精神压力，亚健康普遍。',
+  prod:['中医康复指导','五高一重管理','EAP心理咨询','定制化健康讲座','五好生活'],pids:['tcm','fivehigh','eap','lecture','fivegood'],
+  value:'针对性缓解教职工"职业病"，通过心理疏导与五好生活提升教学、科研专注度与生活质量。',payer:['工会经费','职工福利费','企康']},
+ {n:'能源 / 化工 / 矿业',s:'大型 1000人+',pain:'高危作业环境，接触有毒有害物质；对现场应急救援响应速度与国家合规审查要求极高。',
+  prod:['心肺运动筛查','职场急救培训','职工就医快通','风险前筛','EAP心理咨询'],pids:['cpet','firstaid','fast','risk-survey','eap'],
+  value:'强化项目现场安全风控，确保突发医疗事件得到最快响应，保障工程项目顺利推进。',payer:['企业安全生产费','职工福利费','企康']},
+ {n:'建筑 / 工程施工',s:'中大型 1000人+',pain:'户外高强度作业，流动性大；夏季中暑、冬季心脑血管突发疾病风险高，就医不便。',
+  prod:['心肺运动筛查','职场急救培训','职工就医快通','风险前筛','EAP心理咨询'],pids:['cpet','firstaid','fast','risk-survey','eap'],
+  value:'强化项目现场安全风控，保证突发医疗事件及时响应，保障工程顺利推进。',payer:['企业安全生产费','工会经费','企康']},
+ {n:'大型国企央企 / 政府机构',s:'中大型 500人+',pain:'员工年龄结构偏大，离退休职工多；"三高"等慢病多发，福利发放合规性要求极严。',
+  prod:['五高一重管理','检后管理','定制化健康讲座','健康小屋','医旅康养'],pids:['fivehigh','risk-report','lecture','clinic','travel'],
+  value:'严格合规使用工会经费，将普惠性健康服务落到实处，提升在职及退休职工获得感与组织凝聚力。',payer:['工会经费','职工福利费','企康']}
 ];
 const LECTURES=[
  {t:'久坐人群的颈腰自救：3 个动作缓解僵硬',d:'11-06 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（可回看 7 天）',dur:'60 分钟',
@@ -1059,7 +1088,7 @@ const state={
   view:'tab', tab:'home', product:null, from:'home',
   sel:new Set(), favs:new Set(), enrolled:new Map(), lecture:0, article:0, signed:false,
   openMods:new Set(['screen']), pq:'', appFilter:'all', lastCode:'',
-  remind:new Set(), artFav:new Set(),
+  remind:new Set(), artFav:new Set(), industry:0,
   msgs:[
     {id:'m1',ic:'doc',title:'体检报告已生成',desc:'2026 年度体检报告已出，6 项指标需关注',time:'10-12',read:false,go:"archive:exam"},
     {id:'m2',ic:'calendar',title:'随访提醒',desc:'明天 09:30 健康管家张医生电话随访',time:'10-25',read:false,go:"apps"},
@@ -1772,8 +1801,8 @@ function discoverHTML(){
         </div>`).join('')}
 
       <div class="section-title"><h3>按行业看方案</h3><span onclick="openIndustry()">全部 8 个行业 ${ico('chev',12)}</span></div>
-      ${INDUSTRIES.slice(0,3).map(x=>`
-        <div class="ind">
+      ${INDUSTRIES.slice(0,3).map((x,i)=>`
+        <div class="ind" onclick="openIndustryAt(${i})">
           <div class="ind-head"><b>${x.n}</b><span>${x.s}</span></div>
           <p>${x.pain}</p>
           <div class="prod">${x.prod.map(p=>`<i>${p}</i>`).join('')}</div>
@@ -1789,10 +1818,54 @@ function discoverHTML(){
     </div>
   </div>`;
 }
+function openIndustryAt(i){state.industry=i;state.view='industry';render();}
+function industryHTML(){
+  const i=state.industry||0, x=INDUSTRIES[i];
+  const tints=[['#F7A862','#B9420A'],['#E995B0','#8E2E52'],['#F3C463','#A05C0C'],['#8FB8D9','#2C5A80'],['#83B9A6','#2C6350'],['#F1A873','#A9470F'],['#93ACD9','#2B4A80'],['#B79AD9','#5A3A86']][i%8];
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="backToDiscover()">${ico('left')}</button><b>行业方案</b></div>
+    <div class="scroll">
+      <div class="ind-hero" style="background:linear-gradient(150deg,${tints[0]},${tints[1]})">
+        <span class="ind-tag">按行业看方案</span>
+        <h1>${x.n}</h1>
+        <p>${x.s} · 匹配 ${x.prod.length} 项服务</p>
+      </div>
+
+      <div class="dcard">
+        <h4>核心痛点</h4>
+        <div style="font-size:13px;color:#3C4048;line-height:1.8">${x.pain}</div>
+      </div>
+
+      <div class="dcard">
+        <h4>匹配服务</h4>
+        ${x.pids.map((pid,k)=>{const p=prod(pid),m=modOf(p.mod);return `<div class="irow" onclick="openProduct('${pid}')">
+          <div class="iico" style="background:${m.tint};color:${m.ink}">${ico(PICON[pid]||m.icon,18)}</div>
+          <div class="itx"><b>${p.name}</b><span>${p.scope} · ${p.tags[0]}</span></div>
+          <span class="arw">${ico('chev',14)}</span>
+        </div>`}).join('')}
+      </div>
+
+      <div class="dcard">
+        <h4>核心价值</h4>
+        <div style="font-size:12.5px;color:#4A4E55;line-height:1.8">${x.value}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px">
+          ${x.payer.map(t=>`<span class="chip">${t}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="bnote">${ico('info',13)}<span>以上配置基于共性需求梳理，仅供参考。企康办提供"一企一策"，按人员结构与预算定制。</span></div>
+      <div style="height:16px"></div>
+    </div>
+    <div class="dock">
+      <button class="fav" onclick="toast('已收藏该行业方案')">${ico('star')}<span>收藏</span></button>
+      <button class="primary" onclick="openContact()">获取企业方案</button>
+    </div>
+  </div>`;
+}
 function openIndustry(){
   openSheet('八大行业 · 配置案例',`
     <div style="font-size:12px;color:#7A7F88;line-height:1.65;margin-bottom:12px">以下配置基于共性需求梳理，仅供参考。企康办提供"一企一策"，按人员结构、预算与痛点定制。</div>
-    ${INDUSTRIES.map(x=>`<div style="padding:12px 0;border-bottom:1px solid #F3F4F7">
+    ${INDUSTRIES.map((x,i)=>`<div style="padding:12px 0;border-bottom:1px solid #F3F4F7" onclick="closeSheet();openIndustryAt(${i})">
       <div style="display:flex;align-items:center;gap:8px"><b style="font-size:13.5px">${x.n}</b><span style="font-size:10.5px;color:#9AA0A8;margin-left:auto">${x.s}</span></div>
       <div style="font-size:11.5px;color:#7A7F88;line-height:1.6;margin-top:6px">${x.pain}</div>
       <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:8px">${x.prod.map(p=>`<span class="chip grey">${p}</span>`).join('')}</div>
@@ -2066,6 +2139,7 @@ function render(){
   else if(state.view==='apps'){root.innerHTML=appsHTML();}
   else if(state.view==='messages'){root.innerHTML=messagesHTML();}
   else if(state.view==='quota'){root.innerHTML=quotaHTML();}
+  else if(state.view==='industry'){root.innerHTML=industryHTML();}
   else if(state.view==='success'){root.innerHTML=successHTML();}
   renderTabbar();
   const sc=document.querySelector('.scroll'); if(sc)sc.scrollTop=0;
