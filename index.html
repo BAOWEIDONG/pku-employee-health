@@ -692,7 +692,7 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .bal-foot b{font-size:12.5px;display:block;font-variant-numeric:tabular-nums;letter-spacing:-.2px}
 .bal-foot span{font-size:10px;color:#9AA0A8;display:block;margin-top:2px}
 
-.appt{margin:9px 14px 0;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.appt{width:calc(100% - 28px);margin:9px auto 0;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;box-sizing:border-box}
 .appt.cancel{opacity:.7}
 .ap-top{display:flex;gap:12px;padding:14px 14px 12px;align-items:flex-start}
 .ap-date{width:58px;flex:0 0 auto;text-align:center;border-right:1px solid #F2F3F6;padding-right:10px}
@@ -702,11 +702,11 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .ap-tx b{font-size:13.5px;display:block;line-height:1.35;letter-spacing:-.2px}
 .ap-tx p{margin:3px 0 0;font-size:11px;color:#9AA0A8}
 .ap-tag{display:inline-block;margin:6px 4px 0 0;font-size:10px;color:#6E737B;background:#F5F6F8;padding:2px 7px;border-radius:5px}
-.appt .st{flex:0 0 auto;font-size:10px;padding:3px 7px;border-radius:6px;background:#E9F7F1;color:#0E9F6E;white-space:nowrap;align-self:flex-start}
+.appt .st{flex:0 0 auto;min-width:54px;text-align:center;font-size:10px;padding:3px 7px;border-radius:6px;background:#E9F7F1;color:#0E9F6E;white-space:nowrap;align-self:flex-start}
 .appt .st.done{background:#F3F4F6;color:#8A8F98}
 .appt .st.cancel{background:#F3F4F6;color:#9AA0A8}
 .ap-act{display:flex;gap:9px;padding:0 14px 13px;justify-content:flex-end}
-.ap-act button{font-size:11.5px;padding:6px 12px;border-radius:9px;background:#F5F6F8;color:#5E626A;font-weight:500}
+.ap-act button{min-width:78px;text-align:center;font-size:11.5px;padding:6px 12px;border-radius:9px;background:#F5F6F8;color:#5E626A;font-weight:500}
 .ap-act button:first-child{background:#FFF3E9;color:#E4520A}
 .scene{width:100%;height:100%;display:block}
 .article .thumb{position:relative;overflow:hidden;border-radius:13px}
@@ -885,6 +885,18 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .ci-tx p{margin:4px 0 0;font-size:11px;color:#9AA0A8;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ci-tags{display:flex;gap:6px;margin-top:7px}
 .ci-tags span{font-size:10px;color:#6E737B;background:#F5F6F8;padding:2px 7px;border-radius:5px}
+
+/* accordion header image */
+.acc-h{position:relative;overflow:hidden;min-height:106px;align-items:center;padding:16px;color:#fff}
+.acc-bg{position:absolute;inset:0;z-index:0}
+.acc-bg svg{width:100%;height:100%;display:block}
+.acc-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,10,12,.42),rgba(10,10,12,.06))}
+.acc-h .mod-ico{position:relative;z-index:2;background:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(4px)}
+.acc-h .acc-t{position:relative;z-index:2}
+.acc-h .acc-t b{color:#fff;font-size:16px}
+.acc-h .acc-t span{color:rgba(255,255,255,.82)}
+.acc-h .acc-ar{position:relative;z-index:2;color:#fff}
+.acc.on .acc-h{border-radius:18px 18px 0 0}
 </style>
 </head>
 <body>
@@ -1036,7 +1048,7 @@ const PRODUCTS=[
  {id:'fivehigh',mod:'chronic',name:'五高一重管理服务',en:'Management Service for Five Highs and One Heavy',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['年度管理','红黄绿分层'],
   intro:'围绕血压、血脂、血糖、尿酸、同型半胱氨酸与体重，建档分层、线上线下干预、异常三级响应与转诊。',
   includes:['入组评估：体检初筛 + 血压血糖、体成分、肝弹性检测','建档分层：红 / 黄 / 蓝三级风险，年度干预方案','线上打卡 + 专属社群（营养师 + 运动康复师 + 责任医生）','季度复测与阶段复盘，异常直通院内专科'],
-  suit:'体检提示血压、血糖、血脂、尿酸、体重异常或同型半胱氨酸升高，尚未系统管理的人群。',
+  suit:'体检提示血压、血糖、血脂、尿酸、体重异常或同型半胱氨酸升高，尚未系统管理的人群；其中体重明显超标者，可叠加“减重训练营”做 90 天强化。',
   duration:'12 个月',resp:'24 小时内响应',
   notice:['入组需提供近 6 个月体检报告','降脂、降糖等处方调整须由医生面诊后执行','出现胸痛、意识改变等急症请立即拨打 120'],
   flow:['入组评估','建档分层','周期干预','复评调优'],
@@ -1404,6 +1416,19 @@ window.addEventListener('orientationchange',()=>setTimeout(fitViewport,120));
 if(window.visualViewport)window.visualViewport.addEventListener('resize',fitViewport);
 
 /* ---------------- products (search + accordion) ---------------- */
+const MSCENE={screen:['#F2A063','#9C3408'],chronic:['#4FAE8C','#07503B'],medical:['#6D9ADF','#1D3A75'],special:['#DE87A3','#7A2545'],safety:['#DFB45C','#734505']};
+function modArt(id){
+  const c=MSCENE[id], m=MODULES.find(x=>x.id===id);
+  const gid='mg'+id;
+  return `<svg viewBox="0 0 360 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c[1]}"/><stop offset="1" stop-color="${c[0]}"/></linearGradient></defs>
+    <rect width="360" height="120" fill="url(#${gid})"/>
+    <circle cx="330" cy="16" r="86" fill="rgba(255,255,255,.10)"/>
+    <circle cx="236" cy="126" r="72" fill="rgba(0,0,0,.14)"/>
+    <g transform="translate(252,20) scale(3.3)" opacity=".22" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${ICONS[m.icon]||''}</g>
+    <path d="M0 98h58l10-15 12 26 11-11h269" stroke="rgba(255,255,255,.16)" stroke-width="1.6" fill="none"/>
+  </svg>`;
+}
 function productsHTML(){
   return `<div class="view fade-in">
     <div class="scroll">
@@ -1439,7 +1464,9 @@ function productListHTML(){
     const on=state.openMods.has(m.id);
     return `<div class="acc ${on?'on':''}" data-id="${m.id}">
       <button class="acc-h" onclick="toggleAcc('${m.id}')">
-        <div class="mod-ico" style="background:${m.tint};color:${m.ink}">${ico(m.icon)}</div>
+        <div class="acc-bg">${modArt(m.id)}</div>
+        <div class="acc-ov"></div>
+        <div class="mod-ico">${ico(m.icon)}</div>
         <div class="acc-t"><b>${m.name}</b><span>${m.sub} · ${items.length} 项</span></div>
         <span class="acc-ar">${ico('down',16)}</span>
       </button>
