@@ -1286,7 +1286,7 @@ function productsHTML(){
 function productListHTML(){
   const q=(state.pq||'').trim();
   if(q){
-    const list=PRODUCTS.filter(p=>(p.name+p.intro+p.tags.join('')+modOf(p.mod).name).toLowerCase().includes(q.toLowerCase()));
+    const list=searchProducts(q);
     if(!list.length)return `<div class="resempty">没有找到「${q}」相关的服务<br><span style="font-size:11px;color:#C1C6CD">试试 体检、睡眠、心理、急救</span></div>`;
     return `<div class="res">${list.map(p=>{const m=modOf(p.mod);return `<div class="resrow" onclick="openProduct('${p.id}')">
       <div class="ri" style="background:${m.tint};color:${m.ink}">${ico(PICON[p.id]||m.icon,18)}</div>
@@ -1987,6 +1987,66 @@ function openIndustry(){
 }
 
 /* ---------------- mine ---------------- */
+/* ---------------- search (fuzzy) ---------------- */
+const SEARCH_SYN={
+ '绿通':['快通','就医','挂号','陪诊'],
+ '快通':['绿通'],
+ '体检':['体检','检查','筛查'],
+ '报告':['报告','解读','结论'],
+ '解读':['解读','报告'],
+ '睡眠':['睡眠','失眠','鼾','OSAS'],
+ '改善':['改善','失眠','调理','康复','睡眠'],
+ '心理':['心理','EAP','情绪','压力'],
+ '咨询':['咨询','EAP','问诊','面诊'],
+ '减重':['减重','体重','脂肪肝','肥胖'],
+ '五高':['五高','血压','血糖','血脂','尿酸'],
+ '就医':['就医','挂号','陪诊','住院'],
+ '挂号':['挂号','就医','快通'],
+ '急救':['急救','CPR','AED','心肺'],
+ '讲座':['讲座','沙龙','直播'],
+ '肿瘤':['肿瘤','重疾','癌症'],
+ '胃镜':['胃镜','胃肠镜','消化'],
+ '颈椎':['颈椎','颈肩','腰腿','中医','康复'],
+ '康复':['康复','理疗','推拿','针灸'],
+ '血糖':['血糖','糖尿病','五高'],
+ '血压':['血压','高血压','心脑'],
+ '结节':['结节','肺','CT']
+};
+function normQ(s){return (s||'').toLowerCase().replace(/[\s·（）()、,，/\-]/g,'');}
+function pHay(p){
+  const m=MODULES.find(x=>x.id===p.mod);
+  return normQ([p.name,p.intro,p.suit,p.tags.join(''),p.includes.join(''),m.name,m.sub].join(''));
+}
+function searchProducts(q){
+  const nq=normQ(q); if(!nq)return [];
+  const grams=[];
+  if(nq.length===1)grams.push(nq);
+  for(let i=0;i<nq.length-1;i++)grams.push(nq.slice(i,i+2));
+  const uniq=[...new Set(grams)];
+  const res=[];
+  PRODUCTS.forEach(p=>{
+    const m=MODULES.find(x=>x.id===p.mod);
+    const fName=normQ(p.name), fTag=normQ(p.tags.join('')), fInc=normQ(p.includes.join('')),
+          fRest=normQ(p.intro+p.suit), fMod=normQ(m.name+m.sub);
+    let total=0,nameHits=0;
+    uniq.forEach(g=>{
+      const syns=[g].concat(SEARCH_SYN[g]||[]).map(normQ);
+      let w=0;
+      syns.forEach(x=>{
+        if(!x)return;
+        if(fName.includes(x))w=Math.max(w,8);
+        else if(fTag.includes(x))w=Math.max(w,4);
+        else if(fInc.includes(x))w=Math.max(w,3);
+        else if(fRest.includes(x))w=Math.max(w,1);
+        else if(fMod.includes(x))w=Math.max(w,2);
+      });
+      total+=w;
+      if(w===8)nameHits++;
+    });
+    if(nameHits>0||total>=10)res.push({p,score:total*10+nameHits});
+  });
+  return res.sort((a,b)=>b.score-a.score).map(x=>x.p).slice(0,12);
+}
 /* ---------------- search ---------------- */
 function openSearch(){
   const sv=$('searchview');
@@ -2017,9 +2077,14 @@ function searchRows(list,q){
 }
 function hi(t,q){
   if(!q)return t;
-  const i=t.toLowerCase().indexOf(q.toLowerCase());
+  const low=t.toLowerCase(), nq=q.toLowerCase();
+  let i=low.indexOf(nq), len=nq.length;
+  if(i<0){
+    const grams=[]; for(let k=0;k<nq.length-1;k++)grams.push(nq.slice(k,k+2));
+    for(const g of grams){const j=low.indexOf(g); if(j>=0){i=j;len=g.length;break;}}
+  }
   if(i<0)return t;
-  return t.slice(0,i)+'<mark>'+t.slice(i,i+q.length)+'</mark>'+t.slice(i+q.length);
+  return t.slice(0,i)+'<mark>'+t.slice(i,i+len)+'</mark>'+t.slice(i+len);
 }
 function fromSearch(id){
   const nm=prod(id).name;
@@ -2028,7 +2093,7 @@ function fromSearch(id){
 }
 function filterSearch(q){
   q=(q||'').trim().toLowerCase();
-  const list=!q?PRODUCTS:PRODUCTS.filter(p=>(p.name+p.intro+p.tags.join('')+modOf(p.mod).name).toLowerCase().includes(q));
+  const list=!q?PRODUCTS:searchProducts(q);
   $('sres').innerHTML=searchRows(list,q);
   const c=$('svcount'); if(c)c.textContent=q?('搜索结果 · '+list.length+' 项'):('全部服务 · '+PRODUCTS.length+' 项');
 }
