@@ -866,7 +866,9 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .fc-left.off{color:#9AA0A8;background:#F3F4F6}
 .fc-q{margin-top:9px;font-size:11.5px;color:#6E737B}
 .fc-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-.fc-chips button{font-size:10.5px;color:#E4520A;background:#FFF3E9;padding:4px 9px;border-radius:7px}
+.fc-chips button{display:inline-flex;align-items:center;gap:1px;font-size:10.5px;color:#E4520A;background:#FFF3E9;padding:4px 9px;border-radius:7px}
+.fc-chips button svg{stroke:#E4520A}
+.fc-more{display:flex;align-items:center;justify-content:flex-end;gap:1px;font-size:11px;color:#9AA0A8;margin-top:10px}
 .tiers{display:flex;gap:9px;margin:0 14px}
 .tier{flex:1;background:#fff;border-radius:14px;padding:12px 10px;text-align:center;box-shadow:var(--shadow)}
 .tier b{display:block;font-size:19px;color:#E4520A;font-weight:800;letter-spacing:-.5px}
@@ -1322,7 +1324,7 @@ const state={
   view:'tab', tab:'home', product:null, from:'home',
   sel:new Set(), favs:new Set(), enrolled:new Map(), lecture:0, article:0, signed:false,
   openMods:new Set(['screen']), pq:'', appFilter:'all', lastCode:'',
-  remind:new Set(), artFav:new Set(), industry:0, hist:[], lecFilter:'all', cat:'chronic', archive:'exam',
+  remind:new Set(), artFav:new Set(), industry:0, hist:[], lecFilter:'all', cat:'chronic', archive:'exam', pillar:0,
   msgs:[
     {id:'m1',ic:'doc',title:'体检报告已生成',desc:'2026 年度体检报告已出，6 项指标需关注',time:'10-12',read:false,go:"archive:exam"},
     {id:'m2',ic:'calendar',title:'随访提醒',desc:'明天 09:30 健康管家张医生电话随访',time:'10-25',read:false,go:"apps"},
@@ -2024,6 +2026,31 @@ function rightsHTML(){
     </div>
   </div>`;
 }
+function openPillar(i){navTo({view:'pillar',pillar:i});}
+function pillarHTML(){
+  const i=state.pillar||0, r=FIVE[i], m=modOf(prod(r.pids[0]).mod);
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>${r.name}</b></div>
+    <div class="scroll">
+      <div class="cat-hero" style="background:${THEME[m.id]}">
+        <span>五好生活</span>
+        <h1>${r.name}</h1>
+        <p>${r.sub} · ${r.quota}</p>
+      </div>
+      ${r.pids.map(pid=>{const p=prod(pid),mm=modOf(p.mod);return `<div class="citem" onclick="openProduct('${pid}')">
+        <div class="ci-ic" style="background:${mm.tint};color:${mm.ink}">${ico(PICON[pid]||mm.icon,20)}</div>
+        <div class="ci-tx">
+          <b>${p.name}</b>
+          <p>${p.intro}</p>
+          <div class="ci-tags"><span>${p.scope}</span><span>${p.tags[0]}</span></div>
+        </div>
+        <span class="arw">${ico('chev',14)}</span>
+      </div>`}).join('')}
+      <div class="bnote">${ico('info',13)}<span>该主题为五好生活企业套餐内容，具体次数与范围以企业选购档位为准。</span></div>
+      <div style="height:20px"></div>
+    </div>
+  </div>`;
+}
 function openFive(){navTo({view:'five'});}
 function fiveHTML(){
   const active=FIVE.filter(r=>r.left>0).length;
@@ -2037,14 +2064,15 @@ function fiveHTML(){
       </div>
       ${FIVE.map((r,idx)=>{
         const m=modOf(prod(r.pids[0]).mod);
-        return `<div class="fcard">
+        return `<div class="fcard" onclick="openPillar(${idx})">
           <div class="fc-h">
             <div class="fc-ico" style="background:${m.tint};color:${m.ink}">${ico(r.icon,19)}</div>
             <div class="fc-t"><b>${r.name}</b><span>${r.sub}</span></div>
             <span class="fc-left ${r.left?'':'off'}">剩余 ${r.left}</span>
           </div>
           <div class="fc-q">${r.quota}</div>
-          <div class="fc-chips">${r.pids.map(pid=>{const p=prod(pid);return `<button onclick="openProduct('${pid}')">${p.name.replace('服务','').replace('（EAP）','')}</button>`}).join('')}</div>
+          <div class="fc-chips">${r.pids.map(pid=>{const p=prod(pid);return `<button onclick="event.stopPropagation();openProduct('${pid}')">${p.name.replace('服务','').replace('（EAP）','')} ${ico('chev',10)}</button>`}).join('')}</div>
+          <div class="fc-more">查看该主题全部服务 ${ico('chev',12)}</div>
         </div>`}).join('')}
       <div class="section-title"><h3>企业专属套餐</h3><span>按预算选购</span></div>
       <div class="tiers">
@@ -2764,6 +2792,7 @@ function render(){
   else if(state.view==='quota'){root.innerHTML=quotaHTML();}
   else if(state.view==='industry'){root.innerHTML=industryHTML();}
   else if(state.view==='five'){root.innerHTML=fiveHTML();}
+  else if(state.view==='pillar'){root.innerHTML=pillarHTML();}
   else if(state.view==='rights'){root.innerHTML=rightsHTML();}
   else if(state.view==='category'){root.innerHTML=categoryHTML();}
   else if(state.view==='archive'){root.innerHTML=archiveHTML();}
