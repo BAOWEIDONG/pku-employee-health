@@ -23,8 +23,9 @@ body{
   font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:#E9EBEF;color:var(--ink);
   display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
+  overflow:hidden;-webkit-user-select:none;user-select:none;
 }
+input,textarea{-webkit-user-select:text;user-select:text}
 button{font-family:inherit;border:none;background:none;padding:0;color:inherit;cursor:pointer}
 input{font-family:inherit;border:none;outline:none;background:none;color:inherit}
 ::-webkit-scrollbar{width:0;height:0}
@@ -569,7 +570,9 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .greetS .g-tx b{font-size:14.5px;display:block;letter-spacing:-.2px}
 .greetS .g-tx span{font-size:10.5px;color:rgba(255,255,255,.78);display:block;margin-top:2px}
 .greetS .g-tag{font-size:10px;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22);padding:3px 8px;border-radius:9px;white-space:nowrap}
-.heroS h1.title{position:relative;z-index:3;margin:18px 18px 0;font-size:27px;line-height:1.28;font-weight:800;letter-spacing:-.9px;color:#fff}
+.heroS .brandline{position:relative;z-index:3;margin:16px 18px 0;font-size:18px;font-weight:700;letter-spacing:.8px;color:#fff}
+.heroS .brandline + h1.title{margin-top:5px}
+.heroS h1.title{position:relative;z-index:3;margin:18px 18px 0;font-size:25px;line-height:1.28;font-weight:800;letter-spacing:-.9px;color:#fff}
 .heroS h1.title em{font-style:normal;display:block;font-size:12px;font-weight:400;letter-spacing:0;color:rgba(255,255,255,.82);margin-top:8px;line-height:1.5}
 .bigsearch{position:relative;z-index:3;margin:15px 16px 0;height:46px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:9px;padding:0 14px;box-shadow:0 12px 26px -16px rgba(120,40,0,.6)}
 .bigsearch svg{width:17px;height:17px;stroke:#B0B5BD;flex:0 0 auto}
@@ -845,6 +848,43 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 
 .seemore{display:flex;align-items:center;gap:2px;font-size:12px;font-weight:600;color:#E4520A;background:#FFF3E9;padding:5px 10px;border-radius:9px}
 .seemore:active{transform:scale(.96)}
+
+/* 五好生活 + 慢病二级页 */
+.fhero{margin:14px;border-radius:18px;padding:18px 16px;background:linear-gradient(145deg,#0F7C5A,#0A5C43);color:#fff;position:relative;overflow:hidden}
+.fhero::after{content:"";position:absolute;right:-40px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.14)}
+.fh-t{font-size:19px;font-weight:800;letter-spacing:-.4px}
+.fh-s{font-size:11px;color:rgba(255,255,255,.78);margin-top:6px;line-height:1.6}
+.fh-m{display:flex;gap:14px;margin-top:12px;font-size:10.5px;color:rgba(255,255,255,.85)}
+.fh-m span{padding:3px 8px;border-radius:7px;background:rgba(255,255,255,.16)}
+.fcard{margin:10px 14px 0;background:#fff;border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.fc-h{display:flex;align-items:center;gap:11px}
+.fc-ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto}
+.fc-t{flex:1;min-width:0}
+.fc-t b{font-size:14.5px;display:block;letter-spacing:-.2px}
+.fc-t span{font-size:10.5px;color:#9AA0A8;display:block;margin-top:2px}
+.fc-left{font-size:10.5px;color:#0A7A55;background:#E9F7F1;padding:3px 8px;border-radius:6px;font-weight:600;flex:0 0 auto}
+.fc-left.off{color:#9AA0A8;background:#F3F4F6}
+.fc-q{margin-top:9px;font-size:11.5px;color:#6E737B}
+.fc-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.fc-chips button{font-size:10.5px;color:#E4520A;background:#FFF3E9;padding:4px 9px;border-radius:7px}
+.tiers{display:flex;gap:9px;margin:0 14px}
+.tier{flex:1;background:#fff;border-radius:14px;padding:12px 10px;text-align:center;box-shadow:var(--shadow)}
+.tier b{display:block;font-size:19px;color:#E4520A;font-weight:800;letter-spacing:-.5px}
+.tier i{font-style:normal;font-size:9px;color:#9AA0A8}
+.tier span{display:block;font-size:11px;margin-top:6px;font-weight:600}
+.tier em{display:block;font-style:normal;font-size:9.5px;color:#9AA0A8;margin-top:2px}
+.cat-hero{position:relative;margin:0 0 4px;padding:22px 18px 26px;color:#fff;border-radius:0 0 24px 24px;overflow:hidden}
+.cat-hero::after{content:"";position:absolute;right:-50px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.16)}
+.cat-hero span{font-size:10.5px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.26)}
+.cat-hero h1{margin:12px 0 0;font-size:24px;letter-spacing:-.6px;position:relative;z-index:2}
+.cat-hero p{margin:6px 0 0;font-size:11.5px;color:rgba(255,255,255,.82);position:relative;z-index:2}
+.citem{display:flex;gap:12px;align-items:flex-start;margin:10px 14px 0;background:#fff;border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.ci-ic{width:40px;height:40px;border-radius:12px;background:#F2F7F5;color:#0A7A55;display:grid;place-items:center;flex:0 0 auto}
+.ci-tx{flex:1;min-width:0}
+.ci-tx b{font-size:14px;display:block;letter-spacing:-.2px}
+.ci-tx p{margin:4px 0 0;font-size:11px;color:#9AA0A8;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ci-tags{display:flex;gap:6px;margin-top:7px}
+.ci-tags span{font-size:10px;color:#6E737B;background:#F5F6F8;padding:2px 7px;border-radius:5px}
 </style>
 </head>
 <body>
@@ -897,7 +937,8 @@ const ICONS={
   close:'<path d="m6 6 12 12M18 6 6 18"/>',
   info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
   scan:'<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 12h10"/>',
-  bag:'<path d="M6 8h12l1 13H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'
+  bag:'<path d="M6 8h12l1 13H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+  bowl:'<path d="M3 11h18a9 9 0 0 1-18 0Z"/><path d="M7 21h10"/><path d="M9 7c0-1.5 1-2 1.5-3M13.5 7c0-1.5 1-2 1.5-3"/>'
 };
 const ico=(n,s)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ${s?`style="width:${s}px;height:${s}px"`:''}>${ICONS[n]||''}</svg>`;
 
@@ -917,141 +958,239 @@ const MODULES=[
   {id:'safety',  name:'应急保障', stab:'应急', sub:'企业安全风控',      icon:'shield',   tint:'#FFF6E0', ink:'#A86A06'}
 ];
 const PRODUCTS=[
+/* ---------- 健康筛查 ---------- */
  {id:'annual-exam',mod:'screen',name:'职工年度体检',en:'Annual Employee Health Checkup',scope:'属地履约',payer:['职工福利费','工会经费','企康'],tags:['每年 1 次','含报告解读'],
-  intro:'企业年度体检套餐：基础检查、影像与肿瘤标志物组合，检后统一由医生解读并给出复查建议。',
-  includes:['内外科、血常规、肝肾功能等基础项目','胸部 CT、腹部超声、心电图','常见肿瘤标志物组合','体检报告 + 医生解读 + 复查建议'],
-  suit:'全体在职职工，每年 1 次；可按岗位与年龄加项。',
+  intro:'年度深度体检：基础检查、影像与肿瘤标志物一次完成，检后由医生统一解读并给出复查建议。',
+  includes:['基础检查：内外科、血常规、肝肾功能、血脂血糖','影像：胸部 CT、腹部 / 甲状腺超声、心电图','肿瘤标志物组合（按年龄与性别配置）','体检报告 + 医生解读 + 复查建议'],
+  suit:'全体在职职工，每年 1 次；40 岁以上或长期熬夜、久坐人群建议加做专项筛查。',
+  duration:'半天',resp:'1 个工作日出报告',
+  notice:['体检前 8 小时禁食，可少量饮水','携带身份证；女性避开经期','长期服药者请提前告知医生'],
+  flow:['预约登记','到院体检','报告出具','医生解读'],
   orgs:['北京大学国际医院 · 健康管理中心','北大医疗康复医院 · 体检中心']},
- {id:'risk-report',mod:'screen',name:'检后管理 · 深度报告解读',en:'Post-checkup Report Interpretation',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['线上','1个工作日出结论'],
+ {id:'risk-report',mod:'screen',name:'检后管理 · 深度报告解读',en:'Post-checkup Report Interpretation',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['线上','1 个工作日出结论'],
   intro:'由全科与专科医生对近 3–6 个月体检报告逐项解读，标出需要复查和干预的指标，给出下一步就医建议。',
   includes:['全科医生逐项解读，异常指标标注风险等级','专科医生复核，给出复查项目与时间窗','异常指标转诊建议，可直接预约院内号源','解读结论同步至个人健康档案'],
   suit:'近半年做过体检、报告有多项异常但不知先看哪一科的在职职工。',
+  duration:'30–45 分钟',resp:'1 个工作日出结论',
+  notice:['需上传近 3–6 个月完整报告与影像资料','解读意见不替代门诊面诊','危急值请立即就医'],
+  flow:['预约登记','报告预审','医生解读','复查与转诊'],
   orgs:['北大医疗互联网医院 · 全科医学中心','北京大学国际医院 · 健康管理中心']},
- {id:'risk-survey',mod:'screen',name:'健康风险调研问卷',en:'Health Risk Assessment',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['10分钟','线上'],
+ {id:'risk-survey',mod:'screen',name:'健康风险调研问卷',en:'Health Risk Assessment',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['10 分钟','线上'],
   intro:'围绕心脑血管、五高一重、睡眠与心理 4 个维度自评，10 分钟生成个人风险画像与干预建议。',
   includes:['28 题自评，覆盖心脑血管 / 代谢 / 睡眠 / 情绪','自动生成风险分级与雷达图','高风险项推送对应服务与随访','脱敏汇总后可用于企业年度健康报告'],
   suit:'希望先做一次整体健康盘点的职工，以及需要建立健康基线的部门。',
+  duration:'约 10 分钟',resp:'提交后即时出结果',
+  notice:['自评结果仅作健康风险参考，不作为诊断依据','建议每年复测一次以观察变化'],
+  flow:['填写问卷','风险计算','结果解读','服务推荐'],
   orgs:['北大医疗互联网医院 · 健康管理部']},
- {id:'gastro',mod:'screen',name:'无痛胃肠镜检查',en:'Painless Gastroscopy & Colonoscopy',scope:'属地履约',payer:['职工福利费','企康'],tags:['麻醉','含病理'],
-  intro:'麻醉下完成胃镜与肠镜联合检查，发现息肉可同期处理，适合 40 岁以上或有消化道家族史人群。',
-  includes:['胃镜 + 肠镜联合检查（麻醉）','息肉切除等镜下治疗（限适应症）','术前评估与术后复苏观察','病理报告与消化科医生解读'],
-  suit:'40 岁以上、长期外食应酬、有消化道肿瘤家族史或幽门螺杆菌阳性者。',
+ {id:'inpatient',mod:'screen',name:'住院体检服务',en:'Inpatient Physical Examination Service',scope:'属地履约',payer:['职工福利费','工会经费','企康'],tags:['2 天 1 晚','VIP 单人病房'],
+  intro:'检查、休养、管理一体化的沉浸式体检：2 天 1 晚院内完成深度筛查，护士全程陪诊，不占用工作时间。',
+  includes:['VIP 单人病房、营养三餐、护士 1 对 1 陪诊','深度筛查：头颅 MRI / 冠脉 CT / 颈动脉超声','无痛胃肠镜、全套肿瘤标志物，PET-CT 可选','专家床旁问诊、最终报告解读、绿色转诊'],
+  suit:'有深度健康管理需求的企业家、高管与核心骨干；希望一次查清、不做多次往返的职工。',
+  duration:'2 天 1 晚',resp:'3–7 个工作日出正式报告',
+  notice:['检查前一天清淡饮食、禁酒，体检当天晨起禁食','胃肠镜需提前 3 天少渣饮食、前 1 日晚餐后禁食禁水','PET-CT 含放射性同位素，孕妇及哺乳期女性禁用','冠脉 CT 需碘造影剂，甲亢、严重肾功能不全者禁用'],
+  flow:['办理入院','床旁问诊与筛查','专家会诊解读','出院与随访'],
+  orgs:['北京大学国际医院 · 国际医疗部','北京大学国际医院 · 健康管理中心']},
+ {id:'gastro',mod:'screen',name:'无痛胃肠镜检查',en:'Painless Gastrointestinal and Colonoscopy Service',scope:'属地履约',payer:['职工福利费','企康'],tags:['麻醉下检查','含病理'],
+  intro:'麻醉下完成胃镜与肠镜联合检查，独立诊区、专家与资深护士操作，发现息肉可同期处理。',
+  includes:['术前检查：血常规、肝肾功、凝血、感染四项、胸片、心电图','无痛胃肠镜检查、清肠药物与麻醉费用','VIP 独立诊区完成麻醉评估与检查','检查后邮件发送病理结果与诊疗建议'],
+  suit:'45 岁以上；有慢性萎缩性胃炎、胃溃疡或胃肠手术史；有食管癌、胃癌、结直肠癌家族史；CA19-9 等指标升高者。',
+  duration:'半天（含术前准备）',resp:'病理 5–7 个工作日',
+  notice:['检查前 3 天少渣饮食，前 1 日晚餐后禁食禁水','停用抗凝药需遵医嘱（如阿司匹林等）','检查当天须有家属陪同，麻醉后 24 小时禁止驾车','严重心肺疾病、凝血功能障碍者慎用或禁用'],
+  flow:['预约与术前检查','麻醉评估','胃肠镜检查','报告与随访'],
   orgs:['北京大学国际医院 · 消化内镜中心','北大医疗康复医院 · 内镜中心']},
- {id:'cancer',mod:'screen',name:'重疾筛查',en:'Critical Illness Screening',scope:'属地履约',payer:['职工福利费','企康'],tags:['影像+标志物'],
-  intro:'针对肺、肝、甲状腺、乳腺、前列腺等高发部位的低剂量 CT、超声与肿瘤标志物组合筛查。',
-  includes:['低剂量螺旋 CT（肺部）','腹部 / 甲状腺 / 乳腺超声','常见肿瘤标志物组合','阳性结果多学科会诊建议'],
-  suit:'长期吸烟饮酒熬夜，或有肿瘤家族史的 35 岁以上职工。',
-  orgs:['北京大学国际医院 · 健康管理中心']},
- {id:'sleep',mod:'screen',name:'医疗级多导睡眠监测',en:'Polysomnography (PSG)',scope:'属地履约',payer:['职工福利费','企康'],tags:['整夜监测'],
-  intro:'院内整夜监测脑电、眼电、肌电、血氧与呼吸事件，明确是否存在阻塞性睡眠呼吸暂停（OSAS）。',
-  includes:['整夜 PSG 监测（含血氧与体位）','睡眠分期与呼吸事件判读','呼吸科 / 耳鼻喉科医生出具报告','CPAP 压力滴定与减重建议'],
-  suit:'打鼾伴憋醒、白天嗜睡、晨起头痛，或血压难以控制的人群。',
-  orgs:['北京大学国际医院 · 睡眠医学中心']},
- {id:'occupational',mod:'screen',name:'职业病筛查',en:'Occupational Disease Screening',scope:'属地履约',payer:['企业安全生产费','职工福利费'],tags:['合规','岗前在岗离岗'],
-  intro:'按岗位接触的粉尘、噪声、化学毒物配置体检项目，出具符合职业健康监护规范的报告。',
-  includes:['岗前 / 在岗 / 离岗三类体检','粉尘、噪声、苯系物等定向项目','职业健康监护档案建立','异常人员调岗建议（合规口径）'],
-  suit:'制造、能源化工、矿业等存在职业病危害因素的岗位。',
-  orgs:['北大医疗职业病防治合作机构','属地职业病防治院']},
- {id:'cpet',mod:'screen',name:'心肺运动 CPET 筛查',en:'Cardiopulmonary Exercise Testing',scope:'属地履约',payer:['职工福利费','企康'],tags:['运动风险评估'],
-  intro:'在运动负荷下同步监测心、肺、代谢指标，评估运动耐量与心血管风险，是运动处方的依据。',
-  includes:['功率车递增负荷测试','最大摄氧量、无氧阈等 12 项指标','运动中十二导联心电与血压监测','运动处方与风险分级建议'],
-  suit:'计划参加高强度运动、体检心电图异常，或需评估心肺储备的职工。',
+ {id:'cancer',mod:'screen',name:'重疾筛查服务',en:'Critical Illness Screening Service',scope:'属地履约',payer:['职工福利费','企康'],tags:['10+4 病种','一管血早筛'],
+  intro:'覆盖 10 种高发恶性肿瘤与 4 类心脑血管疾病，按低 / 中 / 高风险三级分层，给出随访与干预策略。',
+  includes:['一管血 NGS 甲基化检测，覆盖 8 大高发癌种','低剂量螺旋 CT、腹部超声、肿瘤标志物','颈动脉斑块超声、心脏功能评估','三级风险分层报告与随访计划'],
+  suit:'长期熬夜、压力大、饮食不规律的职场高压人群；吸烟≥20 包/年、重度饮酒或肥胖者；直系亲属有癌症或心脑血管病史者。',
+  duration:'半天',resp:'2–3 周出早筛报告',
+  notice:['采血无需空腹（建议空腹以便同时加做生化）','NGS 结果为风险参考，阳性需结合影像与病理进一步确认','孕妇、严重血液系统疾病患者请提前告知'],
+  flow:['风险评估','专项筛查','三级分层','随访干预'],
+  orgs:['北京大学国际医院 · 健康管理中心','北大医疗康复医院']},
+ {id:'cpet',mod:'screen',name:'心肺运动 CPET 筛查',en:'Cardiopulmonary Exercise Testing (CPET)',scope:'属地履约',payer:['职工福利费','企康'],tags:['当天出报告','运动处方'],
+  intro:'在运动负荷下监测气体交换与心电指标，评估心肺适能与运动风险，当场出具报告并制定个体化运动处方。',
+  includes:['运动负荷下气体交换、十二导联心电、血压监测','最大摄氧量、无氧阈等核心指标','高年资医师现场报告与深度解读','FITT 个体化运动处方与用药调整建议'],
+  suit:'运动中出现胸闷、心悸、头晕者；马拉松、越野、球类等爱好者；准备开始高强度训练的新手；术后需评估心肺功能者。',
+  duration:'约 60–90 分钟',resp:'当天出报告',
+  notice:['穿舒适运动装与运动鞋','检查前遵医嘱暂停影响心率的药物','人体成分分析等项目为自费可选项'],
+  flow:['预约与评估','运动负荷测试','报告解读','运动处方'],
   orgs:['北京大学国际医院 · 心肺运动实验室']},
- {id:'inpatient',mod:'screen',name:'住院体检',en:'Inpatient Physical Examination',scope:'属地履约',payer:['职工福利费','企康'],tags:['1–2天','一站式'],
-  intro:'1–2 天院内完成全部检查，含胃肠镜、影像与多学科会诊，免去多次往返与排队。',
-  includes:['住院 1–2 天，一站式完成检查','含无痛胃肠镜与胸部 CT','多学科医生联合出具体检结论','出院后 7 日内电话随访'],
-  suit:'工作节奏紧、希望一次查清楚的管理者与外地驻场职工。',
-  orgs:['北京大学国际医院 · 国际医疗部']},
- {id:'fivehigh',mod:'chronic',name:'五高一重管理',en:'Five Highs & One Heavy Management',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['年度管理','健管师随访'],
-  intro:'高血压、高血糖、高血脂、高尿酸、高体重与重疾风险管理，健管师按季度随访，医生按需介入。',
-  includes:['首诊建档 + 年度干预方案','血压 / 血糖 / 体重数据线上记录与预警','健管师季度随访，异常升级医生','年度复评与用药依从性提醒'],
-  suit:'体检已提示血压、血糖、血脂、尿酸或体重异常，尚未系统管理的职工。',
+ {id:'sleep',mod:'screen',name:'医疗级多导睡眠监测',en:'Medical-grade Polysomnography',scope:'属地履约',payer:['职工福利费','企康'],tags:['整夜监测','PSG'],
+  intro:'院内整夜监测脑电、眼电、肌电、血氧与呼吸事件，计算 AHI 与睡眠结构，区分中枢性与阻塞性呼吸暂停。',
+  includes:['多导联同步采集：脑电、眼电、肌电、心电、呼吸、血氧','睡眠分期、AHI 指数、睡眠效率、深睡比例','病因辅助评估（中枢性 / 阻塞性、轻中重度）','睡眠专科医生解读，给出 CPAP 压力滴定或口腔矫治建议'],
+  suit:'打鼾伴呼吸暂停、白天嗜睡乏力、晨起头痛者；难治性高血压、夜间心律失常、血糖控制不佳者；顽固性失眠或 REM 睡眠行为障碍者。',
+  duration:'整夜（约 8 小时）',resp:'3–5 个工作日出报告',
+  notice:['检查当天避免午睡与咖啡因','睡前洗头，不使用护发素与发胶','需在具备资质的医疗机构、由专业人员操作'],
+  flow:['预约登记','整夜监测','数据分析','专科解读'],
+  orgs:['北京大学国际医院 · 睡眠医学中心']},
+ {id:'occupational',mod:'screen',name:'职业病筛查服务',en:'Occupational Disease Screening Service',scope:'属地履约',payer:['企业安全生产费','职工福利费'],tags:['合规','岗前在岗离岗'],
+  intro:'依据《职业健康检查管理办法》开展岗前、在岗、离岗检查，报告具法律效力，可按危害因素定制项目。',
+  includes:['粉尘类：胸部 X 线 / DR、肺功能 FVC/FEV1、血常规 CRP','化学类：血铅血镉、尿汞、肝肾功能、神经传导','物理类：纯音听阈、声导抗、心电图、骨科与眼科检查','职业健康监护档案与异常人员调岗建议'],
+  suit:'接触粉尘、化学毒物、噪声、高温、手传振动等职业病危害因素的岗位；新建、改建、扩建项目及工艺变更企业。',
+  duration:'按岗位批量安排',resp:'体检后 30 日内出报告',
+  notice:['需提供岗位危害因素清单与作业场所检测报告','接触化学因素者按 6–12 个月周期复检','报告须由具备资质的机构出具方具法律效力'],
+  flow:['危害因素识别','定制项目','现场检查','报告与档案'],
+  orgs:['北京大学国际医院 · 职业病科','北大医疗职业病防治合作机构']},
+
+/* ---------- 慢病管理 ---------- */
+ {id:'fivehigh',mod:'chronic',name:'五高一重管理服务',en:'Management Service for Five Highs and One Heavy',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['年度管理','红黄绿分层'],
+  intro:'围绕血压、血脂、血糖、尿酸、同型半胱氨酸与体重，建档分层、线上线下干预、异常三级响应与转诊。',
+  includes:['入组评估：体检初筛 + 血压血糖、体成分、肝弹性检测','建档分层：红 / 黄 / 蓝三级风险，年度干预方案','线上打卡 + 专属社群（营养师 + 运动康复师 + 责任医生）','季度复测与阶段复盘，异常直通院内专科'],
+  suit:'体检提示血压、血糖、血脂、尿酸、体重异常或同型半胱氨酸升高，尚未系统管理的人群。',
+  duration:'12 个月',resp:'24 小时内响应',
+  notice:['入组需提供近 6 个月体检报告','降脂、降糖等处方调整须由医生面诊后执行','出现胸痛、意识改变等急症请立即拨打 120'],
+  flow:['入组评估','建档分层','周期干预','复评调优'],
   orgs:['北大医疗互联网医院 · 慢病管理中心','北京大学国际医院 · 全科医学科']},
- {id:'lung',mod:'chronic',name:'肺结节管理',en:'Pulmonary Nodule Management',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['影像比对','分层随访'],
-  intro:'按结节大小与密度分层随访，影像科医生逐年比对，避免过度检查也不漏掉窗口期。',
-  includes:['薄层 CT 影像判读与分层','3 / 6 / 12 个月随访计划','两次影像同屏比对','高危结节胸外科绿色通道'],
-  suit:'体检发现肺结节、需要确定随访节奏的人群。',
-  orgs:['北京大学国际医院 · 胸外科 / 影像科']},
- {id:'heart',mod:'chronic',name:'心脑健康训练营',en:'Cardio-Cerebral Health Camp',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['12周','线上营'],
-  intro:'12 周线上营期，运动、营养、睡眠与用药四条线同步干预，配合家庭血压监测。',
-  includes:['12 周分阶段课程与打卡','运动处方 + 营养师 1v1','血压计 / 手环数据接入','结营复评与个人报告'],
-  suit:'血压血脂偏高、久坐、有早发心脑血管家族史的职工。',
-  orgs:['北大医疗互联网医院 · 心脏康复团队']},
- {id:'weight',mod:'chronic',name:'减重训练营',en:'Weight Management Camp',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['90天','双师带队'],
-  intro:'90 天医学减重，营养师与运动康复师双师带队，按月复测体成分与代谢指标。',
-  includes:['体成分与代谢评估','营养师 1v1 食谱调整','运动康复师定制训练计划','月度复测与阶段报告'],
-  suit:'BMI≥24 或腹型肥胖，合并脂肪肝、血糖异常的职工。',
+ {id:'heart',mod:'chronic',name:'心脑健康训练营',en:'Cardio-Cerebral Health Training Camp',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['365 天','医护到企'],
+  intro:'开营日医护带设备到企做全面“摸底”，之后 365 天分五阶段管理，从指标、饮食、运动到用药逐项改善。',
+  includes:['血液生化五高指标 + 肝肾功能 11 项','颈动脉斑块超声、InBody 体成分、体姿态与睡眠评估','营养处方、运动指导、医疗干预、线上社群四大模块','D365 结营复测与《个人健康管理报告》'],
+  suit:'体检“三高 / 五高”临界或确诊人群；超重肥胖、颈动脉有斑块、睡眠障碍者；有心脑血管家族史、希望提前预防的职场人群。',
+  duration:'365 天',resp:'开营后 5 个工作日内出方案',
+  notice:['血液检测与超声需由专业医护人员操作','晕血、体内有金属植入物等情况请提前告知','训练强度按运动处方执行，出现不适立即停止'],
+  flow:['开营评估','分阶段干预','季度复查','结营评估'],
+  orgs:['北大医疗互联网医院 · 心脏康复团队','北京大学国际医院 · 心内科']},
+ {id:'weight',mod:'chronic',name:'减重训练营',en:'Weight Management Bootcamp',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['90 天','双师带队'],
+  intro:'90 天医学减重：营养师与运动康复师双师带队，每日三餐点评、运动打卡与异常指标预警。',
+  includes:['体成分与代谢评估，制定个体化能量与蛋白目标','每日三餐拍照点评、运动打卡、睡眠与心率记录','每周课程：认知重建、技能掌握、应用强化、习惯固化','结营复测与 5 个月线上随访计划'],
+  suit:'BMI≥24 或腹型肥胖；合并脂肪肝、血糖异常；反复减重反弹，希望建立长期饮食与运动习惯者。',
+  duration:'90 天（4 周集中 + 随访）',resp:'入营 48 小时内出方案',
+  notice:['减重效果因人而异，与依从性、基础疾病相关','血糖 >13.9 或血压 >180/110 需先就医','孕期、哺乳期及严重肝肾功能不全者不建议参加'],
+  flow:['入营评估','4 周干预','复测调整','结营随访'],
   orgs:['北大医疗互联网医院 · 医学营养中心']},
- {id:'rehab',mod:'chronic',name:'远程居家康复健康指导',en:'Remote Home Rehabilitation',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['术后/伤后','视频指导'],
-  intro:'术后或伤后居家阶段，康复治疗师通过视频指导训练动作，按周调整强度。',
-  includes:['康复治疗师首次评估','每周 1 次视频指导 + 日常动作清单','疼痛与活动度记录追踪','复工前功能评估建议'],
-  suit:'骨科术后、运动损伤、脑卒中恢复期需居家训练的职工。',
-  orgs:['北大医疗康复医院 · 康复治疗部']},
- {id:'tcm',mod:'chronic',name:'中医康复综合解决方案',en:'Integrated Traditional Medicine Rehabilitation',scope:'全国履约',payer:['职工福利费','工会经费','自费'],tags:['针灸推拿','疗程制'],
-  intro:'针灸、推拿、艾灸与中药调理组合，针对颈肩腰腿痛、失眠与疲劳等职场常见问题。',
-  includes:['中医体质辨识与辨证','针灸 / 推拿 / 理疗组合疗程','代煎中药配送（可选）','疗程结束疗效评估'],
-  suit:'长期伏案、颈肩腰腿痛、睡眠差、易疲劳人群。',
+ {id:'lung',mod:'chronic',name:'肺结节管理服务',en:'Pulmonary Nodule Management Service',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['5–8mm 黄金窗口','影像比对'],
+  intro:'抓住 5–8mm 黄金窗口期：专业团队解读影像、制定随访节奏，配合心理疏导与中西医结合干预。',
+  includes:['胸外科专家报告解读与管理方案制定','低剂量 CT + 肺癌 7 抗体检测，AI 辅助识别微小结节','心理减压评估与健管师疏导','必要时绿色转诊至胸外科，30 天术后随访'],
+  suit:'体检发现 5–8mm 结节者；长期吸烟、有肺癌家族史或粉尘 / 油烟职业暴露者；肺癌术后需院后健康管理者。',
+  duration:'12 个月随访周期',resp:'3 个工作日内出管理方案',
+  notice:['复查尽量在同一医院、同一设备做薄层 CT','出现咯血、持续咳嗽、体重下降请立即就诊','AI 早筛为辅助手段，最终以医生综合判断为准'],
+  flow:['影像评估','风险分层','随访干预','转诊随访'],
+  orgs:['北京大学国际医院 · 胸外科','北大医疗互联网医院']},
+ {id:'tcm',mod:'chronic',name:'中医康复综合解决服务',en:'Integrated TCM Rehabilitation Service',scope:'全国履约',payer:['职工福利费','工会经费','自费'],tags:['入企服务','按场配置'],
+  intro:'针对职场亚健康与慢性疲劳：中医养生咨询、眼部金汤熏蒸、骨骼健康调理与黄帝内针组合。',
+  includes:['中医养生咨询：体质辨识 + 饮食起居运动建议','眼部舒缓护理：清洁、药膏、按摩熏蒸（护士 2 名 / 场 32 人）','骨骼健康调理：理筋、调曲、复位、导引（康复师 2 名）','黄帝内针：问诊号脉 + 1 对 1 施针'],
+  suit:'长期伏案导致的颈肩腰背不适、视疲劳、鼠标手、压力焦虑等职场亚健康人群。',
+  duration:'单场 2–3 小时',resp:'入企排期 5 个工作日内',
+  notice:['针刺需由执业中医师操作，晕针、凝血异常者提前告知','眼部熏蒸温度 55–72℃，敏感肌先做局部测试','孕期、皮肤破损处不做相关理疗'],
+  flow:['需求评估','入企排期','现场服务','反馈建档'],
   orgs:['北京大学国际医院 · 中医科','北大医疗康复医院 · 中医康复科']},
- {id:'fast',mod:'medical',name:'职工就医快通（挂号 / 陪诊 / 住院安排）',en:'Employee Medical Fast Track',scope:'属地到院 · 全国履约',payer:['社保','商保','企康','自费'],tags:['3个工作日','全程陪诊'],
-  intro:'副主任以上号源协调、院内全程陪诊、住院床位安排，把看病从"跑一天"变成"请半天"。',
-  includes:['专家号源协调（3 个工作日内）','院内全程陪诊（挂号 / 检查 / 取药）','住院床位与术前检查安排','就诊结果回传企业健康档案'],
-  suit:'工作日难以请假、对院内流程不熟悉、需要住院协调的职工。',
+ {id:'rehab',mod:'chronic',name:'远程居家康复健康指导',en:'Remote Home Rehabilitation and Health Guidance',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['4+3 服务','3 个月'],
+  intro:'术后、伤后居家阶段，康复医师与治疗师通过视频评估与指导，配合 3 次随访闭环，避免“回家养着”错过窗口期。',
+  includes:['康复评估：1V1 真人评估，5 项标准（躯体 / 情绪 / 皮肤 / 风险 / 环境）','24 小时内出具《居家康复指导书》与个性化方案','274 个标准训练视频，按周推送并逐帧纠错','随-7 / 随-21 / 随-W 三次随访，周期 3 个月'],
+  suit:'术后恢复期、骨折后关节受限、颈肩腰腿痛、慢病机能下降需要长期提升的人群。',
+  duration:'3 个月',resp:'接单 4 小时内致电，24 小时内出方案',
+  notice:['预约确认后暂不支持取消，请合理安排时间','训练中出现疼痛加重、头晕请立即停止并联系治疗师','严重心衰、骨折未固定等阶段需先线下就诊'],
+  flow:['接单评估','方案制定','视频指导','随访复评'],
+  orgs:['北大医疗康复医院 · 康复治疗部']},
+
+/* ---------- 就医服务 ---------- */
+ {id:'fast',mod:'medical',name:'职工就医快通服务',en:'Employee Medical Fast-Track Service',scope:'属地到院 · 全国履约',payer:['社保','商保','企康','自费'],tags:['T+1 挂号','全程陪诊'],
+  intro:'专属企康服务台、专家号源协调、全程陪诊、住院床位安排，把“跑一天”变成“请半天”。',
+  includes:['专属企康服务台：专家大咖出诊、配套专属车位与窗口结算','挂号优先：最快当天预约，普通客户需排队数周','检查高效：15:00 前到院非空腹项目当天完成','住院快速通道：最快 T+3 安排住院手术'],
+  suit:'工作日难请假、对院内流程不熟悉、需要住院协调的职工；异地员工可通过云端问诊与药品直送。',
+  duration:'按就诊流程',resp:'T+1 预约、T+3 检查加急、T+7 住院协调',
+  notice:['号源以实际协调结果为准，未约到可改约','陪诊请提前 24 小时确认','住院安排需提供医保与身份信息'],
+  flow:['需求提交','资源匹配','就诊陪诊','诊后随访'],
   orgs:['北京大学国际医院','北大医疗康复医院','北大医疗淄博医院']},
- {id:'second',mod:'medical',name:'专家线上二次诊疗咨询',en:'Expert Online Second Opinion',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['45分钟','书面意见'],
-  intro:'已确诊或拿到治疗方案后，由三甲专家复核诊断与治疗路径，给出书面第二意见。',
-  includes:['病历与影像资料预审','45 分钟视频问诊','书面第二诊疗意见','必要时转介院内专家'],
-  suit:'确诊重大疾病、面临手术或多种治疗方案选择的职工及家属。',
-  orgs:['北大医疗互联网医院 · 专家会诊中心']},
- {id:'cloud',mod:'medical',name:'北大国际医院云门诊',en:'PKU International Hospital Cloud Clinic',scope:'全国履约',payer:['社保','商保','自费'],tags:['1v1视频','可开检查'],
-  intro:'北大国际医院医生 1v1 视频面诊，可开具线上处方与检查单，到院直接做检查。',
-  includes:['1v1 视频面诊（约 20 分钟）','线上处方与检查开单','到院检查优先时段','复诊线上续方'],
-  suit:'常见病复诊、慢病续方、报告咨询，不想跑医院的职工。',
-  orgs:['北京大学国际医院 · 云门诊']},
- {id:'clinic',mod:'medical',name:'企业医务室（医务室 / 健康小屋 / 云诊医务室）',en:'On-site Clinic & Health Cabin',scope:'属地到企',payer:['企康','职工福利费'],tags:['驻场医护','按人数配置'],
-  intro:'驻场医护 + 智能设备 + 云诊终端，把血压血糖测量、常见病处置和转诊放到办公楼下。',
-  includes:['驻场护士 / 医生（按人数配置）','血压、血糖、体成分等自助检测','云诊终端直连院内医生','急救箱与药品管理'],
-  suit:'员工 500 人以上、园区偏远或有多班次生产的企业。',
+ {id:'second',mod:'medical',name:'专家线上二次诊疗咨询',en:'Online Expert Second Opinion Consultation',scope:'全国履约',payer:['职工福利费','商保','企康'],tags:['T+3 会诊','书面报告'],
+  intro:'确诊后由国内权威专家复核诊断与治疗方案，必要时组织 MDT 多学科会诊，出具书面第二诊疗意见。',
+  includes:['病历与影像资料整理、1 个工作日内完成审核','T+1 协调专家、T+3 安排视频或电话会诊','肿瘤、心脑血管、骨科等疑难病例可申请 MDT','会诊后 1 个工作日出《专家咨询报告》'],
+  suit:'诊断不明、方案不一的重大复杂疾病；希望获得第二意见再决定手术或用药；被诊断为疑难杂症找不到对口专家者。',
+  duration:'会诊约 45 分钟',resp:'24 小时响应、3 个工作日安排、1 个工作日出报告',
+  notice:['需提供完整病历、影像与检查报告','第二意见不替代正式病历诊断书，仅供临床参考','如病情紧急，请优先就近急诊'],
+  flow:['激活服务','资料审核','专家会诊','报告与转诊'],
+  orgs:['北大医疗互联网医院 · 专家会诊中心','北京大学国际医院']},
+ {id:'cloud',mod:'medical',name:'北大国际医院云门诊',en:'PKU International Hospital Cloud Outpatient Service',scope:'全国履约',payer:['社保','商保','自费'],tags:['40+ 科室','医保结算'],
+  intro:'北大国际医院互联网诊疗平台：线上复诊开方、开具检查单、医保实时结算、药品配送到家。',
+  includes:['40+ 科室专家在线，专属号源、预约响应及时','线上开具检查 / 住院申请单，到院直接做检查','北京医保线上实时结算，药品快递到家','一对一服务热线，操作疑问随时解答'],
+  suit:'常见病复诊、慢病续方、报告咨询、异地就医咨询，不方便到院的职工。',
+  duration:'约 20 分钟',resp:'当日号源，30 分钟内响应',
+  notice:['仅限常见病、慢性病复诊及健康咨询，不得首诊','线上处方与检查申请须经线下机构审核后执行','急危重症请立即前往急诊'],
+  flow:['登录小程序','选择科室医生','视频问诊','开方与配送'],
+  orgs:['北京大学国际医院 · 互联网医院']},
+ {id:'clinic',mod:'medical',name:'企业医务室',en:'On-site Corporate Clinic',scope:'属地到企',payer:['企康','职工福利费'],tags:['三种模式','驻场医护'],
+  intro:'云端医务室、健康小屋、集团版医务室三种模式按需定制，把常见病处置、慢病管理与急救搬到办公楼下。',
+  includes:['云端医务室（5–10㎡）：远程问诊、自助检测、急救箱','健康小屋（20–60㎡）：1–2 名医护 + 远程支持、轻伤应急','集团版（50–200㎡）：全科 / 专科医生 + 护士 + 药房与急救','日常诊疗、OTC 与处方药、慢病随访、中医理疗与心理支持'],
+  suit:'员工 500 人以上、园区偏远或多班次生产的企业；有职业健康管理需求的制造、能源类企业。',
+  duration:'按驻场排班',resp:'7×24 小时应急响应',
+  notice:['云端与健康小屋模式不涉及侵入性诊疗','集团版需取得《医疗机构执业许可证》','处方药须由执业医师开具'],
+  flow:['需求评估','模式选型','筹建招聘','常态运营'],
   orgs:['北大医疗企业健康服务团队']},
- {id:'eap',mod:'special',name:'EAP 心理咨询（压力 / 情绪 / 职场关系）',en:'Employee Assistance Program',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['7×24','全程保密'],
-  intro:'7×24 小时热线与面对面咨询，覆盖压力、情绪、亲子、婚恋与职场关系，全程保密。',
-  includes:['7×24 小时心理热线','每人每年 6 次 1v1 咨询','心理测评与危机干预转介','管理者心理风险培训'],
-  suit:'高压岗位、经历组织调整，或出现持续失眠焦虑的职工。',
-  orgs:['北大医疗心理服务中心','合作心理咨询师团队']},
- {id:'lecture',mod:'special',name:'定制化健康讲座（线上直播 / 线下沙龙）',en:'Customized Health Lecture',scope:'全国履约',payer:['工会经费','职工福利费','企康'],tags:['可定制选题','含回放'],
-  intro:'按企业人群画像选题，线上直播覆盖异地员工，线下沙龙做小范围深度互动。',
-  includes:['选题定制（颈腰 / 睡眠 / 三高 / 急救等）','线上直播 + 回放','线下沙龙（50 人以内）','课后答疑与资料包'],
-  suit:'希望做全员健康宣教、工会活动或党建主题活动的企业。',
+
+/* ---------- 特色服务 ---------- */
+ {id:'onsite',mod:'special',name:'专家入企健管服务',en:'On-site Corporate Health Management by Medical Experts',scope:'全国履约',payer:['职工福利费','工会经费','企康'],tags:['基础/标准/尊享','150+ 专家'],
+  intro:'把三甲医院专家请进企业：1V1 咨询、专家团义诊、健康讲座与驻场健康管理，按基础 / 标准 / 尊享三档配置。',
+  includes:['基础版：线上讲座、全科医生线上咨询、就医协助','标准版：副主任医师入企 1–2 次/年、时令主题活动 2–4 次/年','尊享版：主任医师每季度 1 次、核心人员 1V1、驻场医生可选','现场开方 + 医互平台下单 + 职场取药，5 步闭环'],
+  suit:'希望为核心人才提供稀缺医疗资源、提升组织健康氛围的企业；有高管保健与关键岗位健康保障需求。',
+  duration:'单次 2–4 小时',resp:'T+1 预约、T+3 检查加急、T+7 住院协调',
+  notice:['专家排期以实际档期为准，需提前 2 周预约','现场开方须符合互联网诊疗与处方管理规定','驻场服务需企业提供场地与基础设备'],
+  flow:['需求对接','专家匹配','现场服务','诊后延伸'],
+  orgs:['北京大学国际医院','北大医疗康复医院','北大医疗心理服务中心']},
+ {id:'lecture',mod:'special',name:'健康科普服务',en:'Corporate Health Lecture Service',scope:'全国履约',payer:['工会经费','职工福利费','企康'],tags:['200+ 主题','按节气排期'],
+  intro:'40+ 专科专家、200+ 定制主题，按行业与二十四节气排全年健康日历，线上直播与线下沙龙结合。',
+  includes:['全年 12 个月主题：寒养生、春季调养、体重管理、护肝、护眼、睡眠等','线下沉浸式讲座：专家授课 + 实操技能（CPR/AED）+ 健康市集','线上数字科普：每月 1–2 场直播，支持回放','定制健康手册：《职工健康手册》《慢病与生活》《就医快通指南》'],
+  suit:'希望建设年度健康文化、做职业病防治周、工会活动、新员工入职培训或退休职工关怀的企业。',
+  duration:'60–90 分钟 / 场',resp:'提前 7 天确认主题与场地',
+  notice:['线下场次需提供投影、音响与实操场地','讲座内容为健康科普，不替代诊疗','可按企业职业病谱与体检报告定制主题'],
+  flow:['选题定制','讲师匹配','现场 / 直播','回放与资料'],
   orgs:['北大医疗健康讲师团']},
- {id:'onsite',mod:'special',name:'入企 1v1 健康咨询',en:'On-site 1v1 Consultation',scope:'全国履约',payer:['企康','职工福利费'],tags:['医生坐诊','20分钟/人'],
-  intro:'全科、中医、心理医生定期到企业坐诊，员工午休时间即可完成一次面诊。',
-  includes:['医生定期坐诊（月度 / 季度）','每人 20 分钟 1v1 面诊','现场血压血糖与体质辨识','需转诊者直接预约院内'],
-  suit:'员工不便外出就医、希望提高健康服务触达率的园区企业。',
-  orgs:['北大医疗企业健康服务团队']},
- {id:'travel',mod:'special',name:'医旅康养服务',en:'Medical Wellness Retreat',scope:'全国履约',payer:['工会经费','职工福利费','自费'],tags:['3–7天','含随队医护'],
-  intro:'3–7 天康养行程，含中医理疗、体检复查与运动课程，兼顾休养与健康管理。',
-  includes:['康养基地住宿与膳食','中医理疗与体检复查','运动与睡眠课程','随队医护保障'],
-  suit:'高强度岗位休整、劳模与退休职工疗休养、党建主题活动。',
-  orgs:['北大医疗康养基地（北京 / 海南）']},
- {id:'fivegood',mod:'special',name:'五好生活',en:'Five Good Life Program',scope:'全国履约',payer:['工会经费','企康'],tags:['全员普惠','30天打卡'],
-  intro:'吃好、睡好、动好、心情好、关系好，五个轻量主题打卡，适合全员普惠式健康促进。',
-  includes:['5 大主题 30 天打卡','企业排行榜与部门 PK','健康积分兑换','年度健康白皮书'],
-  suit:'希望低门槛覆盖全员、提升健康氛围的企业与工会。',
-  orgs:['北大医疗企业健康服务团队']},
- {id:'firstaid',mod:'safety',name:'职场急救培训（持证）',en:'Workplace First Aid Certification',scope:'全国履约',payer:['企业安全生产费','职工福利费','工会经费'],tags:['4学时','发证书'],
-  intro:'心肺复苏、AED、气道梗阻与创伤处置，考核通过颁发急救员证书。',
-  includes:['4 学时理论 + 实操','AED 与 CPR 考核','红十字会 / 急救中心证书','年度复训提醒'],
-  suit:'安全生产重点岗位、园区安保、HR 与工会干部。',
-  orgs:['北大医疗急救培训中心']},
- {id:'env',mod:'safety',name:'职场环境健康安全服务（集体疫苗 / 消杀）',en:'Workplace Environment Health & Safety',scope:'全国履约',payer:['企业安全生产费','职工福利费','企康'],tags:['上门','季度报告'],
-  intro:'流感等集体疫苗接种、办公区与食堂消杀、空气质量检测，按季度形成环境健康报告。',
-  includes:['集体疫苗接种（上门）','办公区 / 食堂定期消杀','空气质量与饮用水检测','环境健康季度报告'],
-  suit:'人员密集办公、有多班次食堂、需应对季节性传染病的园区。',
+ {id:'eap',mod:'special',name:'心理健康管理服务（EAP）',en:'Mental Health Management Service',scope:'全国履约',payer:['职工福利费','工会经费'],tags:['7×24 热线','医疗级'],
+  intro:'医疗级 EAP：40+ 专职心理咨询医师、可开处方，覆盖测评、咨询、危机干预与管理者支持。',
+  includes:['免费 24 小时心理热线 400-100-1063','全维心理测评（SCL-90、MBI-GS、16PF），生成个人与组织风险地图','1V1 咨询 6 次/年，电话 / 视频 / 面询可选，全程保密','三级预防：全员讲座、中风险团辅、高风险 MDT 与危机干预'],
+  suit:'高压岗位、经历组织调整、出现持续失眠焦虑或职业倦怠的职工；需要管理者心理技能培训的企业。',
+  duration:'50 分钟 / 次',resp:'热线即时响应，咨询 48 小时内安排',
+  notice:['咨询内容全程保密，不进入企业人事记录','精神科诊疗与处方须线下就诊','危机个案按预案转介，必要时联系紧急联系人'],
+  flow:['测评建档','风险分级','咨询干预','跟踪转介'],
+  orgs:['北大医疗心理服务中心','北京大学国际医院 · 心理科']},
+ {id:'travel',mod:'special',name:'医旅康养服务',en:'Medical Tourism and Wellness Service',scope:'全国履约',payer:['工会经费','职工福利费','自费'],tags:['3 天 2 晚','含康复评估'],
+  intro:'康复评估 + 康养疗愈 + 文化游学：在温泉、园林与康复治疗中完成一次身心修复，适合劳模与退休职工疗休养。',
+  includes:['康复医院功能重建评估（1 天）：体能、认知、营养、骨关节深度评估','康养疗程：温泉汤池、恒温泳池、园林健步','健康赋能：全国劳模疗休养基地 3 天 2 晚、红色精神疗养','文化游学：故宫、国博、高校人文景观（按需定制）'],
+  suit:'骨关节困扰人群；退休党支部 / 工会需要合规、安全的疗休养活动；慢病与亚健康人群的功能维持。',
+  duration:'1–3 天',resp:'提前 10 个工作日预约',
+  notice:['温泉与运动项目需评估心血管风险','随队医护按人数配置','行程与住宿以最终确认单为准'],
+  flow:['需求沟通','行程定制','康养实施','评估反馈'],
+  orgs:['北大医疗康复医院','北大医疗康养基地']},
+ {id:'fivegood',mod:'special',name:'五好生活',en:'Five Good Life Program',scope:'全国履约',payer:['工会经费','职工福利费','企康'],tags:['五大主题','企业套餐'],
+  intro:'好好早筛、好好吃饭、好好运动、好好睡觉、好好放松：一站式企业健康福利平台，按 500/1000/2000 元档位采购。',
+  includes:['五大主题服务包，覆盖体检、营养、运动、睡眠、心理','企业专属套餐 500 / 1000 / 2000 元多档，可按节日预算组合','员工扫码核销，管理端查看使用数据','五好生活福利商城：体检卡、低 GI 食品、助眠与心理设备'],
+  suit:'希望用一份福利覆盖全员健康、提升员工获得感与雇主品牌的企业。',
+  duration:'年度',resp:'开通后 3 个工作日上线',
+  notice:['套餐内容以企业选购档位为准','商城商品由第三方供应，配送与售后按其规则','权益仅限本人使用，不可转赠'],
+  flow:['档位选择','员工开通','扫码使用','数据复盘'],
+  orgs:['北大医疗集团 · 企康办']},
+ {id:'vip',mod:'special',name:'企业家健康管理中心',en:'Executive Health Management Center',scope:'属地到院',payer:['企康','商保','自费'],tags:['710㎡ 专属空间','44 家商保直付'],
+  intro:'北大国际医院 710㎡ 专属健康空间：1+N 专家团队、全生命周期管理，支持 44 家商业保险直付。',
+  includes:['独立 VIP 诊室、治疗室、运动康复区与专属停车','F1316 体系：全科评估 + 功能医学检测 + MDT + 全周期管理','18 项精准干预：肿瘤易感基因、心脑血管深度筛查、抗衰、肠道菌群等','会员主卡 + 家属副卡（最多 5 位），全流程隐私保护'],
+  suit:'企业家、高管与核心人才；希望为自己与家人建立长期健康档案与就医通道的人群。',
+  duration:'年度会员',resp:'专属管家 24 小时内响应',
+  notice:['部分检查为自费或商保直付项目','PET-CT 等含辐射检查有明确禁忌','会员权益以签约档位为准'],
+  flow:['预约建档','深度评估','方案制定','年度管理'],
+  orgs:['北京大学国际医院 · 企业家健康管理中心']},
+
+/* ---------- 应急保障 ---------- */
+ {id:'firstaid',mod:'safety',name:'职场急救培训服务',en:'Workplace First Aid Training Service',scope:'全国履约',payer:['企业安全生产费','职工福利费','工会经费'],tags:['AHA 双认证','持证'],
+  intro:'北大医疗临床医师授课 + 美国心脏协会（AHA）国际认证，考核通过颁发全球 180 多国通用的急救证书。',
+  includes:['医院认证方案：30 人/组、2.5 小时，导师学员比 1:15','AHA 认证方案：12 人/组、4 小时，导师学员比 1:6','内容：成人 CPR、AED 使用、气道梗阻、晕厥癫痫处置','考核通过颁发证书，AHA 证书有效期 2 年'],
+  suit:'16 岁以上非医学专业员工；安全生产重点岗位、园区安保、HR 与工会干部。',
+  duration:'2.5–4 小时',resp:'提前 7 天预约排期',
+  notice:['需提供投影与实操场地、每人一套模型耗材','急救培训仅用于现场应急处置，不替代医疗救治','孕妇及骨关节伤病者请提前告知'],
+  flow:['需求确认','导师排期','现场培训','考核发证'],
+  orgs:['北大医疗急救培训中心','AHA 授权培训中心']},
+ {id:'env',mod:'safety',name:'职场环境健康安全服务',en:'Workplace Environment Health & Safety',scope:'全国履约',payer:['企业安全生产费','职工福利费','企康'],tags:['上门服务','季度报告'],
+  intro:'集体疫苗接种、办公区与食堂消杀、空气质量与饮用水检测，按季度形成环境健康报告。',
+  includes:['流感等集体疫苗接种（上门）','办公区 / 食堂定期消杀与病媒防制','空气质量、饮用水与中央空调检测','环境健康季度报告与整改建议'],
+  suit:'人员密集办公、有多班次食堂、需应对季节性传染病的园区与工厂。',
+  duration:'按场次',resp:'5 个工作日内排期',
+  notice:['疫苗接种需符合疾控要求并签署知情同意','消杀作业需提前清场并做好通风','检测报告由具备资质的机构出具'],
+  flow:['现场评估','方案排期','实施作业','报告与整改'],
   orgs:['北大医疗公共卫生服务团队']},
- {id:'event',mod:'safety',name:'大型活动应急保障（年会 / 运动会现场医护）',en:'Event Medical Support',scope:'全国履约',payer:['企业安全生产费','工会经费'],tags:['现场医护','含AED'],
-  intro:'医护团队与急救设备现场驻守，含 AED、担架与转运通道，覆盖年会、运动会与大型会议。',
-  includes:['现场医护驻守（按人数配比）','AED、急救包、担架','应急转运通道与就近医院联动','活动前风险评估'],
-  suit:'举办年会、运动会、开放日等大型聚集活动的企业。',
-  orgs:['北大医疗急救保障团队']}
+ {id:'event',mod:'safety',name:'大型活动应急保障服务',en:'Large-scale Event Emergency Support',scope:'全国履约',payer:['企业安全生产费','工会经费'],tags:['现场医护','含 AED'],
+  intro:'年会、运动会、开放日现场医护驻守，含 AED、担架与转运通道，重症可联动直升机与固定翼转运。',
+  includes:['专业急救 / 全科医生 + 资深护士现场值守','急救包、AED、便携超声、心电监护与远程会诊','院前急救—急诊科—ICU—专科病房全链条衔接','直升机（100–300km）/ 固定翼（跨省）航空转运'],
+  suit:'举办年会、运动会、产品发布会、大型展会与团建的企业；能源、矿山、建筑等高风险作业场景。',
+  duration:'按活动时长',resp:'提前 10 个工作日确认',
+  notice:['需提供活动人数、场地与流程','千人以上活动增配医护小组','航空转运按天气与空域批复执行'],
+  flow:['风险评估','医护配置','现场保障','复盘报告'],
+  orgs:['北大医疗海洋石油医院 · 紧急救援中心','北京大学国际医院 · 急危重症中心']}
 ];
 const INDUSTRIES=[
  {n:'互联网 / IT科技',s:'中大型 500人+',pain:'长期熬夜、久坐、高压；颈肩腰腿痛与睡眠障碍高发，心源性猝死风险不容忽视。',
@@ -1091,13 +1230,12 @@ const LECTURES=[
  {t:'久坐族的肩颈拉伸（已结束·可回看）',d:'10-23 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（回看有效期 30 天）',dur:'55 分钟',status:'ended',
   outline:['肩颈紧张的 3 个常见代偿动作','办公室可做的 4 个拉伸','拉伸的时长与频次怎么定','课后 7 天打卡计划']}
 ];
-const RIGHTS=[
- {pid:'annual-exam',name:'职工年度体检',benefit:'每年 1 次基础体检，含报告解读',total:'1 次 / 年',left:1,used:0,expiry:'2026-12-31'},
- {pid:'fast',name:'就医绿通',benefit:'副主任以上号源协调、院内陪诊、住院安排',total:'3 次 / 年',left:2,used:1,expiry:'2026-12-31'},
- {pid:'fivehigh',name:'五高一重管理',benefit:'建档 + 季度随访 + 医生按需介入',total:'1 年',left:1,used:0,expiry:'2026-12-31'},
- {pid:'eap',name:'EAP 心理咨询',benefit:'1v1 咨询，全程保密不进入企业记录',total:'6 次 / 年',left:4,used:2,expiry:'2026-12-31'},
- {pid:'firstaid',name:'职场急救培训',benefit:'CPR + AED 实操，考核通过发证',total:'1 次 / 年',left:1,used:0,expiry:'2026-12-31'},
- {pid:'weight',name:'减重训练营',benefit:'90 天医学减重，营养师与康复师带队',total:'1 期 / 年',left:0,used:1,expiry:'2026-12-31'}
+const FIVE=[
+ {k:'screen',name:'好好早筛',sub:'预见未来，掌控健康',icon:'scan',quota:'年度体检 1 次 + 专项筛查 3 选 1',left:1,pids:['annual-exam','cancer','gastro']},
+ {k:'food',name:'好好吃饭',sub:'精准营养，吃出员工生命力',icon:'bowl',quota:'营养评估 1 次 + 营养师咨询 2 次',left:2,pids:['fivehigh','weight']},
+ {k:'move',name:'好好运动',sub:'科学动练，焕发团队活力',icon:'walk',quota:'CPET 评估 1 次 + 训练营 1 期',left:1,pids:['cpet','heart','weight']},
+ {k:'sleep',name:'好好睡觉',sub:'修复身心，重获全员能量',icon:'sleep',quota:'睡眠监测 1 次 + CBT-I 4 次',left:1,pids:['sleep','eap']},
+ {k:'relax',name:'好好放松',sub:'释放压力，身心合一',icon:'chat',quota:'心理测评 + 1v1 咨询 6 次 / 年',left:4,pids:['eap','lecture']}
 ];
 const ARTICLES=[
  {t:'体检报告上的"结节"，多久复查一次才不焦虑',m:'健康科普 · 6 分钟阅读',mod:'screen',rel:'lung',
@@ -1122,7 +1260,7 @@ const state={
   view:'tab', tab:'home', product:null, from:'home',
   sel:new Set(), favs:new Set(), enrolled:new Map(), lecture:0, article:0, signed:false,
   openMods:new Set(['screen']), pq:'', appFilter:'all', lastCode:'',
-  remind:new Set(), artFav:new Set(), industry:0, hist:[], lecFilter:'all',
+  remind:new Set(), artFav:new Set(), industry:0, hist:[], lecFilter:'all', cat:'chronic',
   msgs:[
     {id:'m1',ic:'doc',title:'体检报告已生成',desc:'2026 年度体检报告已出，6 项指标需关注',time:'10-12',read:false,go:"archive:exam"},
     {id:'m2',ic:'calendar',title:'随访提醒',desc:'明天 09:30 健康管家张医生电话随访',time:'10-25',read:false,go:"apps"},
@@ -1147,7 +1285,7 @@ const TABS=[
 ];
 const $=id=>document.getElementById(id);
 const modOf=id=>MODULES.find(m=>m.id===id);
-const PICON={'annual-exam':'calendar','risk-report':'doc','risk-survey':'file','gastro':'search','cancer':'shield','sleep':'sleep','occupational':'shield','cpet':'pulse','inpatient':'hospital','fivehigh':'pulse','lung':'lung','heart':'heart','weight':'walk','rehab':'walk','tcm':'heart','fast':'hospital','second':'video','cloud':'video','clinic':'hospital','eap':'chat','lecture':'chat','onsite':'user','travel':'star','fivegood':'star','firstaid':'shield','env':'shield','event':'shield'};
+const PICON={'vip':'star','fivegood':'star','annual-exam':'calendar','risk-report':'doc','risk-survey':'file','gastro':'search','cancer':'shield','sleep':'sleep','occupational':'shield','cpet':'pulse','inpatient':'hospital','fivehigh':'pulse','lung':'lung','heart':'heart','weight':'walk','rehab':'walk','tcm':'heart','fast':'hospital','second':'video','cloud':'video','clinic':'hospital','eap':'chat','lecture':'chat','onsite':'user','travel':'star','fivegood':'star','firstaid':'shield','env':'shield','event':'shield'};
 const prod=id=>PRODUCTS.find(p=>p.id===id);
 const AVATAR=`<svg viewBox="0 0 64 64"><defs><linearGradient id="avg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF0E2"/><stop offset="1" stop-color="#FFD9BE"/></linearGradient><linearGradient id="avg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF8A3D"/><stop offset="1" stop-color="#F04E00"/></linearGradient></defs><rect width="64" height="64" fill="url(#avg)"/><path d="M32 36c8.8 0 16 6.6 17.6 16H14.4C16 42.6 23.2 36 32 36Z" fill="url(#avg2)"/><circle cx="32" cy="24" r="10.5" fill="#FFE0C8"/><path d="M21.5 23c0-7 4.7-11.5 10.5-11.5S42.5 16 42.5 23c0 1.6-.3 2.8-.8 3.6-1.4-4.4-5.2-7-9.7-7s-8.3 2.6-9.7 7c-.5-.8-.8-2-.8-3.6Z" fill="#4A2E22"/><path d="M28 29.5c1.2.8 2.5 1.2 4 1.2s2.8-.4 4-1.2" stroke="#C4633A" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="27.5" cy="24" r="1.2" fill="#4A2E22"/><circle cx="36.5" cy="24" r="1.2" fill="#4A2E22"/></svg>`;
 
@@ -1157,14 +1295,14 @@ function homeHTML(){
   const grid=[
     ['calendar','体检预约','#FFF1E7','#F5520A',"openProduct('annual-exam')"],
     ['hospital','就医快通','#EDF3FF','#1F4FD1',"openProduct('fast')"],
-    ['pulse','五高管理','#E9F7F1','#0A7A55',"openProduct('fivehigh')"],
-    ['heart','心理EAP','#FDEEF4','#BE2A5E',"openProduct('eap')"],
-    ['shield','急救培训','#FFF6E0','#A86A06',"openProduct('firstaid')"],
+    ['pulse','慢病管理','#E9F7F1','#0A7A55',"openCategory('chronic')"],
+    ['heart','心理健康','#FDEEF4','#BE2A5E',"openProduct('eap')"],
     ['video','云门诊','#EDF3FF','#1F4FD1',"openProduct('cloud')"],
-    ['walk','减重营','#E9F7F1','#0A7A55',"openProduct('weight')"],
-    ['chat','健康讲座','#FFF1E7','#F5520A',"openLectureList()"],
-    ['file','健康档案','#F1F2F6','#4A4E55',"openArchive('exam')"],
-    ['wallet','我的权益','#FFF6E0','#A86A06',"openRights()"]
+    ['shield','急救培训','#FFF6E0','#A86A06',"openProduct('firstaid')"],
+    ['plus','企业医务室','#E9F7F1','#0A7A55',"openProduct('clinic')"],
+    ['user','专家入企','#FFF1E7','#F5520A',"openProduct('onsite')"],
+    ['chat','健康讲座','#FDEEF4','#BE2A5E',"openLectureList()"],
+    ['star','五好生活','#FFF6E0','#A86A06',"openRights()"]
   ];
   return `<div class="view fade-in">
   <div class="scroll">
@@ -1179,10 +1317,11 @@ function homeHTML(){
         <div class="g-tx"><b>你好，王莉</b><span>国家电网 · 华东分部</span></div>
         <span class="g-tag">职工权益已开通</span>
       </div>
-      <h1 class="title">职工健康服务<em>5 大类 ${PRODUCTS.length} 项，体检、就医、慢病、心理都能直接约</em></h1>
+      <div class="brandline">北大医疗集团</div>
+      <h1 class="title">您的企业员工健康管家<em>筛、诊、治、康　全生命周期守护</em></h1>
       <button class="bigsearch" onclick="openSearch()">${ico('search')}<span>搜索服务、症状或机构</span></button>
       <div class="hotline">
-        ${['体检报告解读','就医绿通','五高管理','心理咨询','睡眠改善'].map(k=>`<button onclick="quickSearch('${k}')">${k}</button>`).join('')}
+        ${['体检报告解读','就医快通','慢病管理','心理咨询','睡眠改善'].map(k=>`<button onclick="quickSearch('${k}')">${k}</button>`).join('')}
       </div>
     </div>
 
@@ -1344,13 +1483,14 @@ const DETAIL_META={
 function detailHTML(p){
   if(!p)return '';
   const m=modOf(p.mod), meta=DETAIL_META[p.mod];
-  const flow={
+  const flow=p.flow||{
     screen:['预约登记','到院检查 / 线上评估','报告出具','医生解读'],
     chronic:['健康建档','方案制定','周期干预','复评调优'],
     medical:['需求提交','资源匹配','就诊 / 面诊','诊后随访'],
     special:['需求评估','匹配顾问','服务实施','反馈建档'],
     safety:['需求沟通','方案排期','现场实施','演练复盘']
   }[p.mod];
+  const notice=p.notice||meta.notice, duration=p.duration||meta.time, resp=p.resp||meta.resp;
   return `<div class="view subview detail slide-in">
     <div class="dnav-fixed" id="dnavFixed">
       <button class="bck" onclick="back()">${ico('left')}</button>
@@ -1368,8 +1508,8 @@ function detailHTML(p){
         <p class="en">${p.en}</p>
         <p class="d-intro">${p.intro}</p>
         <div class="d-meta">
-          <div><span>服务时长</span><b>${meta.time}</b></div>
-          <div><span>响应时效</span><b>${meta.resp}</b></div>
+          <div><span>服务时长</span><b>${duration}</b></div>
+          <div><span>响应时效</span><b>${resp}</b></div>
           <div><span>支出来源</span><b>${p.payer[0]}</b></div>
         </div>
       </div>
@@ -1398,7 +1538,7 @@ function detailHTML(p){
 
       <div class="dcard">
         <h4>预约须知</h4>
-        ${meta.notice.map(n=>`<div class="note">${ico('info',13)}<span>${n}</span></div>`).join('')}
+        ${notice.map(n=>`<div class="note">${ico('info',13)}<span>${n}</span></div>`).join('')}
       </div>
 
       <div class="brands"><div>北京大学国际医院</div><i></i><div>北大医疗康复医院</div><i></i><div>企康办</div></div>
@@ -1606,7 +1746,7 @@ function mineHTML(){
 
       <div class="section-title"><h3>更多</h3></div>
       <div class="mcard" style="margin:0 14px">
-        ${[['wallet','我的权益','5 项可用','openRights()'],['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
+        ${[['star','五好生活','5 大主题','openRights()'],['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
           <div class="mrow" onclick="${r[3]}">
             <div class="mi2" style="background:#F4F5F7;color:#5E626A">${ico(r[0])}</div>
             <div>${r[1]}</div>
@@ -1755,30 +1895,61 @@ function scene(kind,c1,c2){
 }
 const LSCENE=[['sleep','#F7A862','#B9420A'],['talk','#E995B0','#8E2E52'],['firstaid','#F3C463','#A05C0C']];
 const ASCENE=[['checkup','#83B9A6','#2C6350'],['report','#F1A873','#A9470F'],['run','#93ACD9','#2B4A80']];
+function openCategory(id){navTo({view:'category',cat:id});}
+function categoryHTML(){
+  const m=MODULES.find(x=>x.id===state.cat)||MODULES[0];
+  const items=PRODUCTS.filter(p=>p.mod===m.id);
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>${m.name}</b></div>
+    <div class="scroll">
+      <div class="cat-hero" style="background:${THEME[m.id]}">
+        <span>${m.sub}</span>
+        <h1>${m.name}</h1>
+        <p>${items.length} 项服务 · 点击查看介绍与预约</p>
+      </div>
+      ${items.map(p=>`<div class="citem" onclick="openProduct('${p.id}')">
+        <div class="ci-ic">${ico(PICON[p.id]||m.icon,20)}</div>
+        <div class="ci-tx">
+          <b>${p.name}</b>
+          <p>${p.intro}</p>
+          <div class="ci-tags"><span>${p.scope}</span><span>${p.tags[0]}</span></div>
+        </div>
+        <span class="arw">${ico('chev',14)}</span>
+      </div>`).join('')}
+      <div class="bnote">${ico('info',13)}<span>具体服务内容、次数与履约范围以企业协议及预约确认页为准。</span></div>
+      <div style="height:20px"></div>
+    </div>
+  </div>`;
+}
 function openRights(){navTo({view:'rights'});}
 function rightsHTML(){
-  const active=RIGHTS.filter(r=>r.left>0).length;
+  const active=FIVE.filter(r=>r.left>0).length;
   return `<div class="view subview slide-in" style="background:#F5F6F8">
-    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>我的权益</b></div>
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>五好生活</b></div>
     <div class="scroll">
-      <div class="rsum">
-        <div><b>${active}</b><span>项可用权益</span></div>
-        <div><b>6</b><span>项已开通</span></div>
-        <div><b>2026</b><span>有效期至 12-31</span></div>
+      <div class="fhero">
+        <div class="fh-t">健康，是 1，其他是 0</div>
+        <div class="fh-s">好好早筛 · 好好吃饭 · 好好运动 · 好好睡觉 · 好好放松</div>
+        <div class="fh-m"><span>${active} 项可用</span><span>2026 年度</span><span>员工扫码核销</span></div>
       </div>
-      <div class="section-title"><h3>健康服务权益</h3><span>企业已开通</span></div>
-      ${RIGHTS.map(r=>{const p=prod(r.pid),m=modOf(p.mod);return `
-        <div class="rcard2 ${r.left?'':'off'}" onclick="openProduct('${r.pid}')">
-          <div class="rc-ico" style="background:${m.tint};color:${m.ink}">${ico(PICON[r.pid]||m.icon,19)}</div>
-          <div class="rc-tx">
-            <b>${r.name}</b>
-            <span>${r.benefit}</span>
-            <div class="rc-meta"><i>${r.total}</i><i>剩余 ${r.left}</i><i>至 ${r.expiry}</i></div>
+      ${FIVE.map((r,idx)=>{
+        const m=modOf(prod(r.pids[0]).mod);
+        return `<div class="fcard">
+          <div class="fc-h">
+            <div class="fc-ico" style="background:${m.tint};color:${m.ink}">${ico(r.icon,19)}</div>
+            <div class="fc-t"><b>${r.name}</b><span>${r.sub}</span></div>
+            <span class="fc-left ${r.left?'':'off'}">剩余 ${r.left}</span>
           </div>
-          <span class="rc-use ${r.left?'':'off'}">${r.left?'去使用':'已用完'}</span>
+          <div class="fc-q">${r.quota}</div>
+          <div class="fc-chips">${r.pids.map(pid=>{const p=prod(pid);return `<button onclick="openProduct('${pid}')">${p.name.replace('服务','').replace('（EAP）','')}</button>`}).join('')}</div>
         </div>`}).join('')}
-      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;padding:16px 24px;line-height:1.7">权益由企业职工福利费与工会经费配置，仅限本人使用，年度清零。<br>具体次数与范围以企业协议为准。</div>
-      <div style="height:12px"></div>
+      <div class="section-title"><h3>企业专属套餐</h3><span>按预算选购</span></div>
+      <div class="tiers">
+        ${[['500','基础档','体检 + 营养'],['1000','标准档','+ 运动 + 睡眠'],['2000','尊享档','五项全覆盖']].map(t=>`
+          <div class="tier"><b>${t[0]}</b><i>元 / 人 / 年</i><span>${t[1]}</span><em>${t[2]}</em></div>`).join('')}
+      </div>
+      <div class="bnote">${ico('info',13)}<span>权益由企业职工福利费与工会经费配置，仅限本人使用，年度清零；具体次数与范围以企业协议为准。</span></div>
+      <div style="height:20px"></div>
     </div>
   </div>`;
 }
@@ -1989,8 +2160,8 @@ function openIndustry(){
 /* ---------------- mine ---------------- */
 /* ---------------- search (fuzzy) ---------------- */
 const SEARCH_SYN={
- '绿通':['快通','就医','挂号','陪诊'],
- '快通':['绿通'],
+ '快通':['快通','就医','挂号','陪诊','绿通'],
+ '绿通':['快通','就医'],
  '体检':['体检','检查','筛查'],
  '报告':['报告','解读','结论'],
  '解读':['解读','报告'],
@@ -2000,6 +2171,7 @@ const SEARCH_SYN={
  '咨询':['咨询','EAP','问诊','面诊'],
  '减重':['减重','体重','脂肪肝','肥胖'],
  '五高':['五高','血压','血糖','血脂','尿酸'],
+ '慢病':['慢病','五高','血压','血糖','减重','体重','结节','康复'],
  '就医':['就医','挂号','陪诊','住院'],
  '挂号':['挂号','就医','快通'],
  '急救':['急救','CPR','AED','心肺'],
@@ -2320,6 +2492,7 @@ function render(){
   else if(state.view==='quota'){root.innerHTML=quotaHTML();}
   else if(state.view==='industry'){root.innerHTML=industryHTML();}
   else if(state.view==='rights'){root.innerHTML=rightsHTML();}
+  else if(state.view==='category'){root.innerHTML=categoryHTML();}
   else if(state.view==='lectures'){root.innerHTML=lecturesHTML();}
   else if(state.view==='success'){root.innerHTML=successHTML();}
   renderTabbar();
