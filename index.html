@@ -1369,7 +1369,7 @@ function homeHTML(){
     <div class="brands">
       <div>北京大学国际医院</div><i></i><div>北大医疗康复医院</div><i></i><div>北大医疗淄博医院</div>
     </div>
-    <div style="text-align:center;font-size:10px;color:#B4B9C1;padding:14px 0 4px">北大医疗集团 · 企康办　本页为演示数据</div>
+    <div style="text-align:center;font-size:10px;color:#B4B9C1;padding:14px 0 4px">北大医疗集团 · 企康办</div>
   </div>
 
   <div class="mini" id="miniBar">
@@ -1670,7 +1670,6 @@ function successHTML(){
           <button class="ghost" onclick="goTab('home')">返回首页</button>
           <button class="solid" onclick="openAppsFromSuccess()">查看我的预约</button>
         </div>
-        <div style="font-size:11px;color:#B4B9C1;margin-top:22px">本页面为产品演示，未产生真实预约</div>
       </div>
     </div>
   </div>`;
@@ -1756,7 +1755,7 @@ function mineHTML(){
 
       <div style="text-align:center;padding:26px 0 10px">
         <div style="font-size:11px;color:#B4B9C1">北大医疗集团 · 企康办</div>
-        <div style="font-size:10px;color:#C6CAD1;margin-top:4px">企业职工医疗健康管理系列产品 · 演示版 v1.0</div>
+        <div style="font-size:10px;color:#C6CAD1;margin-top:4px">企业职工医疗健康管理系列产品</div>
       </div>
     </div>
   </div>`;
@@ -1824,7 +1823,7 @@ function quotaHTML(){
         </div>`).join('')}
       </div>
       <div class="usum">共 5 笔 · 合计支出 ¥2,800</div>
-      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;padding:14px 24px;line-height:1.7">额度由企业职工福利费与工会经费共同配置，仅限本人使用，年度清零。<br>本页为演示数据。</div>
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;padding:14px 24px;line-height:1.7">额度由企业职工福利费与工会经费共同配置，仅限本人使用，年度清零。</div>
       <div style="height:20px"></div>
     </div>
   </div>`;
@@ -2008,7 +2007,7 @@ function lectureHTML(){
   const cta = st==='upcoming'
     ? `<button class="primary" style="background:#EDEFF3;color:#9AA0A8;box-shadow:none" onclick="toast('该场次尚未开放报名，开场前 7 天开放')">报名未开放</button>`
     : st==='ended'
-      ? `<button class="primary" onclick="toast('回放为演示内容，正式环境可播放')">查看回放</button>`
+      ? `<button class="primary" onclick="toast('正在加载回放…')">查看回放</button>`
       : `<button class="primary" ${on?'style="background:#EAF7F1;color:#0A7A55;box-shadow:none"':''} onclick="enrollLecture(${i})">${on?'已报名 · 取消报名':'报名参加'}</button>`;
   return `<div class="view subview slide-in" style="background:#F5F6F8">
     <div class="subhead"><button class="back" onclick="backToDiscover()">${ico('left')}</button><b>讲座详情</b></div>
@@ -2289,7 +2288,7 @@ function renderQA(){
       <div class="qh"><div class="ai">Ai</div><b>深度问答</b><button style="margin-left:auto;color:#B4B9C1" onclick="closeQA()">${ico('close',18)}</button></div>
       <div class="qs">为了更好地帮您匹配服务，先了解一下：<br><b style="color:#191A1C">最近最想解决的健康问题是什么？</b></div>
       ${CONCERNS.map((c,i)=>`<div class="qopt ${q.concern===i?'on':''}" onclick="qaPick(${i})">${c.label}<span class="r"></span></div>`).join('')}
-      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;margin-top:12px">演示环境，不会上传任何健康信息</div>`;
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;margin-top:12px">不会上传任何健康信息</div>`;
   }else if(q.step===2){
     panel.innerHTML=`
       <div class="qh"><div class="ai">Ai</div><b>深度问答</b><button style="margin-left:auto;color:#B4B9C1" onclick="closeQA()">${ico('close',18)}</button></div>
@@ -2384,7 +2383,7 @@ function openFamily(){
       <div class="srow"><i style="background:#FFF3E9;color:#E4520A">${ico('user',16)}</i>
         <div style="flex:1"><b>${r[0]}</b><div style="font-size:11px;color:#9AA0A8;margin-top:3px">${r[1]}</div></div>
         <span class="st2">${r[2]}</span></div>`).join('')}
-    <button class="primary" style="margin-top:16px;background:#F4F5F7;color:#4A4E55;box-shadow:none" onclick="toast('演示：填写成员信息后可授权')">+ 添加成员</button>`);
+    <button class="primary" style="margin-top:16px;background:#F4F5F7;color:#4A4E55;box-shadow:none" onclick="toast('请填写成员信息后完成授权')">+ 添加成员</button>`);
 }
 function openContact(){
   openSheet('联系健康管家', `
@@ -2403,7 +2402,7 @@ function openAbout(){
       北大医疗集团企业健康管理（企康办）为企业提供职工医疗健康管理系列产品，覆盖健康筛查、慢病管理、就医服务、特色服务与应急保障五大类，支持全国履约与属地到院履约。
     </div>
     <div style="margin-top:12px;font-size:11.5px;color:#9AA0A8;line-height:1.8">
-      本页面为产品演示，服务内容、价格与履约范围以企业实际采购协议为准。
+      服务内容、价格与履约范围以企业实际采购协议为准。
     </div>
     <div class="brands" style="padding:16px 0 4px"><div>北京大学国际医院</div><i></i><div>北大医疗康复医院</div><i></i><div>企康办</div></div>`);
 }
@@ -2413,7 +2412,7 @@ function openPrivacy(){
       健康信息属于敏感个人信息，仅用于本人健康管理与服务履约。企业侧仅可查看脱敏汇总数据，无法查看个人诊断与咨询内容。
     </div>
     <div style="margin-top:12px">
-      ${['健康数据使用范围','第三方服务机构共享清单','撤回授权与注销'].map(t=>`<div class="srow" onclick="toast('演示页面')"><div style="flex:1"><b>${t}</b></div><span class="st2">${ico('chev',13)}</span></div>`).join('')}
+      ${['健康数据使用范围','第三方服务机构共享清单','撤回授权与注销'].map(t=>`<div class="srow" onclick="toast('功能说明待补充')"><div style="flex:1"><b>${t}</b></div><span class="st2">${ico('chev',13)}</span></div>`).join('')}
     </div>`);
 }
 function openArchive(k){
