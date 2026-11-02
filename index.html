@@ -1284,6 +1284,14 @@ const LECTURES=[
  {t:'久坐族的肩颈拉伸（已结束·可回看）',d:'10-23 周四 19:30',tag:'线上直播',n:'康复治疗师 · 李静',place:'线上直播（回看有效期 30 天）',dur:'55 分钟',status:'ended',
   outline:['肩颈紧张的 3 个常见代偿动作','办公室可做的 4 个拉伸','拉伸的时长与频次怎么定','课后 7 天打卡计划']}
 ];
+const RIGHTS=[
+ {pid:'annual-exam',name:'职工年度体检',benefit:'每年 1 次基础体检，含报告解读',total:'1 次 / 年',left:1,used:0},
+ {pid:'fast',name:'职工就医快通',benefit:'专家号源协调、院内陪诊、住院安排',total:'3 次 / 年',left:2,used:1},
+ {pid:'fivehigh',name:'五高一重管理',benefit:'建档 + 季度随访 + 医生按需介入',total:'1 年',left:1,used:0},
+ {pid:'eap',name:'心理健康管理（EAP）',benefit:'1v1 咨询，全程保密不进入企业记录',total:'6 次 / 年',left:4,used:2},
+ {pid:'firstaid',name:'职场急救培训',benefit:'CPR + AED 实操，考核通过发证',total:'1 次 / 年',left:1,used:0},
+ {pid:'weight',name:'减重训练营',benefit:'90 天医学减重，营养师与康复师带队',total:'1 期 / 年',left:0,used:1}
+];
 const FIVE=[
  {k:'screen',name:'好好早筛',sub:'预见未来，掌控健康',icon:'scan',quota:'年度体检 1 次 + 专项筛查 3 选 1',left:1,pids:['annual-exam','cancer','gastro']},
  {k:'food',name:'好好吃饭',sub:'精准营养，吃出员工生命力',icon:'bowl',quota:'营养评估 1 次 + 营养师咨询 2 次',left:2,pids:['fivehigh','weight']},
@@ -1356,7 +1364,7 @@ function homeHTML(){
     ['plus','企业医务室','#E9F7F1','#0A7A55',"openProduct('clinic')"],
     ['user','专家入企','#FFF1E7','#F5520A',"openProduct('onsite')"],
     ['chat','健康讲座','#FDEEF4','#BE2A5E',"openLectureList()"],
-    ['star','五好生活','#FFF6E0','#A86A06',"openRights()"]
+    ['star','五好生活','#FFF6E0','#A86A06',"openFive()"]
   ];
   return `<div class="view fade-in">
   <div class="scroll">
@@ -1814,7 +1822,7 @@ function mineHTML(){
 
       <div class="section-title"><h3>更多</h3></div>
       <div class="mcard" style="margin:0 14px">
-        ${[['star','五好生活','5 大主题','openRights()'],['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
+        ${[['wallet','我的权益','6 项权益','openMyRights()'],['users','家庭成员','未添加','openFamily()'],['phone','联系健康管家','400-820-8866','openContact()'],['info','关于企业健康服务','企康办','openAbout()'],['set','隐私与授权','仅本人可见','openPrivacy()']].map(r=>`
           <div class="mrow" onclick="${r[3]}">
             <div class="mi2" style="background:#F4F5F7;color:#5E626A">${ico(r[0])}</div>
             <div>${r[1]}</div>
@@ -1989,8 +1997,35 @@ function categoryHTML(){
     </div>
   </div>`;
 }
-function openRights(){navTo({view:'rights'});}
+function openMyRights(){navTo({view:'rights'});}
 function rightsHTML(){
+  const active=RIGHTS.filter(r=>r.left>0).length;
+  return `<div class="view subview slide-in" style="background:#F5F6F8">
+    <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>我的权益</b></div>
+    <div class="scroll">
+      <div class="rsum">
+        <div><b>${active}</b><span>项可用权益</span></div>
+        <div><b>${RIGHTS.length}</b><span>项已开通</span></div>
+        <div><b>2026</b><span>有效期至 12-31</span></div>
+      </div>
+      <div class="section-title"><h3>健康服务权益</h3><span>企业已开通</span></div>
+      ${RIGHTS.map(r=>{const p=prod(r.pid),m=modOf(p.mod);return `
+        <div class="rcard2 ${r.left?'':'off'}" onclick="openProduct('${r.pid}')">
+          <div class="rc-ico" style="background:${m.tint};color:${m.ink}">${ico(PICON[r.pid]||m.icon,19)}</div>
+          <div class="rc-tx">
+            <b>${r.name}</b>
+            <span>${r.benefit}</span>
+            <div class="rc-meta"><i>${r.total}</i><i>剩余 ${r.left}</i><i>至 2026-12-31</i></div>
+          </div>
+          <span class="rc-use ${r.left?'':'off'}">${r.left?'去使用':'已用完'}</span>
+        </div>`}).join('')}
+      <div style="font-size:10.5px;color:#B4B9C1;text-align:center;padding:16px 24px;line-height:1.7">权益由企业职工福利费与工会经费配置，仅限本人使用，年度清零。<br>具体次数与范围以企业协议为准。</div>
+      <div style="height:12px"></div>
+    </div>
+  </div>`;
+}
+function openFive(){navTo({view:'five'});}
+function fiveHTML(){
   const active=FIVE.filter(r=>r.left>0).length;
   return `<div class="view subview slide-in" style="background:#F5F6F8">
     <div class="subhead"><button class="back" onclick="back()">${ico('left')}</button><b>五好生活</b></div>
@@ -2728,6 +2763,7 @@ function render(){
   else if(state.view==='messages'){root.innerHTML=messagesHTML();}
   else if(state.view==='quota'){root.innerHTML=quotaHTML();}
   else if(state.view==='industry'){root.innerHTML=industryHTML();}
+  else if(state.view==='five'){root.innerHTML=fiveHTML();}
   else if(state.view==='rights'){root.innerHTML=rightsHTML();}
   else if(state.view==='category'){root.innerHTML=categoryHTML();}
   else if(state.view==='archive'){root.innerHTML=archiveHTML();}
