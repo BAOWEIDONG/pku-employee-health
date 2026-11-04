@@ -948,7 +948,7 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .bc-sub{font-size:11.5px;color:#6C7F96;margin-top:10px;letter-spacing:.2px}
 
 /* home brand banner */
-.brandbanner{position:relative;z-index:3;margin:16px 16px 0;height:172px;border-radius:18px;overflow:hidden;box-shadow:0 14px 30px -18px rgba(120,50,0,.55)}
+.brandbanner{position:relative;z-index:3;margin:16px 16px 0;height:172px;border-radius:18px;overflow:hidden;box-shadow:0 14px 30px -18px rgba(120,50,0,.55);touch-action:pan-y}
 .bsB{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:5px;background:linear-gradient(150deg,#FDFAF4,#F6EFE3);opacity:0;transition:opacity .55s ease;pointer-events:none}
 .bsB.on{opacity:1;pointer-events:auto}
 .bb-brand{font-size:11.5px;font-weight:700;letter-spacing:1.2px;color:#1A5FA8}
@@ -2786,17 +2786,35 @@ function renderTabbar(){
   </button>`).join('');
 }
 const VIEWS={home:homeHTML,products:productsHTML,discover:discoverHTML,mine:mineHTML};
-let brandTimer=null;
+let brandTimer=null, brandIdx=0;
+function brandGo(n){
+  const slides=document.querySelectorAll('.bsB'), dots=document.querySelectorAll('.bdotsB i');
+  if(!slides.length)return;
+  brandIdx=((n%slides.length)+slides.length)%slides.length;
+  slides.forEach((x,i)=>x.classList.toggle('on',i===brandIdx));
+  dots.forEach((x,i)=>x.classList.toggle('on',i===brandIdx));
+}
+function brandAuto(){ clearInterval(brandTimer); brandTimer=setInterval(()=>brandGo(brandIdx+1),4200); }
 function startBrandBanner(){
-  clearInterval(brandTimer);
-  let i=0;
-  brandTimer=setInterval(()=>{
-    const slides=document.querySelectorAll('.bsB'), dots=document.querySelectorAll('.bdotsB i');
-    if(!slides.length){clearInterval(brandTimer);return;}
-    i=(i+1)%slides.length;
-    slides.forEach((x,n)=>x.classList.toggle('on',n===i));
-    dots.forEach((x,n)=>x.classList.toggle('on',n===i));
-  },4200);
+  clearInterval(brandTimer); brandGo(0);
+  const el=document.getElementById('brandBanner'); if(!el)return;
+  brandAuto();
+  let sx=0,sy=0,dx=0,dragging=false,lastDrag=0;
+  el.addEventListener('pointerdown',e=>{dragging=true;sx=e.clientX;sy=e.clientY;dx=0;clearInterval(brandTimer);});
+  el.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    dx=e.clientX-sx;
+    if(Math.abs(dx)>8&&Math.abs(dx)>Math.abs(e.clientY-sy)){e.preventDefault();}
+  });
+  const endDrag=()=>{
+    if(!dragging)return; dragging=false;
+    if(Math.abs(dx)>45){ brandGo(brandIdx+(dx<0?1:-1)); lastDrag=Date.now(); }
+    dx=0; brandAuto();
+  };
+  el.addEventListener('pointerup',endDrag);
+  el.addEventListener('pointercancel',()=>{dragging=false;dx=0;brandAuto();});
+  el.addEventListener('pointerleave',()=>{if(dragging){dragging=false;dx=0;brandAuto();}});
+  el.addEventListener('click',e=>{ if(Date.now()-lastDrag<350){e.stopPropagation();e.preventDefault();} },true);
 }
 let bannerTimer=null;
 function startBanner(){
