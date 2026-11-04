@@ -946,6 +946,18 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .brandcard{position:relative;z-index:3;margin:16px 16px 0;background:linear-gradient(150deg,#FDFAF4,#F6EFE3);border-radius:18px;padding:16px 18px;box-shadow:0 14px 30px -18px rgba(120,50,0,.55)}
 .bc-title{font-size:21px;line-height:1.45;font-weight:800;letter-spacing:-.2px;color:#1A5FA8}
 .bc-sub{font-size:11.5px;color:#6C7F96;margin-top:10px;letter-spacing:.2px}
+
+/* home brand banner */
+.brandbanner{position:relative;z-index:3;margin:16px 16px 0;height:172px;border-radius:18px;overflow:hidden;box-shadow:0 14px 30px -18px rgba(120,50,0,.55)}
+.bsB{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:5px;background:linear-gradient(150deg,#FDFAF4,#F6EFE3);opacity:0;transition:opacity .55s ease;pointer-events:none}
+.bsB.on{opacity:1;pointer-events:auto}
+.bb-brand{font-size:11.5px;font-weight:700;letter-spacing:1.2px;color:#1A5FA8}
+.bb-title{font-size:21px;line-height:1.42;font-weight:800;letter-spacing:-.2px;color:#1A5FA8;margin-top:2px}
+.bsB .bb-tag{align-self:flex-start;font-size:10px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.32)}
+.bb-sub{font-size:11.5px;color:#6C7F96;letter-spacing:.2px;margin-top:4px}
+.bdotsB{position:absolute;right:12px;bottom:12px;z-index:4;display:flex;gap:4px;padding:4px 7px;border-radius:9px;background:rgba(255,255,255,.55);backdrop-filter:blur(4px)}
+.bdotsB i{width:5px;height:5px;border-radius:3px;background:rgba(26,95,168,.28);transition:.3s}
+.bdotsB i.on{width:14px;background:#1A5FA8}
 </style>
 </head>
 <body>
@@ -1386,9 +1398,23 @@ function homeHTML(){
         <div class="g-tx"><b>你好，杨君</b><span>国家电网 · 华东分部</span></div>
         <span class="g-tag">健康权益已开通</span>
       </div>
-      <div class="brandcard">
-        <div class="bc-title">北大医疗企业职工医疗<br>健康管理系列产品</div>
-        <div class="bc-sub">筛、诊、治、康　全生命周期守护</div>
+      <div class="brandbanner" id="brandBanner">
+        <div class="bsB on" onclick="goTab('products')">
+          <div class="bb-brand">北大医疗</div>
+          <div class="bb-title">企业职工医疗<br>健康管理系列产品</div>
+          <div class="bb-sub">筛、诊、治、康　全生命周期守护</div>
+        </div>
+        <div class="bsB" style="background:linear-gradient(145deg,#12916A,#07503B)" onclick="openFive()">
+          <div class="bb-tag">企业专属福利</div>
+          <div class="bb-title" style="color:#fff">五好生活</div>
+          <div class="bb-sub" style="color:rgba(255,255,255,.84)">好好早筛 · 吃饭 · 运动 · 睡觉 · 放松</div>
+        </div>
+        <div class="bsB" style="background:linear-gradient(145deg,#1A5FA8,#0D3260)" onclick="openProduct('vip')">
+          <div class="bb-tag">高端会员</div>
+          <div class="bb-title" style="color:#fff">企业家健康管理中心</div>
+          <div class="bb-sub" style="color:rgba(255,255,255,.84)">710㎡ 专属空间 · 44 家商保直付</div>
+        </div>
+        <div class="bdotsB"><i class="on"></i><i></i><i></i></div>
       </div>
       <button class="bigsearch" onclick="openSearch()">${ico('search')}<span>搜索服务、症状或机构</span></button>
       <div class="hotline">
@@ -2760,6 +2786,18 @@ function renderTabbar(){
   </button>`).join('');
 }
 const VIEWS={home:homeHTML,products:productsHTML,discover:discoverHTML,mine:mineHTML};
+let brandTimer=null;
+function startBrandBanner(){
+  clearInterval(brandTimer);
+  let i=0;
+  brandTimer=setInterval(()=>{
+    const slides=document.querySelectorAll('.bsB'), dots=document.querySelectorAll('.bdotsB i');
+    if(!slides.length){clearInterval(brandTimer);return;}
+    i=(i+1)%slides.length;
+    slides.forEach((x,n)=>x.classList.toggle('on',n===i));
+    dots.forEach((x,n)=>x.classList.toggle('on',n===i));
+  },4200);
+}
 let bannerTimer=null;
 function startBanner(){
   clearInterval(bannerTimer);
@@ -2807,7 +2845,8 @@ function render(){
   else if(state.view==='success'){root.innerHTML=successHTML();}
   renderTabbar();
   const sc=document.querySelector('.scroll'); if(sc)sc.scrollTop=0;
-  if(state.view==='tab'&&state.tab==='home')startBanner(); else clearInterval(bannerTimer);
+  if(state.view==='tab'&&state.tab==='home'){startBanner();startBrandBanner();}
+  else{clearInterval(bannerTimer);clearInterval(brandTimer);}
   mount();
 }
 fitViewport();
