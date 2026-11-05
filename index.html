@@ -1501,6 +1501,10 @@ function fitViewport(){
 fitViewport();
 window.addEventListener('resize',fitViewport);
 window.addEventListener('orientationchange',()=>setTimeout(fitViewport,120));
+window.addEventListener('popstate',()=>{
+  const p=state.hist.pop();
+  if(p){Object.assign(state,p);render();}
+});
 if(window.visualViewport)window.visualViewport.addEventListener('resize',fitViewport);
 
 /* ---------------- products (search + accordion) ---------------- */
@@ -1666,13 +1670,17 @@ function detailHTML(p){
   </div>`;
 }
 function snap(){return {view:state.view,tab:state.tab,product:state.product,lecture:state.lecture,article:state.article,industry:state.industry};}
-function navTo(u){state.hist.push(snap());Object.assign(state,u);render();}
+function navTo(u){
+  state.hist.push(snap());Object.assign(state,u);render();
+  try{history.pushState({app:1},'');}catch(e){}
+}
 function openProduct(id){navTo({view:'detail',product:id});}
 function toggleFav(id,el){
   if(state.favs.has(id)){state.favs.delete(id);el.classList.remove('on');el.querySelector('span').textContent='关注';toast('已取消关注');}
   else{state.favs.add(id);el.classList.add('on');el.querySelector('span').textContent='已关注';toast('已加入我的关注');}
 }
 function back(){
+  if(history.state&&history.state.app){history.back();return;}
   const p=state.hist.pop();
   if(p){Object.assign(state,p);render();}
   else{state.view='tab';render();}
@@ -2846,28 +2854,32 @@ function mount(){
     setTimeout(()=>{el.style.width=el.dataset.w;},80);
   });
 }
-/* 安卓微信：左边缘滑动返回 */
+/* 安卓微信：滑动返回（左半屏起手 + 方向锁） */
 (function initSwipeBack(){
-  let sx=0,sy=0,dx=0,active=false,el=null;
+  let sx=0,sy=0,dx=0,active=false,dir='',el=null;
   const overlayOpen=()=>document.querySelector('.backdrop.on')||document.getElementById('searchview').classList.contains('on')||document.getElementById('qawrap').classList.contains('on');
+  const reset=()=>{ if(el){el.classList.remove('swiping');el.style.transform='';} };
   const start=(x,y)=>{
     if(state.view==='tab'||overlayOpen())return;
-    if(x>32)return;
-    sx=x;sy=y;dx=0;active=true;el=document.querySelector('.view.subview');
+    if(x>window.innerWidth*0.5)return;
+    sx=x;sy=y;dx=0;dir='';active=true;el=document.querySelector('.view.subview');
     if(el)el.classList.add('swiping');
   };
   const move=(x,y,ev)=>{
     if(!active)return;
     dx=x-sx; const dy=y-sy;
-    if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>18){active=false;reset();return;}
-    if(dx<=0)return;
-    if(dx>6&&ev&&ev.cancelable)ev.preventDefault();
-    if(el)el.style.transform='translateX('+Math.min(dx*0.55,280)+'px)';
+    if(!dir&&(Math.abs(dx)>8||Math.abs(dy)>8)){
+      dir=Math.abs(dx)>Math.abs(dy)*1.2?'h':'v';
+      if(dir==='v'){active=false;reset();return;}
+    }
+    if(dir!=='h')return;
+    if(dx>4&&ev&&ev.cancelable)ev.preventDefault();
+    if(dx<=0){if(el)el.style.transform='';return;}
+    if(el)el.style.transform='translateX('+Math.min(dx*0.6,300)+'px)';
   };
-  const reset=()=>{ if(el){el.classList.remove('swiping');el.style.transform='';} };
   const end=()=>{
     if(!active)return; active=false;
-    if(dx>80&&el){
+    if(dx>70&&el){
       el.classList.remove('swiping');
       el.style.transition='transform .22s ease';
       el.style.transform='translateX(102%)';
@@ -2878,10 +2890,11 @@ function mount(){
   document.addEventListener('touchmove',e=>{const t=e.touches[0];move(t.clientX,t.clientY,e);},{passive:false});
   document.addEventListener('touchend',end);
   document.addEventListener('touchcancel',()=>{active=false;reset();});
-  document.addEventListener('mousedown',e=>{if(e.clientX<32)start(e.clientX,e.clientY);});
+  document.addEventListener('mousedown',e=>{if(e.clientX<window.innerWidth*0.5)start(e.clientX,e.clientY);});
   document.addEventListener('mousemove',e=>{if(active)move(e.clientX,e.clientY,e);});
   document.addEventListener('mouseup',()=>{if(active)end();});
 })();
+
 function render(){
   const root=$('root');
   if(state.view==='tab'){root.innerHTML=VIEWS[state.tab]();}
