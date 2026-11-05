@@ -958,6 +958,9 @@ mark{background:transparent;color:var(--orange-d);font-weight:700}
 .bdotsB{position:absolute;right:12px;bottom:12px;z-index:4;display:flex;gap:4px;padding:4px 7px;border-radius:9px;background:rgba(255,255,255,.55);backdrop-filter:blur(4px)}
 .bdotsB i{width:5px;height:5px;border-radius:3px;background:rgba(26,95,168,.28);transition:.3s}
 .bdotsB i.on{width:14px;background:#1A5FA8}
+
+.view.subview.swiping{transition:none!important}
+.view.subview{will-change:transform}
 </style>
 </head>
 <body>
@@ -2843,6 +2846,42 @@ function mount(){
     setTimeout(()=>{el.style.width=el.dataset.w;},80);
   });
 }
+/* 安卓微信：左边缘滑动返回 */
+(function initSwipeBack(){
+  let sx=0,sy=0,dx=0,active=false,el=null;
+  const overlayOpen=()=>document.querySelector('.backdrop.on')||document.getElementById('searchview').classList.contains('on')||document.getElementById('qawrap').classList.contains('on');
+  const start=(x,y)=>{
+    if(state.view==='tab'||overlayOpen())return;
+    if(x>32)return;
+    sx=x;sy=y;dx=0;active=true;el=document.querySelector('.view.subview');
+    if(el)el.classList.add('swiping');
+  };
+  const move=(x,y,ev)=>{
+    if(!active)return;
+    dx=x-sx; const dy=y-sy;
+    if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>18){active=false;reset();return;}
+    if(dx<=0)return;
+    if(dx>6&&ev&&ev.cancelable)ev.preventDefault();
+    if(el)el.style.transform='translateX('+Math.min(dx*0.55,280)+'px)';
+  };
+  const reset=()=>{ if(el){el.classList.remove('swiping');el.style.transform='';} };
+  const end=()=>{
+    if(!active)return; active=false;
+    if(dx>80&&el){
+      el.classList.remove('swiping');
+      el.style.transition='transform .22s ease';
+      el.style.transform='translateX(102%)';
+      setTimeout(()=>{ if(el){el.style.transition='';el.style.transform='';} back(); },170);
+    }else reset();
+  };
+  document.addEventListener('touchstart',e=>{const t=e.touches[0];start(t.clientX,t.clientY);},{passive:true});
+  document.addEventListener('touchmove',e=>{const t=e.touches[0];move(t.clientX,t.clientY,e);},{passive:false});
+  document.addEventListener('touchend',end);
+  document.addEventListener('touchcancel',()=>{active=false;reset();});
+  document.addEventListener('mousedown',e=>{if(e.clientX<32)start(e.clientX,e.clientY);});
+  document.addEventListener('mousemove',e=>{if(active)move(e.clientX,e.clientY,e);});
+  document.addEventListener('mouseup',()=>{if(active)end();});
+})();
 function render(){
   const root=$('root');
   if(state.view==='tab'){root.innerHTML=VIEWS[state.tab]();}
