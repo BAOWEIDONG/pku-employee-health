@@ -1388,6 +1388,7 @@ function homeHTML(){
     ['chat','健康讲座','#FDEEF4','#BE2A5E',"openLectureList()"],
     ['star','五好生活','#FFF6E0','#A86A06',"openFive()"]
   ];
+  const gridMod=['screen','medical','chronic','special','medical','safety','medical','medical','special','special'];
   return `<div class="view fade-in">
   <div class="scroll">
     <div class="heroS">
@@ -1426,7 +1427,7 @@ function homeHTML(){
     </div>
 
     <div class="gridS">
-      ${grid.map(g=>`<button class="gitem" onclick="${g[4]}">
+      ${grid.map((g,gi)=>`<button class="gitem" data-mod="${gridMod[gi]}" onclick="${g[4]}">
         <div class="gicon" style="background:${g[2]};color:${g[3]}">${ico(g[0])}</div>
         <span>${g[1]}</span>
       </button>`).join('')}
@@ -1456,7 +1457,7 @@ function homeHTML(){
       <div class="bdots"><i class="on"></i><i></i><i></i></div>
     </div>
 
-    ${hot.map(p=>{const mm=modOf(p.mod);return `<div class="svc" onclick="openProduct('${p.id}')">
+    ${hot.map(p=>{const mm=modOf(p.mod);return `<div class="svc" data-pid="${p.id}" onclick="openProduct('${p.id}')">
       <div class="svc-ic" style="background:${mm.tint};color:${mm.ink}">${ico(PICON[p.id]||mm.icon)}</div>
       <div class="svc-b">
         <b>${p.name}</b>
@@ -2948,6 +2949,6 @@ render();
   } catch (e) { console.warn('[admin-config] skipped', e && e.message); }
 })();
 </script>
-<script src="https://baoweidong.github.io/pku-console/assets/pku-bridge.js?v=1" data-channel="employee"></script>
+<script src="https://baoweidong.github.io/pku-console/assets/pku-bridge.js?v=2" data-channel="employee"></script>
 </body>
 </html>
