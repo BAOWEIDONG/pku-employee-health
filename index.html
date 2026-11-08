@@ -2923,5 +2923,30 @@ fitViewport();
 render();
 
 </script>
+
+<script id="admin-config-bridge">
+/* 运营中台配置桥：同域读取 config.json，覆盖服务名称/上架状态后重渲染 */
+(function () {
+  try {
+    var x = new XMLHttpRequest();
+    x.open('GET', 'https://baoweidong.github.io/pku-console/config.json', false);
+    x.send();
+    var c = JSON.parse(x.responseText);
+    if (!c || !c.employee) return;
+    if (c.employee.site && c.employee.site.title) document.title = c.employee.site.title;
+    if (typeof PRODUCTS === 'undefined') return;
+    (c.employee.services || []).forEach(function (s) {
+      var idx = -1;
+      for (var i = 0; i < PRODUCTS.length; i++) { if (PRODUCTS[i].id === s.id) { idx = i; break; } }
+      if (idx < 0) return;
+      if (s.status === 'offline') { PRODUCTS.splice(idx, 1); return; }
+      if (s.name) PRODUCTS[idx].name = s.name;
+      if (s.intro) PRODUCTS[idx].intro = s.intro;
+    });
+    if (typeof render === 'function') render();
+    console.info('[admin-config] applied', c.version);
+  } catch (e) { console.warn('[admin-config] skipped', e && e.message); }
+})();
+</script>
 </body>
 </html>
