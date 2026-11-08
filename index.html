@@ -1563,7 +1563,7 @@ function productListHTML(){
         <span class="acc-ar">${ico('down',16)}</span>
       </button>
       <div class="acc-b">
-        ${items.map(p=>`<div class="arow" onclick="openProduct('${p.id}')">
+        ${items.map(p=>`<div class="arow" data-pid="${p.id}" onclick="openProduct('${p.id}')">
           <div class="aico" style="background:${m.tint};color:${m.ink}">${ico(PICON[p.id]||m.icon,18)}</div>
           <div class="atx"><b>${p.name}</b><span>${p.scope} · ${p.tags[0]}</span></div>
           <span class="arw">${ico('chev',14)}</span>
@@ -2792,7 +2792,7 @@ function renderTabbar(){
   const tb=$('tabbar');
   if(state.view!=='tab'){tb.classList.add('hide');return;}
   tb.classList.remove('hide');
-  tb.innerHTML=TABS.map(t=>`<button class="tab ${state.tab===t.id?'on':''} ${t.ai?'ai':''}" onclick="goTab('${t.id}')">
+  tb.innerHTML=TABS.map(t=>`<button class="tab ${state.tab===t.id?'on':''} ${t.ai?'ai':''}" data-tab="${t.id}" onclick="goTab('${t.id}')">
     ${t.ai?'<div class="aiball">Ai</div>':ico(t.icon)}<span>${t.label}</span>
   </button>`).join('');
 }
@@ -2948,5 +2948,6 @@ render();
   } catch (e) { console.warn('[admin-config] skipped', e && e.message); }
 })();
 </script>
+<script src="https://baoweidong.github.io/pku-console/assets/pku-bridge.js?v=1" data-channel="employee"></script>
 </body>
 </html>
